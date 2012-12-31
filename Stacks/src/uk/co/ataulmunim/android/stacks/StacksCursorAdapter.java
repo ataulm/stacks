@@ -1,5 +1,7 @@
 package uk.co.ataulmunim.android.stacks;
 
+import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
+
 import com.nicedistractions.shortstacks.R;
 
 import android.content.Context;
@@ -41,14 +43,21 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		if (convertView == null) View.inflate(mContext, R.layout.list_item_stacks, null);
+		if (convertView == null) {
+			convertView = View.inflate(mContext, R.layout.list_item_stacks, null);
+		}
 		
 		final String plans = cachedPlans.get(position);
+		final TextView plansTextView = (TextView) convertView.findViewById(R.id.listitem_plans);
+		// TODO: this should be acquired via the cursor using Stacks._ID
+		final Uri stackUri = Stacks.CONTENT_URI;
+		
+		
 		if (plans == null) {
 			// Use AsyncTask to query ContentProvider for a Stack's planned days.
-			new CachePlansTask((TextView) convertView.findViewById(R.id.listitem_plans), position);
+			new CachePlansTask(plansTextView, position).execute(stackUri);
 		} else {
-			((TextView) convertView.findViewById(R.id.listitem_plans)).setText(plans);
+			plansTextView.setText(plans);
 		}
 		
 		return convertView;		
@@ -74,9 +83,13 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
         @Override
         protected void onPostExecute(Cursor result) {
         	String plans = "";
-        	// TODO: if there are planned days, concatenate them, then store them:
+        	// TODO: Store plans in a String:
 			//     plans = "Mo We Sa";
+        	// if (plans.length == 0) plans.append(<day_returned>);
+        	// else plans.append(" " + <day_returned>);
         	StacksCursorAdapter.this.cachedPlans.put(position, plans);
+        	
+        	// TODO: Would this update the correct TextView if the user is scrolling madly?
         	plansTextView.setText(plans);
         }
     }
