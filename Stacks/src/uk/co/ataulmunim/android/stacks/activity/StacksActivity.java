@@ -24,8 +24,8 @@ public class StacksActivity extends SherlockFragmentActivity {
 		
 		// TODO: assess and remove
 		// clears DB, and then adds some items
-		clearAllItems();
-		addItem();
+		//clearAllItems();
+		//addItem();
 	}
 	
 	

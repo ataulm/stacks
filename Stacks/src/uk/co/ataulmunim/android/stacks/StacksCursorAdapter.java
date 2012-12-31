@@ -47,17 +47,16 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 			convertView = View.inflate(mContext, R.layout.list_item_stacks, null);
 		}
 		
-		final String plans = cachedPlans.get(position);
 		final TextView plansTextView = (TextView) convertView.findViewById(R.id.listitem_plans);
 		// TODO: this should be acquired via the cursor using Stacks._ID
 		final Uri stackUri = Stacks.CONTENT_URI;
 		
 		
-		if (plans == null) {
+		if (cachedPlans.get(position) == null) {
 			// Use AsyncTask to query ContentProvider for a Stack's planned days.
 			new CachePlansTask(plansTextView, position).execute(stackUri);
 		} else {
-			plansTextView.setText(plans);
+			plansTextView.setText(cachedPlans.get(position));
 		}
 		
 		return convertView;		
@@ -84,9 +83,9 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
         protected void onPostExecute(Cursor result) {
         	String plans = "";
         	// TODO: Store plans in a String:
-			//     plans = "Mo We Sa";
         	// if (plans.length == 0) plans.append(<day_returned>);
         	// else plans.append(" " + <day_returned>);
+        	// Update the cache
         	StacksCursorAdapter.this.cachedPlans.put(position, plans);
         	
         	// TODO: Would this update the correct TextView if the user is scrolling madly?

@@ -13,27 +13,28 @@
         android:text="fragment_stack_view.xml (blue)"
         />
     
-    <Button
-        android:id="@+id/add_item"
-        android:onClick="testButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="Add item" />
-    
-    <Button
-        android:id="@+id/print_db"
-        android:onClick="testButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="Print db" />
-    
     <!-- Main stack view -->
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#C45810"
         android:id="@android:id/list"
         />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        
+        <EditText
+            android:id="@+id/add_stack_field" 
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:imeOptions="actionDone"
+            android:inputType="text|textAutoCorrect"
+            android:hint="Add an item" />            
+    </LinearLayout>
 
 </LinearLayout>

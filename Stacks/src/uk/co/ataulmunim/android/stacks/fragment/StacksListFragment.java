@@ -7,11 +7,16 @@ import com.nicedistractions.shortstacks.R;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -21,8 +26,9 @@ import com.actionbarsherlock.app.SherlockListFragment;
 
 
 public class StacksListFragment extends SherlockListFragment
-	implements LoaderManager.LoaderCallbacks<Cursor> {
+	implements LoaderManager.LoaderCallbacks<Cursor>, OnEditorActionListener {
 	
+	public static final String LOG_TAG = "StacksListFragment";
 	public static final int STACKS_LOADER = 0;
 	public static final int DATES_LOADER = 1;
 	public static final int PLANS_LOADER = 2;
@@ -68,10 +74,23 @@ public class StacksListFragment extends SherlockListFragment
         
         // Prepare the loader.  Either re-connect with an existing one,
         // or start a new one.
-        getLoaderManager().initLoader(STACKS_LOADER, null, this);		
+        //getLoaderManager().initLoader(STACKS_LOADER, null, this);
+        
+        ((EditText) getView().findViewById(R.id.add_stack_field)).setOnEditorActionListener(this);
 	}
 	
-    
+	/**
+	 * Allows user to quick-add items to the Stack by using the "Done" button on their keyboard.
+	 * The keyboard will not close unless the "back" button or the "close-keyboard" button is
+	 * pressed.
+	 */
+	@Override
+	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+		Log.d(LOG_TAG, "Done pressed.");
+		// TODO: Insert a new Stack based on the trimmed input from the field and the current stackId
+		v.setText("");
+	    return true;
+	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -99,23 +118,6 @@ public class StacksListFragment extends SherlockListFragment
 
 	}
 	
-	/**
-	 * Temporary method to test button functions
-	 * TODO: assess and remove method
-	 * @param v
-	 */
-	public void testButton(View v) {		
-		switch (v.getId()){
-			case R.id.add_item:
-				Crud.genStack(getActivity(), Stacks.ROOT_STACK_ID);
-				break;
-			
-			case R.id.print_db:
-				break;
-			
-			default:
-				break;
-		}	
-	}
+
 	
 }
