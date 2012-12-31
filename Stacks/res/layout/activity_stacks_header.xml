@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Main header view - remember: each ExpandView should have two children exactly -->
+<uk.co.ataulmunim.android.view.ExpandView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <!-- Primary view in the main header view (always visible) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:onClick="toggleV"
+        >
+        <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        >
+	        <TextView
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1"
+	            android:text="Item Name"
+	            />
+	        <ImageView
+                android:id="@+id/favstar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/rate_star_med_on_holo_dark"
+                />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="[ Mo We Th ]"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="7"
+                />
+        </LinearLayout>
+        
+        <!-- Should be imageview, with downwards caret -->
+        <TextView
+            android:id="@+id/caret"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="v"
+            />
+    </LinearLayout>
+    
+    <!-- Secondary view in the main header view (starts collapsed) -->
+    <uk.co.ataulmunim.android.view.ExpandView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="toggleV"
+        >
+	    <!-- Primary view in the inner ExpandView view (always visible if parent is visible) -->
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="NOTE"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Truffaut kogi freegan lo-fi post-ironic iphone farm-to-table. Try-hard american apparel cray, salvia truffaut hella messenger bag lo-fi mlkshk banjo organic raw denim."
+                />
+            
+            <!-- Should be imageview, with downwards caret -->
+	        <TextView
+	            android:id="@+id/caret"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center_horizontal"
+	            android:text="v"
+	            />     
+	    </LinearLayout>
+        
+	    <!-- Secondary view in the inner ExpandView (starts collapsed) -->
+	    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DATES"
+                />
+            
+            <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="horizontal"
+	            >
+	            <TextView
+	                android:layout_width="0dp"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:text="01 Feb 2013"
+	                />
+	            <TextView
+	                android:layout_width="0dp"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:text="IO Registration!!"
+	                />
+	        </LinearLayout>
+	        
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="15 May 2013"
+                    />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="[No description]"
+                    />
+            </LinearLayout> 
+        </LinearLayout>
+    </uk.co.ataulmunim.android.view.ExpandView>
+	
+</uk.co.ataulmunim.android.view.ExpandView>

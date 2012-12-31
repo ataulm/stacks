@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#4FBF22"
+    >
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="activity_stacks.xml (green)"
+        />
+
+	<fragment
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    class="uk.co.ataulmunim.android.stacks.fragment.StacksListFragment"
+		android:id="@+id/stacklist"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		/>
+</LinearLayout>
