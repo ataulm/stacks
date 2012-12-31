@@ -4,6 +4,7 @@ import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 
 import com.nicedistractions.shortstacks.R;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -32,6 +34,12 @@ public class StacksListFragment extends SherlockListFragment
 	public static final int STACKS_LOADER = 0;
 	public static final int DATES_LOADER = 1;
 	public static final int PLANS_LOADER = 2;
+	
+	/**
+	 * Determines whether or not to close the soft input keyboard when adding Stacks to the list.
+	 * A value of TRUE will leave it open, but this can be set in shared preferences.
+	 */
+	private boolean quickAddMode;
 	
 	private SimpleCursorAdapter adapter;
 	private int stackId; // id of the current stack in the Stacks table
@@ -76,34 +84,45 @@ public class StacksListFragment extends SherlockListFragment
         // or start a new one.
         //getLoaderManager().initLoader(STACKS_LOADER, null, this);
         
+        // TODO: Get/set quickAddMode via SharedPreferences
+        quickAddMode = true;
         ((EditText) getView().findViewById(R.id.add_stack_field)).setOnEditorActionListener(this);
 	}
 	
 	/**
-	 * Allows user to quick-add items to the Stack by using the "Done" button on their keyboard.
-	 * The keyboard will not close unless the "back" button or the "close-keyboard" button is
-	 * pressed.
+	 * Adds a stack as a child to the current stack.
 	 */
 	@Override
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 		Log.d(LOG_TAG, "Done pressed.");
 		// TODO: Insert a new Stack based on the trimmed input from the field and the current stackId
 		v.setText("");
+		
+		if (!quickAddMode) {
+			InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
+					Activity.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+		}
 	    return true;
 	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		final String select = Stacks.PARENT + "=" + stackId + " AND " + Stacks.DELETED + "= 0";
 		
-		CursorLoader cursor = new CursorLoader(getActivity(),
-				Stacks.CONTENT_URI,
-				STACKS_PROJECTION,
-				select,
-				null,
-				Stacks.LOCAL_SORT);		
+		if (id == STACKS_LOADER) {
+			final String select = Stacks.PARENT + "=" + stackId + " AND " + Stacks.DELETED + "= 0";
+			
+			CursorLoader cursor = new CursorLoader(getActivity(),
+					Stacks.CONTENT_URI,
+					STACKS_PROJECTION,
+					select,
+					null,
+					Stacks.LOCAL_SORT);		
+			
+			return cursor;	
+		}
 		
-		return cursor;
+		return null;
 	}
 	
 	
