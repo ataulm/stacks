@@ -1,36 +1,38 @@
 package uk.co.ataulmunim.android.stacks.fragment;
-import uk.co.ataulmunim.android.stacks.Crud;
+import uk.co.ataulmunim.android.stacks.StacksCursorAdapter;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
-
-import com.nicedistractions.shortstacks.R;
-
 import android.app.Activity;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.nicedistractions.shortstacks.R;
 
 
 public class StacksListFragment extends SherlockListFragment
 	implements LoaderManager.LoaderCallbacks<Cursor>, OnEditorActionListener {
 	
 	public static final String LOG_TAG = "StacksListFragment";
+	
+	public static final String[] STACKS_PROJECTION = {
+		Stacks.NAME,
+		Stacks.ACTION_ITEMS,
+		Stacks._ID
+	};
+	
 	public static final int STACKS_LOADER = 0;
 	public static final int DATES_LOADER = 1;
 	public static final int PLANS_LOADER = 2;
@@ -51,10 +53,7 @@ public class StacksListFragment extends SherlockListFragment
         return inflater.inflate(R.layout.fragment_stack_view, container, false);
     }
 	
-	public static final String[] STACKS_PROJECTION = {
-		Stacks.NAME,
-		Stacks.ACTION_ITEMS
-	};
+	
 	
 	/**
 	 * Called after onCreateView(), after the parent activity is created
@@ -66,14 +65,17 @@ public class StacksListFragment extends SherlockListFragment
 		// Restore stuff if needed
 		// if (savedInstanceState != null) editmode = savedInstanceState.getBoolean("editing");
 		
+		// TODO: get id from intent
+		stackId = Stacks.ROOT_STACK_ID;
+		
 		// Create an empty adapter we will use to display the loaded data.
-		adapter = new SimpleCursorAdapter(
+		adapter = new StacksCursorAdapter(
 					getActivity(),
 					R.layout.list_item_stacks,
 					null,
 					STACKS_PROJECTION,
-					new int[] { R.id.listitem_name, R.id.listitem_actionable_items },
-					0);
+					new int[] { R.id.listitem_name, R.id.listitem_actionable_items }
+					);
 
         setListAdapter(adapter);
         
@@ -82,7 +84,7 @@ public class StacksListFragment extends SherlockListFragment
         
         // Prepare the loader.  Either re-connect with an existing one,
         // or start a new one.
-        //getLoaderManager().initLoader(STACKS_LOADER, null, this);
+        getActivity().getSupportLoaderManager().initLoader(STACKS_LOADER, null, this);
         
         // TODO: Get/set quickAddMode via SharedPreferences
         quickAddMode = true;
@@ -99,6 +101,7 @@ public class StacksListFragment extends SherlockListFragment
 		v.setText("");
 		
 		if (!quickAddMode) {
+			Log.d(LOG_TAG, "quickAddMode false, hiding keyboard.");
 			InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
 					Activity.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
@@ -108,33 +111,37 @@ public class StacksListFragment extends SherlockListFragment
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		
 		if (id == STACKS_LOADER) {
-			final String select = Stacks.PARENT + "=" + stackId + " AND " + Stacks.DELETED + "= 0";
+			Log.d(LOG_TAG, "Loading Stacks.");
+			final String select = Stacks.PARENT + "=" + stackId + " AND " + Stacks.DELETED + "<> 1";
 			
-			CursorLoader cursor = new CursorLoader(getActivity(),
+			CursorLoader cursorLoader = new CursorLoader(getActivity(),
 					Stacks.CONTENT_URI,
 					STACKS_PROJECTION,
 					select,
 					null,
 					Stacks.LOCAL_SORT);		
 			
-			return cursor;	
+			return cursorLoader;	
 		}
 		
 		return null;
 	}
-	
-	
 
 	@Override
-	public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
-		
+	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+		if (loader.getId() == STACKS_LOADER) {
+			Log.d(LOG_TAG, "Stacks loaded, swapping cursor.");
+			adapter.swapCursor(data);	
+		}		
 	}
 
 	@Override
-	public void onLoaderReset(Loader<Cursor> arg0) {
-
+	public void onLoaderReset(Loader<Cursor> loader) {
+		if (loader.getId() == STACKS_LOADER) {
+			Log.d(LOG_TAG, "Closing last Stacks cursor, so setting adapter cursor to null.");
+			adapter.swapCursor(null);
+		}
 	}
 	
 

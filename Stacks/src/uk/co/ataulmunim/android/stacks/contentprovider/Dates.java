@@ -3,6 +3,7 @@ package uk.co.ataulmunim.android.stacks.contentprovider;
 import android.net.Uri;
 import edu.mit.mobile.android.content.ContentItem;
 import edu.mit.mobile.android.content.ProviderUtils;
+import edu.mit.mobile.android.content.UriPath;
 import edu.mit.mobile.android.content.column.DBColumn;
 import edu.mit.mobile.android.content.column.DBForeignKeyColumn;
 import edu.mit.mobile.android.content.column.DatetimeColumn;
@@ -17,6 +18,7 @@ import edu.mit.mobile.android.content.column.TextColumn;
  * @author ataulm
  *
  */
+@UriPath(Dates.PATH)
 public class Dates implements ContentItem {
 	
 	// Column definitions /////////////////////////////////////////////////////
@@ -37,8 +39,11 @@ public class Dates implements ContentItem {
     // ========================================================================
 	
 	/**
-	 * The stack item that this date is associated with - a foreign key mapping
-	 * to the _id column in the Stacks table.
+	 * The stack item that this date is associated with - a foreign key mapping to the _id column
+	 * in the Stacks table.
+	 * 
+	 * This creates a foreign key relationship to the stack. In effect, this is the child storing
+	 * the ID of its parent. The ForeignKeyManager will help access this relationship.
 	 */
 	@DBForeignKeyColumn(parent = Stacks.class)
     public static final String STACK = "stack";
@@ -55,7 +60,7 @@ public class Dates implements ContentItem {
 	@DBColumn(type = TextColumn.class)
     public static final String ABOUT = "about";
 	
-	// ////////////////////////////////////////////////////////////////////////
+	// End of Column definitions //////////////////////////////////////////////////////////////////
 	
 	// This defines the path component of the content URI.
     // For most instances, it's best to just use the classname here:

@@ -4,38 +4,26 @@ import android.net.Uri;
 import edu.mit.mobile.android.content.ContentItem;
 import edu.mit.mobile.android.content.ForeignKeyManager;
 import edu.mit.mobile.android.content.ProviderUtils;
+import edu.mit.mobile.android.content.UriPath;
 import edu.mit.mobile.android.content.column.BooleanColumn;
 import edu.mit.mobile.android.content.column.DBColumn;
 import edu.mit.mobile.android.content.column.DatetimeColumn;
 import edu.mit.mobile.android.content.column.IntegerColumn;
 import edu.mit.mobile.android.content.column.TextColumn;
 
+
+@UriPath(Stacks.PATH)
 public class Stacks implements ContentItem {
 	
 	/**
      * Defines the path component of the content URI.
      */
-	public static final String PATH = "stack";
+	public static final String PATH = "stacks";
     
-    /**
-     * The SimpleContentProvider constructs content URIs based on your provided
-     * path and authority.
-     */
-    public static final Uri CONTENT_URI =
-    		ProviderUtils.toContentUri(StacksContentProvider.AUTHORITY, PATH);
-    
-    public static final String CONTENT_TYPE =
-    		"vnd.android.cursor.item/vnd.co.uk.ataulmunim.stacks.contentprovider.stack";
-    
-    /**
-     * The _id of the root stack, which is created on first-open.
-     */
-    public static final int ROOT_STACK_ID = 1;
-	
-	// Column definitions /////////////////////////////////////////////////////////////////////////
+    // Column definitions /////////////////////////////////////////////////////////////////////////
 
-	// ContentItem contains one column definition for the BaseColumns._ID which
-    // defines the primary key.
+	// ContentItem contains one column definition for the BaseColumns._ID which defines the primary
+	// key, so it doesn't need to be declared explicitly
     // ============================================================================================
     // Column Name		type		description
     // ============================================================================================
@@ -64,7 +52,7 @@ public class Stacks implements ContentItem {
     /**
 	 * A single line summary of the Stack (title, task or list item) 
 	 */
-	@DBColumn(type = TextColumn.class)
+	@DBColumn(type = TextColumn.class, notnull = true)
     public static final String NAME = "name";
 	
 	/**
@@ -90,7 +78,7 @@ public class Stacks implements ContentItem {
 	 * The _ID of this Stack's parent, where parent is the direct ancestor in
 	 * the tree.
 	 */
-	@DBColumn(type = IntegerColumn.class)
+	@DBColumn(type = IntegerColumn.class, notnull = true)
     public static final String PARENT = "parent";
 	
 	/**
@@ -104,7 +92,7 @@ public class Stacks implements ContentItem {
 	 * Flag to indicate whether this Stack has been starred by the user. If
 	 * true, it will be unavailable to the user.
 	 */
-	@DBColumn(type = BooleanColumn.class)
+	@DBColumn(type = BooleanColumn.class, defaultValue = "0")
     public static final String STARRED = "starred";
 	
 	/**
@@ -112,7 +100,7 @@ public class Stacks implements ContentItem {
 	 * The date specifies the time it was marked for deletion, and no date
 	 * indicates that the Stack has not been marked for deletion.
 	 */
-	@DBColumn(type = DatetimeColumn.class)
+	@DBColumn(type = DatetimeColumn.class, defaultValue = "0")
     public static final String DELETED = "deleted";
 	
 	/**
@@ -121,7 +109,20 @@ public class Stacks implements ContentItem {
 	@DBColumn(type = IntegerColumn.class)
     public static final String LOCAL_SORT = "localsort";
 	
-	// ////////////////////////////////////////////////////////////////////////
+	// End of Column definitions //////////////////////////////////////////////////////////////////
+	
+	/**
+     * The SimpleContentProvider constructs content URIs based on your provided
+     * path and authority.
+     */
+    public static final Uri CONTENT_URI =
+    		ProviderUtils.toContentUri(StacksContentProvider.AUTHORITY, PATH);
+    
+    public static final String CONTENT_TYPE =
+    		"vnd.android.cursor.item/vnd.co.uk.ataulmunim.stacks.contentprovider.stack";
+    
+    // _ID of the root stack, which is created on first-open.
+    public static final int ROOT_STACK_ID = 1;
 	
 	// This is a helpful tool connecting back to the "child" of this object. This is similar
     // to Django's relation manager, although we need to define it ourselves.

@@ -7,7 +7,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.TextView;
+
 import com.nicedistractions.shortstacks.R;
 
 
@@ -37,6 +40,8 @@ public abstract class Crud {
 	 * @param parent
 	 */
 	public static Uri addStack(Context context, String name, String notes, int parent) {
+		Log.d(LOG_TAG, "Trying to add stack");
+		
 		// place your content inside a ContentValues object.
 	    final ContentValues values = new ContentValues();
 	    values.put(Stacks.NAME, name);
@@ -49,6 +54,7 @@ public abstract class Crud {
 	    final Uri addedStack = context.getContentResolver().insert(Stacks.CONTENT_URI, values);
 	    
 	    if (addedStack == null) Log.e(LOG_TAG, context.getString(R.string.error_insert));
+	    else Log.d(LOG_TAG, "Added stack: " + addedStack.toString());
 	    
 	    return addedStack;
 	}
@@ -117,4 +123,6 @@ public abstract class Crud {
 		
 		return addedDate;
 	}
+	
+
 }

@@ -3,6 +3,7 @@ package uk.co.ataulmunim.android.stacks.contentprovider;
 import android.net.Uri;
 import edu.mit.mobile.android.content.ContentItem;
 import edu.mit.mobile.android.content.ProviderUtils;
+import edu.mit.mobile.android.content.UriPath;
 import edu.mit.mobile.android.content.column.DBColumn;
 import edu.mit.mobile.android.content.column.DBForeignKeyColumn;
 import edu.mit.mobile.android.content.column.DatetimeColumn;
@@ -28,6 +29,7 @@ import edu.mit.mobile.android.content.column.TextColumn;
  * @author ataulm
  *
  */
+@UriPath(Plans.PATH)
 public class Plans implements ContentItem {
 	
 	// Column definitions /////////////////////////////////////////////////////
@@ -56,7 +58,7 @@ public class Plans implements ContentItem {
 	@DBColumn(type = IntegerColumn.class)
     public static final String VALUE = "value";
 	
-	// ////////////////////////////////////////////////////////////////////////
+	// End of Column definitions //////////////////////////////////////////////////////////////////
 	
 	// This defines the path component of the content URI.
     // For most instances, it's best to just use the classname here:

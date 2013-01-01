@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 public class StacksCursorAdapter extends SimpleCursorAdapter {
 
+	public static final String LOG_TAG = "StacksCursorAdapter";
 	/**
 	 * Saves Plans data to avoid requerying the content provider when the user scrolls the list.
 	 */
@@ -35,6 +37,8 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 	public StacksCursorAdapter(Context context, int layout, Cursor c, String[] from, int[] to) {
 		super(context, layout, c, from, to, 0);
 		cachedPlans = new SparseArray<String>();
+		
+		if (c != null) Log.i(LOG_TAG, "Cursor column count: " + c.getColumnCount());
 	}
 	
 	/**
