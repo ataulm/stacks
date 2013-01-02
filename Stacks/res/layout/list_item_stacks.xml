@@ -8,34 +8,38 @@
     
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1" >
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" >
     
         <TextView
             android:id="@+id/listitem_name"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical" />
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:background="#BC8CDB" />
         
         <TextView
             android:id="@+id/listitem_plans"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="[getView fills me]" />
+            android:text="[getView fills me]"
+            android:background="#F294E4" />
     </LinearLayout>
-        
+    
     <TextView
         android:id="@+id/listitem_actionable_items"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:background="#E4F294"
+        android:text="#"
         android:gravity="center" />
     
-    <ImageView
+    <TextView
         android:id="@+id/listitem_more"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:contentDescription="More options for this list item" />
+        android:background="#94E0DD"
+        android:text="More"
+        android:gravity="center" />
     
 </LinearLayout>

@@ -27,10 +27,10 @@ public class StacksListFragment extends SherlockListFragment
 	
 	public static final String LOG_TAG = "StacksListFragment";
 	
-	public static final String[] STACKS_PROJECTION = {
+	public final String[] STACKS_PROJECTION = {
+		Stacks._ID,
 		Stacks.NAME,
-		Stacks.ACTION_ITEMS,
-		Stacks._ID
+		Stacks.ACTION_ITEMS
 	};
 	
 	public static final int STACKS_LOADER = 0;
@@ -73,10 +73,10 @@ public class StacksListFragment extends SherlockListFragment
 					getActivity(),
 					R.layout.list_item_stacks,
 					null,
-					STACKS_PROJECTION,
+					new String[] {Stacks.NAME, Stacks.ACTION_ITEMS},
 					new int[] { R.id.listitem_name, R.id.listitem_actionable_items }
 					);
-
+		
         setListAdapter(adapter);
         
         // Start out with a progress indicator.
@@ -132,7 +132,15 @@ public class StacksListFragment extends SherlockListFragment
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		if (loader.getId() == STACKS_LOADER) {
 			Log.d(LOG_TAG, "Stacks loaded, swapping cursor.");
-			adapter.swapCursor(data);	
+			
+			if (data.moveToFirst()) {
+				do {
+					Log.d(LOG_TAG, "stack id: " + data.getString(data.getColumnIndex(Stacks._ID)) +
+							", name: " + data.getString(data.getColumnIndex(Stacks.NAME)));
+				} while (data.moveToNext());
+			}
+			
+			adapter.swapCursor(data);
 		}		
 	}
 

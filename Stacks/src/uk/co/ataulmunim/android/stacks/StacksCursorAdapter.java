@@ -47,21 +47,24 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		convertView = super.getView(position, convertView, parent);
+		
 		if (convertView == null) {
+			Log.d(LOG_TAG, "convertView was null, inflating.");
 			convertView = View.inflate(mContext, R.layout.list_item_stacks, null);
 		}
+//		
+//		final TextView plansTextView = (TextView) convertView.findViewById(R.id.listitem_plans);
+//		// TODO: this should be acquired via the cursor using Stacks._ID
+//		final Uri stackUri = Stacks.CONTENT_URI;
 		
-		final TextView plansTextView = (TextView) convertView.findViewById(R.id.listitem_plans);
-		// TODO: this should be acquired via the cursor using Stacks._ID
-		final Uri stackUri = Stacks.CONTENT_URI;
 		
-		
-		if (cachedPlans.get(position) == null) {
-			// Use AsyncTask to query ContentProvider for a Stack's planned days.
-			new CachePlansTask(plansTextView, position).execute(stackUri);
-		} else {
-			plansTextView.setText(cachedPlans.get(position));
-		}
+//		if (cachedPlans.get(position) == null) {
+//			// Use AsyncTask to query ContentProvider for a Stack's planned days.
+//			new CachePlansTask(plansTextView, position).execute(stackUri);
+//		} else {
+//			plansTextView.setText(cachedPlans.get(position));
+//		}
 		
 		return convertView;		
 	}
