@@ -1,14 +1,18 @@
 package uk.co.ataulmunim.android.stacks.fragment;
+import uk.co.ataulmunim.android.stacks.Crud;
 import uk.co.ataulmunim.android.stacks.StacksCursorAdapter;
+import uk.co.ataulmunim.android.stacks.contentprovider.Plans;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import android.app.Activity;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,10 +31,12 @@ public class StacksListFragment extends SherlockListFragment
 	
 	public static final String LOG_TAG = "StacksListFragment";
 	
-	public final String[] STACKS_PROJECTION = {
-		Stacks._ID,
-		Stacks.NAME,
-		Stacks.ACTION_ITEMS
+	public static final String[] STACKS_PROJECTION = {
+		Stacks._ID,	Stacks.NAME, Stacks.ACTION_ITEMS
+	};
+	
+	public static final String[] PLANS_PROJECTION = {
+		Plans._ID, Plans.DAY, Plans.STACK
 	};
 	
 	public static final int STACKS_LOADER = 0;
@@ -43,7 +49,7 @@ public class StacksListFragment extends SherlockListFragment
 	 */
 	private boolean quickAddMode;
 	
-	private SimpleCursorAdapter adapter;
+	private StacksCursorAdapter adapter;
 	private int stackId; // id of the current stack in the Stacks table
 		
 	@Override
@@ -85,6 +91,7 @@ public class StacksListFragment extends SherlockListFragment
         // Prepare the loader.  Either re-connect with an existing one,
         // or start a new one.
         getActivity().getSupportLoaderManager().initLoader(STACKS_LOADER, null, this);
+        getActivity().getSupportLoaderManager().initLoader(PLANS_LOADER, null, this);
         
         // TODO: Get/set quickAddMode via SharedPreferences
         quickAddMode = true;
@@ -97,7 +104,8 @@ public class StacksListFragment extends SherlockListFragment
 	@Override
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 		Log.d(LOG_TAG, "Done pressed.");
-		// TODO: Insert a new Stack based on the trimmed input from the field and the current stackId
+		// TODO: use the correct parent stack, not just the root stack
+		Crud.addStack(getActivity(), v.getText().toString().trim(), null, Stacks.ROOT_STACK_ID);
 		v.setText("");
 		
 		if (!quickAddMode) {
@@ -111,37 +119,72 @@ public class StacksListFragment extends SherlockListFragment
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+		CursorLoader cursorLoader = null;
+		
 		if (id == STACKS_LOADER) {
-			Log.d(LOG_TAG, "Loading Stacks.");
-			final String select = Stacks.PARENT + "=" + stackId + " AND " + Stacks.DELETED + "<> 1";
+			Log.d(LOG_TAG, "Loading Stacks for Stack " + stackId);
+			final String where = Stacks.PARENT + "=" + stackId + " AND " + Stacks.DELETED + "<> 1";
 			
-			CursorLoader cursorLoader = new CursorLoader(getActivity(),
+			cursorLoader = new CursorLoader(getActivity(),
 					Stacks.CONTENT_URI,
 					STACKS_PROJECTION,
-					select,
+					where,
 					null,
 					Stacks.LOCAL_SORT);		
 			
 			return cursorLoader;	
 		}
 		
-		return null;
+		else if (id == PLANS_LOADER ) {
+			Log.d(LOG_TAG, "Loading Stacks Plans for Stack " + stackId);
+			
+			final String where = Plans.VALUE + "> 0";
+			// URI for all plans which are connected to the Stacks table
+			final Uri allPlans = Stacks.PLANS.getAll(Stacks.CONTENT_URI);
+			
+			cursorLoader = new CursorLoader(getActivity(), allPlans, PLANS_PROJECTION, where, null, Plans.STACK);
+		}
+		
+		return cursorLoader;
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		if (loader.getId() == STACKS_LOADER) {
-			Log.d(LOG_TAG, "Stacks loaded, swapping cursor.");
+			Log.d(LOG_TAG, "Stacks loaded, swapping cursor, scrolling to end.");
 			
+			adapter.swapCursor(data);
+			getListView().smoothScrollToPosition(adapter.getCount());
+		}
+		else if (loader.getId() == PLANS_LOADER) {
+			Log.d(LOG_TAG, data.getCount() + " plans loaded");
+			SparseArray<String> plans = new SparseArray<String>();
+			
+			/**
+			 * The idea is to append. if empty add. if not empty append.
+			 */
 			if (data.moveToFirst()) {
 				do {
-					Log.d(LOG_TAG, "stack id: " + data.getString(data.getColumnIndex(Stacks._ID)) +
-							", name: " + data.getString(data.getColumnIndex(Stacks.NAME)));
+					final int stack = data.getInt(data.getColumnIndex(Plans.STACK));
+					final String plan = plans.get(stack);
+					final int dayCode = data.getInt(data.getColumnIndex(Plans.DAY)); 
+					final String day = Plans.getDayShort(dayCode);
+					
+					if (plan == null) {
+						plans.put(stack, day);
+					} else if (!plan.contains(day)){
+						plans.put(stack, plan + " " + day); 
+					}
+					
+					Log.d(LOG_TAG, "key: "+ stack+ ", plan: "+ plans.get(stack));
+					
 				} while (data.moveToNext());
 			}
 			
-			adapter.swapCursor(data);
-		}		
+			// TODO: Update views already visible
+			adapter.setCachedPlans(plans);
+			adapter.notifyDataSetChanged();			
+		}
 	}
 
 	@Override

@@ -41,21 +41,21 @@ public class Plans implements ContentItem {
 	 * The stack item that this plan is associated with - a foreign key mapping
 	 * to the _id column in the Stacks table.
 	 */
-	@DBForeignKeyColumn(parent = Stacks.class)
+	@DBForeignKeyColumn(parent = Stacks.class, notnull = true)
     public static final String STACK = "stack";
 	
 	/**
 	 * Day that this row represents - can be one of the days of the week where
 	 * days are represented as integers (constants provided in this class).
 	 */
-	@DBColumn(type = IntegerColumn.class)
+	@DBColumn(type = IntegerColumn.class, notnull = true)
     public static final String DAY = "day";
 	
 	/**
 	 * Value that this row represents - can be one of the 16 values listed as
 	 * constants in this class.
 	 */
-	@DBColumn(type = IntegerColumn.class)
+	@DBColumn(type = IntegerColumn.class, notnull = true)
     public static final String VALUE = "value";
 	
 	// End of Column definitions //////////////////////////////////////////////////////////////////
@@ -78,6 +78,32 @@ public class Plans implements ContentItem {
     public static final int FRIDAY = 5;
     public static final int SATURDAY = 6;
     public static final int SUNDAY = 7;
+    
+    /**
+     * Returns day mapping as String
+     * @param code
+     * @return
+     */
+    public static String getDayShort(int code) {
+    	switch (code) {
+	    	case MONDAY:
+	    		return "Mo";
+	    	case TUESDAY:
+	    		return "Tu";
+	    	case WEDNESDAY:
+	    		return "We";
+	    	case THURSDAY:
+	    		return "Th";
+	    	case FRIDAY:
+	    		return "Fr";
+	    	case SATURDAY:
+	    		return "Sa";
+	    	case SUNDAY:
+	    		return "Su";
+    		default:
+    			return "";
+    	}
+    }
     
     // Value combinations
     public static final int SOMETIME_TODAY = 1;

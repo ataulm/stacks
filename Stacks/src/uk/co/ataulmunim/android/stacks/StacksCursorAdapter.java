@@ -36,7 +36,6 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 	 */
 	public StacksCursorAdapter(Context context, int layout, Cursor c, String[] from, int[] to) {
 		super(context, layout, c, from, to, 0);
-		cachedPlans = new SparseArray<String>();
 		
 		if (c != null) Log.i(LOG_TAG, "Cursor column count: " + c.getColumnCount());
 	}
@@ -47,56 +46,54 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		convertView = super.getView(position, convertView, parent);
+		View row = super.getView(position, convertView, parent);
+		ViewHolder holder = (ViewHolder) row.getTag();
 		
-		if (convertView == null) {
-			Log.d(LOG_TAG, "convertView was null, inflating.");
-			convertView = View.inflate(mContext, R.layout.list_item_stacks, null);
+		int stackId = getCursor().getInt(getCursor().getColumnIndex(Stacks._ID));		
+		
+		if (holder == null) {
+			holder = new ViewHolder(row);
+			row.setTag(holder);
 		}
-//		
-//		final TextView plansTextView = (TextView) convertView.findViewById(R.id.listitem_plans);
-//		// TODO: this should be acquired via the cursor using Stacks._ID
-//		final Uri stackUri = Stacks.CONTENT_URI;
 		
+		// Actionable items
+		if (holder.actionItems.getText().toString() != "" &&
+				Integer.parseInt(holder.actionItems.getText().toString()) < 1) {
+			holder.actionItems.setVisibility(View.GONE);
+		}
+		else holder.actionItems.setVisibility(View.VISIBLE);
 		
-//		if (cachedPlans.get(position) == null) {
-//			// Use AsyncTask to query ContentProvider for a Stack's planned days.
-//			new CachePlansTask(plansTextView, position).execute(stackUri);
-//		} else {
-//			plansTextView.setText(cachedPlans.get(position));
-//		}
+		// Plans
+		if (cachedPlans != null && cachedPlans.get(stackId) != null) {
+			holder.plans.setText(cachedPlans.get(stackId));
+		}
+		else holder.plans.setText("");
 		
-		return convertView;		
+		return row;
 	}
 	
-    private class CachePlansTask extends AsyncTask<Uri, Void, Cursor> {
-    	private TextView plansTextView;
-    	private int position;
+	/**
+	 * Updates the cache of Plans from the Fragment so
+	 * {@link StacksCursorAdapter#getView(int, View, ViewGroup)} can update rows with plans.
+	 * 
+	 * @param cachedPlans
+	 */
+	public void setCachedPlans(SparseArray<String> cachedPlans) {
+		this.cachedPlans = cachedPlans;
+	}
+	
+    /**
+     * The ViewHolder pattern allows reduction in number of findViewById() calls we need to do
+     * @author ataulm
+     *
+     */
+    class ViewHolder {
+    	TextView plans = null;
+    	TextView actionItems = null;
     	
-    	public CachePlansTask(TextView plansTextView, int position) {
-    		super();
-    		this.plansTextView = plansTextView;
-    		this.position = position;
+    	ViewHolder(View row) {
+    		this.plans = (TextView) row.findViewById(R.id.listitem_plans);
+    		this.actionItems = (TextView) row.findViewById(R.id.listitem_actionable_items);
     	}
-    	
-        @Override
-        protected Cursor doInBackground(Uri... params) {
-            // TODO: query the DB for planned days for the given stack
-        	// return queryDatabase(params[0]);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Cursor result) {
-        	String plans = "";
-        	// TODO: Store plans in a String:
-        	// if (plans.length == 0) plans.append(<day_returned>);
-        	// else plans.append(" " + <day_returned>);
-        	// Update the cache
-        	StacksCursorAdapter.this.cachedPlans.put(position, plans);
-        	
-        	// TODO: Would this update the correct TextView if the user is scrolling madly?
-        	plansTextView.setText(plans);
-        }
     }
 }
