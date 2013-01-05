@@ -4,13 +4,13 @@ import uk.co.ataulmunim.android.stacks.StacksCursorAdapter;
 import uk.co.ataulmunim.android.stacks.contentprovider.Plans;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.KeyEvent;
@@ -68,11 +68,10 @@ public class StacksListFragment extends SherlockListFragment
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		// Restore stuff if needed
-		// if (savedInstanceState != null) editmode = savedInstanceState.getBoolean("editing");
-		
-		// TODO: get id from intent
-		stackId = Stacks.ROOT_STACK_ID;
+		final Intent intent = getActivity().getIntent();
+		final Uri stackUri = intent.getData();
+		final String action = intent.getAction();
+		stackId = intent.getIntExtra(Stacks._ID, Stacks.ROOT_STACK_ID);
 		
 		// Create an empty adapter we will use to display the loaded data.
 		adapter = new StacksCursorAdapter(
@@ -186,6 +185,8 @@ public class StacksListFragment extends SherlockListFragment
 			adapter.notifyDataSetChanged();			
 		}
 	}
+	
+	
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
