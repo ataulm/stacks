@@ -4,6 +4,7 @@ import uk.co.ataulmunim.android.stacks.Crud;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +19,7 @@ import com.actionbarsherlock.view.Menu;
 import com.commonsware.cwac.loaderex.acl.SharedPreferencesLoader;
 import com.nicedistractions.shortstacks.R;
 
+
 public class WelcomeActivity extends SherlockFragmentActivity implements
 		LoaderManager.LoaderCallbacks<SharedPreferences> {
 	
@@ -30,9 +32,12 @@ public class WelcomeActivity extends SherlockFragmentActivity implements
 		
 		// Checks SharedPrefs to see if default stack created yet
 		getSupportLoaderManager().initLoader(0, null, this);
-		
-		Intent stacks = new Intent(this, StacksActivity.class);
-		startActivity(stacks);
+
+		// TODO: get the default open stack from SharedPrefs
+		// Open the default stack
+        final Uri stack = ContentUris.withAppendedId(Stacks.CONTENT_URI, Stacks.ROOT_STACK_ID);
+        final Intent viewStack = new Intent(Intent.ACTION_VIEW, stack);
+        startActivity(viewStack);
 	}
 	
 	
@@ -61,7 +66,8 @@ public class WelcomeActivity extends SherlockFragmentActivity implements
 
 	/**
 	 * Creates a default root stack if one hasn't been made.
-	 * SuppressLint("CommitPrefEdits") is because it's done in {@link SharedPreferencesLoader#persist(SharedPreferences.Editor)}
+	 * SuppressLint("CommitPrefEdits") is because it's done in
+	 * {@link SharedPreferencesLoader#persist(SharedPreferences.Editor)}
 	 */
 	@SuppressLint("CommitPrefEdits")
 	@Override

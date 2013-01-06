@@ -10,7 +10,7 @@ public class StacksContentProvider extends SimpleContentProvider {
 
 	// Each ContentProvider must have a globally unique authority. You should
     // specify one here starting from your Application's package string:
-    public static final String AUTHORITY = "uk.co.ataulmunim.android.stacks.contentprovider";
+    public static final String AUTHORITY = "uk.co.ataulmunim.android.stacks.contentprovider.stackscontentprovider";
     
     public static final String SEARCH_PATH = null;
 

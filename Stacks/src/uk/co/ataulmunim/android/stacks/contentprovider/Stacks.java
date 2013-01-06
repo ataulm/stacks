@@ -18,7 +18,7 @@ public class Stacks implements ContentItem {
 	/**
      * Defines the path component of the content URI.
      */
-	public static final String PATH = "stacks";
+	public static final String PATH = "stack";
     
     // Column definitions /////////////////////////////////////////////////////////////////////////
 
@@ -119,7 +119,7 @@ public class Stacks implements ContentItem {
     		ProviderUtils.toContentUri(StacksContentProvider.AUTHORITY, PATH);
     
     public static final String CONTENT_TYPE =
-    		"vnd.android.cursor.item/vnd.co.uk.ataulmunim.stacks.contentprovider.stack";
+    		"vnd.android.cursor.item/vnd." + StacksContentProvider.AUTHORITY + "." + PATH;
     
     // _ID of the root stack, which is created on first-open.
     public static final int ROOT_STACK_ID = 1;

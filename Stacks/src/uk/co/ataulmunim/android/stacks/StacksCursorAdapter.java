@@ -26,7 +26,6 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 	
 	/**
 	 * Standard constructor, with additional flag to register content observer.
-	 * For use with CursorLoaders only: remember to set cursor to null in onLoaderReset()
 	 * 
 	 * @param context
 	 * @param layout
@@ -36,8 +35,6 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 	 */
 	public StacksCursorAdapter(Context context, int layout, Cursor c, String[] from, int[] to) {
 		super(context, layout, c, from, to, 0);
-		
-		if (c != null) Log.i(LOG_TAG, "Cursor column count: " + c.getColumnCount());
 	}
 	
 	/**

@@ -4,6 +4,7 @@ import uk.co.ataulmunim.android.stacks.StacksCursorAdapter;
 import uk.co.ataulmunim.android.stacks.contentprovider.Plans;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -18,6 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -27,7 +30,7 @@ import com.nicedistractions.shortstacks.R;
 
 
 public class StacksListFragment extends SherlockListFragment
-	implements LoaderManager.LoaderCallbacks<Cursor>, OnEditorActionListener {
+	implements LoaderManager.LoaderCallbacks<Cursor>, OnEditorActionListener, OnItemClickListener {
 	
 	public static final String LOG_TAG = "StacksListFragment";
 	
@@ -50,7 +53,7 @@ public class StacksListFragment extends SherlockListFragment
 	private boolean quickAddMode;
 	
 	private StacksCursorAdapter adapter;
-	private int stackId; // id of the current stack in the Stacks table
+	private int stackId = Stacks.ROOT_STACK_ID; // id of the current stack in the Stacks table
 		
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
@@ -67,11 +70,23 @@ public class StacksListFragment extends SherlockListFragment
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		Log.i(LOG_TAG, "onActivityCreated()");
 		
 		final Intent intent = getActivity().getIntent();
 		final Uri stackUri = intent.getData();
+		
+		// TODO: differentiate between INTENTs by performing different actions
 		final String action = intent.getAction();
-		stackId = intent.getIntExtra(Stacks._ID, Stacks.ROOT_STACK_ID);
+		
+		if (stackUri != null) {
+			try {
+				stackId = Integer.parseInt(stackUri.getLastPathSegment());	
+			} catch (NumberFormatException e) {
+				Log.w(LOG_TAG, "stackUri.getLastPathSegment() was not cool. (" +
+						stackUri.getLastPathSegment() + ")." +
+						"Stays unchanged as Stacks.ROOT_STACK_ID.");
+			}	
+		}
 		
 		// Create an empty adapter we will use to display the loaded data.
 		adapter = new StacksCursorAdapter(
@@ -84,11 +99,8 @@ public class StacksListFragment extends SherlockListFragment
 		
         setListAdapter(adapter);
         
-        // Start out with a progress indicator.
-        //setListShown(false);
-        
-        // Prepare the loader.  Either re-connect with an existing one,
-        // or start a new one.
+        getListView().setOnItemClickListener(this);
+        // Prepare the loader.  Either re-connect with an existing one, or start a new one.
         getActivity().getSupportLoaderManager().initLoader(STACKS_LOADER, null, this);
         getActivity().getSupportLoaderManager().initLoader(PLANS_LOADER, null, this);
         
@@ -97,14 +109,22 @@ public class StacksListFragment extends SherlockListFragment
         ((EditText) getView().findViewById(R.id.add_stack_field)).setOnEditorActionListener(this);
 	}
 	
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		Log.d(LOG_TAG, "List item clicked, stackId: " + id);
+		final Uri stack = ContentUris.withAppendedId(Stacks.CONTENT_URI, id);
+        final Intent viewStack = new Intent(Intent.ACTION_VIEW, stack);
+        startActivity(viewStack);
+	}
+	
 	/**
 	 * Adds a stack as a child to the current stack.
 	 */
 	@Override
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		Log.d(LOG_TAG, "Done pressed.");
-		// TODO: use the correct parent stack, not just the root stack
-		Crud.addStack(getActivity(), v.getText().toString().trim(), null, Stacks.ROOT_STACK_ID);
+		final String name = v.getText().toString().trim();
+		Log.d(LOG_TAG, "Adding " + name);
+		Crud.addStack(getActivity(), name, null, stackId);
 		v.setText("");
 		
 		if (!quickAddMode) {
@@ -115,33 +135,40 @@ public class StacksListFragment extends SherlockListFragment
 		}
 	    return true;
 	}
+	
+	// Loaders ////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		CursorLoader cursorLoader = null;
 		
 		if (id == STACKS_LOADER) {
-			Log.d(LOG_TAG, "Loading Stacks for Stack " + stackId);
-			final String where = Stacks.PARENT + "=" + stackId + " AND " + Stacks.DELETED + "<> 1";
+			Log.d(LOG_TAG, "Loading stacks under stack " + stackId);
+			final String where = Stacks.PARENT + "=" + stackId +
+					" AND " + Stacks.DELETED + "<> 1" + " AND " + 
+					Stacks._ID + "<>" + Stacks.ROOT_STACK_ID; // Don't show default stack as child
 			
 			cursorLoader = new CursorLoader(getActivity(),
 					Stacks.CONTENT_URI,
 					STACKS_PROJECTION,
 					where,
 					null,
-					Stacks.LOCAL_SORT);		
-			
-			return cursorLoader;	
+					Stacks.LOCAL_SORT);
 		}
 		
 		else if (id == PLANS_LOADER ) {
-			Log.d(LOG_TAG, "Loading Stacks Plans for Stack " + stackId);
+			Log.d(LOG_TAG, "Loading plans for stacks under stack " + stackId);
 			
 			final String where = Plans.VALUE + "> 0";
 			// URI for all plans which are connected to the Stacks table
 			final Uri allPlans = Stacks.PLANS.getAll(Stacks.CONTENT_URI);
 			
-			cursorLoader = new CursorLoader(getActivity(), allPlans, PLANS_PROJECTION, where, null, Plans.STACK);
+			cursorLoader = new CursorLoader(getActivity(),
+					allPlans,
+					PLANS_PROJECTION,
+					where,
+					null,
+					Plans.STACK);
 		}
 		
 		return cursorLoader;
@@ -171,23 +198,19 @@ public class StacksListFragment extends SherlockListFragment
 					
 					if (plan == null) {
 						plans.put(stack, day);
-					} else if (!plan.contains(day)){
+					} else if (!plan.contains(day)) {
 						plans.put(stack, plan + " " + day); 
 					}
-					
 					Log.d(LOG_TAG, "key: "+ stack+ ", plan: "+ plans.get(stack));
-					
 				} while (data.moveToNext());
 			}
 			
-			// TODO: Update views already visible
+			// Update views already visible
 			adapter.setCachedPlans(plans);
 			adapter.notifyDataSetChanged();			
 		}
-	}
+	}	
 	
-	
-
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 		if (loader.getId() == STACKS_LOADER) {
@@ -196,6 +219,5 @@ public class StacksListFragment extends SherlockListFragment
 		}
 	}
 	
-
-	
+	// Loaders end ////////////////////////////////////////////////////////////////////////////////
 }
