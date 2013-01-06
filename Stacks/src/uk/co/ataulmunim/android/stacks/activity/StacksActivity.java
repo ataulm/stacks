@@ -11,7 +11,9 @@ public class StacksActivity extends SherlockFragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getWindow().setWindowAnimations(android.R.anim.fade_in);
 		setContentView(R.layout.activity_stacks);
+		
 	}
 	
     @Override
