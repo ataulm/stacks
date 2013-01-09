@@ -1,6 +1,6 @@
 package uk.co.ataulmunim.android.stacks.fragment;
 import uk.co.ataulmunim.android.stacks.Crud;
-import uk.co.ataulmunim.android.stacks.StacksCursorAdapter;
+import uk.co.ataulmunim.android.stacks.adapter.StacksCursorAdapter;
 import uk.co.ataulmunim.android.stacks.contentprovider.Plans;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import android.app.Activity;
@@ -54,7 +54,12 @@ public class StacksListFragment extends SherlockListFragment
 	
 	private StacksCursorAdapter adapter;
 	private int stackId = Stacks.ROOT_STACK_ID; // id of the current stack in the Stacks table
-		
+	
+	public static StacksListFragment newInstance() {
+		return new StacksListFragment();
+    }
+	
+	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
         Bundle savedInstanceState) {
@@ -95,11 +100,10 @@ public class StacksListFragment extends SherlockListFragment
 					null,
 					new String[] {Stacks.NAME, Stacks.ACTION_ITEMS},
 					new int[] { R.id.listitem_name, R.id.listitem_actionable_items }
-					);
-		
-        setListAdapter(adapter);
-        
+					);		
+        setListAdapter(adapter);        
         getListView().setOnItemClickListener(this);
+        
         // Prepare the loader.  Either re-connect with an existing one, or start a new one.
         getActivity().getSupportLoaderManager().initLoader(STACKS_LOADER, null, this);
         getActivity().getSupportLoaderManager().initLoader(PLANS_LOADER, null, this);
@@ -109,6 +113,9 @@ public class StacksListFragment extends SherlockListFragment
         ((EditText) getView().findViewById(R.id.add_stack_field)).setOnEditorActionListener(this);
 	}
 	
+	/**
+	 * Opens the clicked Stack in a new StacksActivity.
+	 */
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Log.d(LOG_TAG, "List item clicked, stackId: " + id);

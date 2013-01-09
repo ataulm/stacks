@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     android:background="#4FBF22"
     >
+    
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+    <!-- 
 	<fragment
 	    xmlns:android="http://schemas.android.com/apk/res/android"
 	    class="uk.co.ataulmunim.android.stacks.fragment.StacksListFragment"
@@ -13,4 +20,5 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		/>
+	 -->
 </LinearLayout>
