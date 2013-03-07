@@ -1,0 +1,117 @@
+
+
+Welcome to the chat. You can see who's currently in the room by looking to the right. Say "Hello" to everyone by just typing in the box below and hitting return.
+
+Ataul M.	has entered the room
+Ataul M.	Hi Mark
+Mark M.	howdy, Ataul!
+how can I help you today?
+Ataul M.	I was hoping for a bit of clarification on overriding getView() please :)
+specifically, when it's appropriate to call super.getView(...)
+View paste 
+and when to check if it's null, before calling super
+or when to check if null, and manually inflating
+Mark M.	you would call super.getView() if you are extending an existing adapter class (like ArrayAdapter) and you want to *add* to what the superclass already does, rather than replace it
+in your paste, what is "it's" that you want to check for null?
+Ataul M.	convertView
+I'm extending SimpleCursorAdapter
+Mark M.	if you are extending SimpleCursorAdapter, you don't override getView() at all
+Ataul M.	so I just called super.getView without checking for null
+Mark M.	you override newView() and/or bindView()
+Ataul M.	In my understanding, getview calls newView and/or bindView?
+Mark M.	correct
+it calls newView() if there is no row ready for recycling
+SimpleCursorAdapter, by default, will inflate your selected layout file in newView()
+you would override that if you have more complex logic (e.g., different row layouts based upon something in the data)
+bindView() is where you pour data into the row, whether that row is newly created or recycled
+Jan 3	
+4:20 PM
+Mark M.	SimpleCursorAdapter can do a lot of that for you, without you overriding bindView(), but you are welcome to override it if you wish
+in neither case do you need to worry about convertView -- you don't even see convertView
+Ataul M.	Doesn't getView supply that in one go then? Without having to call them separately?
+them= new/bind
+Mark M.	yes, at the cost of writing a lot more code
+Ataul M.	ah
+Mark M.	and for no gain in speed
+Ataul M.	okay got you :)
+another question, related if it's okay
+Mark M.	go right ahead -- nobody else is waiting for a turn :-)
+Ataul M.	I want to fill a view with data from a contentprovider, so I launch an ASyncTask in my extension of SimpleCursorAdapter
+I cache the results (and check the cache before launching the ASyncTask)
+Mark M.	oh, that really doesn't sound good
+Ataul M.	:S
+Mark M.	an adapter should not be spawning threads IMHO
+that's the responsibility of the fragment (or activity if there are no fragments)
+Ataul M.	Could I describe my usecase for some advice?
+Mark M.	sure
+Ataul M.	I'm using SimpleContentProvider to front a SQLite db, with 1 main table, which I use to populate the adapter using CursorLoaders.
+I also need to populate one of the views in a list row, from another table
+4:25 PM
+Mark M.	SimpleContentProvider?
+Ataul M.	the mit one: https://github.com/mitmel/SimpleContentProvider
+Mark M.	ah, OK, that one
+Ataul M.	sorry, 3rd party lib
+Mark M.	I know of it but have not used it
+Ataul M.	my "another table" can have many records which are related to a single record in my main table
+I was going to use the ASyncTask to get all the related records, and collate the information into a single view
+Mark M.	that sounds fine, so long as it is not the adapter starting the task
+Ataul M.	View paste 
+(it is..)
+
+I guess i could have a second loader in my fragment
+Mark M.	it's not a question of using AsyncTask instead of a Loader (though you could use another Loader if you wanted)
+it's a question of responsibilities
+an adapter is solely responsible for rendering rows in a list (or whatever you are using the adapter for)
+it's not responsible for data aggregation
+any more than a button is responsible for a Web service call, or an EditText is responsible for saving a file
+Ataul M.	suppose I did the aggregation in my fragment then, how might I update the adapter so it renders the currently empty view (in each row) with the newly aggregated information when it's ready?
+Mark M.	when onLoadFinished() is called on your fragment, have the fragment start the AsyncTask
+4:30 PM
+Mark M.	set the adapter on the list(?) in onPostExecute() of the AsyncTask
+if you're saying that you want to display the list with just the initial Cursor, then augment it with additional data from the AsyncTask, that's doable but complex
+Ataul M.	yes that's exactly what I'm saying
+I have a way, but it'll only update when the views get recycled
+Mark M.	you would have to walk the existing child views of the AdapterView and update them, plus give the adapter the additional Cursors(?) or whatever the data is for when the user scrolls
+Ataul M.	where would I walk through the existing child views? Presumably I'd only have to do it for the ones that are on screen? (In my current implementation, or plan, getView() checks to see if the data is available, and sets nothing if it's not available)
+Mark M.	"where would I walk through the existing child views?" -- something triggered by onPostExecute() of the AsyncTask
+in terms of who does it... you could argue either the adapter or the fragment
+Ataul M.	as in, how could I determine which views are currently displayed?
+*rows
+Mark M.	this is a ListView?
+Ataul M.	yes
+Mark M.	getFirstVisiblePosition() tells you the position index of the first child (getChildAt(0)) of the ListView
+4:35 PM
+Mark M.	so, you call getChildCount() on the ListView, and iterate that many times, using getFirstVisiblePosition() as your position offset, to walk the existing rows
+Ataul M.	is there a corresponding getLastVisiblePosition()
+or just do a reasonable amount
+Mark M.	there is a getLastVisiblePosition() which you can use
+Ataul M.	awesome
+is there a function on campfirenow to email the transcript? I made the mistake of leaving last time without copying it
+Mark M.	I post the transcripts shortly after each chat at http://commonsware.com/office-hours
+you'll find a couple of years' worth there :-)
+Ataul M.	ah brilliant :D
+Mark M.	but, no, there's no email-me-a-transcript in Campfire AFAIK
+Ataul M.	ok, I think that's enough information for me to get on with for a week ish :)
+Thanks a lot
+Mark M.	sure!
+Ataul M.	what did you do prior to Android?
+job-wise if you don't mind me asking
+Mark M.	that's a bit off-topic for this chat
+Ataul M.	fair enough
+thanks again, I'll be back soon no doubt
+Mark M.	next chat is tomorrow, 7:30pm Eastern
+Ataul M.	I've got them all in my gCal
+:)
+Mark M.	ah, OK
+ 
+ 	
+
+ 
+Office Hours
+Open for questions and answers on anything related to Android development, for Warescription members only at select times.
+
+Leave Who's here?
+Ataul Munim
+Mark Murphy
+Upload a file  
+ 
