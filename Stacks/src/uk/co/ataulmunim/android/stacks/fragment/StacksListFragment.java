@@ -1,4 +1,5 @@
 package uk.co.ataulmunim.android.stacks.fragment;
+
 import uk.co.ataulmunim.android.stacks.Crud;
 import uk.co.ataulmunim.android.stacks.adapter.StacksCursorAdapter;
 import uk.co.ataulmunim.android.stacks.contentprovider.Plans;
