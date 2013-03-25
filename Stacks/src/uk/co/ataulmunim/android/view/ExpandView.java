@@ -1,5 +1,6 @@
 package uk.co.ataulmunim.android.view;
 
+import com.nicedistractions.shortstacks.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
@@ -14,7 +15,7 @@ import android.widget.FrameLayout;
 public class ExpandView extends FrameLayout implements OnClickListener,
 		OnGlobalLayoutListener {
 	
-	public static final String LOG_TAG = "ExpandView";
+	public static final String TAG = "ExpandView";
 	public static final String PRIMARY_TAG = "expandinglayout.primary";
 	public static final String SECONDARY_TAG = "expandinglayout.secondary";
 	
@@ -73,7 +74,7 @@ public class ExpandView extends FrameLayout implements OnClickListener,
     		setSecondaryView(sView);
     	}
     	else {
-    		Log.w(LOG_TAG, "Unexpected number of children in ExpandView. " +
+    		Log.w(TAG, "Unexpected number of children in ExpandView. " +
     				"Each ExpandView specified in XML should have " +
     				"exactly two children, a primary and secondary view " +
     				"specified in that order.");
@@ -208,22 +209,23 @@ public class ExpandView extends FrameLayout implements OnClickListener,
 			// do nothing - (added otherwise it treats it as a list item)
 		}
 		else {
-			Log.w(LOG_TAG, "Only the primary view is considered, " +
+			Log.w(TAG, "Only the primary view is considered, " +
 					"use an alternative OnClickListener for other views.");
 		}
 	}
 	
 	
+	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
 	@Override
 	public void onGlobalLayout() {
-		Log.d(LOG_TAG, "layout changed.");
+		Log.d(TAG, "layout changed.");
     	refit();
     	
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
 			primaryView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
     	} else {
-			// there was a spelling mistake in the method prior to Version 15
+			// there was a grammar mistake in the method prior to Version 15
     		primaryView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
     	}	
 	}
@@ -262,17 +264,12 @@ public class ExpandView extends FrameLayout implements OnClickListener,
 	
 	
 	protected void warnAboutUnusedMethod(String methodSignature) {
-		Log.w(LOG_TAG, "Cannot use the " + methodSignature + " method on ExpandView." +
-				"Use \"setPrimaryView(View)\" and \"setSecondaryView(View)\".");
+		Log.w(TAG, getResources().getString(R.string.warning_unused_method) +
+				" " + methodSignature);
 	}
 	
 	
 	protected void warnAboutUnexpectedView() {
-		Log.w(LOG_TAG, "ExpandView should only have two views, primary " +
-				"and secondary. Use \"setPrimaryView(View)\" and " +
-				"\"setSecondaryView(View)\" if programmatically using this " +
-				"view widget. If declaring via XML, the element should have " +
-				"exactly two children (of type View, or a subclass) and the " +
-				"primary View should be declared after the the secondary one");
+		Log.w(TAG, getResources().getString(R.string.warning_unexpected_view));
 	}
 }

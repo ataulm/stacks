@@ -32,12 +32,6 @@ public class WelcomeActivity extends SherlockFragmentActivity implements
 		
 		// Checks SharedPrefs to see if default stack created yet
 		getSupportLoaderManager().initLoader(0, null, this);
-
-		// TODO: get the default open stack from SharedPrefs
-		// Open the default stack
-        final Uri stack = ContentUris.withAppendedId(Stacks.CONTENT_URI, Stacks.ROOT_STACK_ID);
-        final Intent viewStack = new Intent(Intent.ACTION_VIEW, stack);
-        startActivity(viewStack);
 	}
 	
 	
@@ -60,7 +54,7 @@ public class WelcomeActivity extends SherlockFragmentActivity implements
 	}
 
 	@Override
-	public Loader<SharedPreferences> onCreateLoader(int id, Bundle args) {
+	public Loader<SharedPreferences> onCreateLoader(int id, Bundle args) {		
 		return(new SharedPreferencesLoader(this));
 	}
 
@@ -71,7 +65,8 @@ public class WelcomeActivity extends SherlockFragmentActivity implements
 	 */
 	@SuppressLint("CommitPrefEdits")
 	@Override
-	public void onLoadFinished(Loader<SharedPreferences> loader, SharedPreferences prefs) {
+	public void onLoadFinished(Loader<SharedPreferences> loader,
+			SharedPreferences prefs) {
 		boolean rootCreated = prefs.getBoolean(PREFS_ROOT_CREATED, false);
 		if (!rootCreated) {
 			// add the root stack
@@ -81,6 +76,13 @@ public class WelcomeActivity extends SherlockFragmentActivity implements
 			editor.putBoolean(PREFS_ROOT_CREATED, true);
 			SharedPreferencesLoader.persist(editor);
 		}
+		
+		// TODO: get the default open stack from SharedPrefs
+		// Open the default stack
+        final Uri stack = ContentUris.withAppendedId(Stacks.CONTENT_URI,
+        		Stacks.ROOT_STACK_ID);
+        final Intent viewStack = new Intent(Intent.ACTION_VIEW, stack);
+        startActivity(viewStack);
 	}
 
 	@Override

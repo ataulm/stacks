@@ -14,16 +14,18 @@ import com.actionbarsherlock.view.MenuItem;
 import android.widget.Toast;
 
 public class StacksActivity extends SherlockFragmentActivity {
-	private static int counter = 0;
-	StacksPagerAdapter adapter;
-	ViewPager pager;
+	private static final String TAG = "StacksActivity";
+	private static int instanceCounter = 0;
+	
+	private StacksPagerAdapter adapter;
+	private ViewPager pager; 
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stacks);
 			
-		Log.d("StacksActivity","Number of instances: " + ++counter);
+		Log.d(TAG, "Number of instances: " + ++instanceCounter);
 		
 		adapter = new StacksPagerAdapter(getSupportFragmentManager());
 		pager = (ViewPager) findViewById(R.id.pager);

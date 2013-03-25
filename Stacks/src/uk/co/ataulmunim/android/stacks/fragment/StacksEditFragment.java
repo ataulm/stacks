@@ -33,23 +33,19 @@ import com.nicedistractions.shortstacks.R;
 public class StacksEditFragment extends SherlockFragment
 	implements LoaderManager.LoaderCallbacks<Cursor> {
 	
-	public static final String LOG_TAG = "StacksListFragment";
+	public static final String TAG = "StacksListFragment";
 	
 	public static final String[] STACKS_PROJECTION = {
 		Stacks._ID,	Stacks.NAME, Stacks.ACTION_ITEMS
 	};
 	
-	public static final String[] PLANS_PROJECTION = {
-		Plans._ID, Plans.DAY, Plans.STACK
-	};
-	
 	public static final int STACKS_LOADER = 0;
 	public static final int DATES_LOADER = 1;
-	public static final int PLANS_LOADER = 2;
 	
 	/**
 	 * Determines whether or not to close the soft input keyboard when adding Stacks to the list.
 	 * A value of TRUE will leave it open, but this can be set in shared preferences.
+	 * TODO: set in shared prefs
 	 */
 	private boolean quickAddMode;
 	
@@ -76,7 +72,7 @@ public class StacksEditFragment extends SherlockFragment
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		Log.i(LOG_TAG, "onActivityCreated()");
+		Log.i(TAG, "onActivityCreated()");
 		
 		final Intent intent = getActivity().getIntent();
 		final Uri stackUri = intent.getData();
@@ -88,7 +84,7 @@ public class StacksEditFragment extends SherlockFragment
 			try {
 				stackId = Integer.parseInt(stackUri.getLastPathSegment());	
 			} catch (NumberFormatException e) {
-				Log.w(LOG_TAG, "stackUri.getLastPathSegment() was not cool. (" +
+				Log.w(TAG, "stackUri.getLastPathSegment() was not cool. (" +
 						stackUri.getLastPathSegment() + ")." +
 						"Stays unchanged as Stacks.ROOT_STACK_ID.");
 			}	
@@ -96,7 +92,6 @@ public class StacksEditFragment extends SherlockFragment
         
         // Prepare the loader.  Either re-connect with an existing one, or start a new one.
         //getActivity().getSupportLoaderManager().initLoader(STACKS_LOADER, null, this);
-        //getActivity().getSupportLoaderManager().initLoader(PLANS_LOADER, null, this);
 	}
 	
 	
@@ -107,7 +102,7 @@ public class StacksEditFragment extends SherlockFragment
 		CursorLoader cursorLoader = null;
 		
 		if (id == STACKS_LOADER) {
-			Log.d(LOG_TAG, "Loading stacks under stack " + stackId);
+			Log.d(TAG, "Loading stacks under stack " + stackId);
 			final String where = Stacks.PARENT + "=" + stackId +
 					" AND " + Stacks.DELETED + "<> 1" + " AND " + 
 					Stacks._ID + "<>" + Stacks.ROOT_STACK_ID; // Don't show default stack as child
@@ -120,64 +115,22 @@ public class StacksEditFragment extends SherlockFragment
 					Stacks.LOCAL_SORT);
 		}
 		
-		else if (id == PLANS_LOADER ) {
-			Log.d(LOG_TAG, "Loading plans for stacks under stack " + stackId);
-			
-			final String where = Plans.VALUE + "> 0";
-			// URI for all plans which are connected to the Stacks table
-			final Uri allPlans = Stacks.PLANS.getAll(Stacks.CONTENT_URI);
-			
-			cursorLoader = new CursorLoader(getActivity(),
-					allPlans,
-					PLANS_PROJECTION,
-					where,
-					null,
-					Plans.STACK);
-		}
-		
 		return cursorLoader;
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		if (loader.getId() == STACKS_LOADER) {
-			Log.d(LOG_TAG, "Stacks loaded, swapping cursor, scrolling to end.");
+			Log.d(TAG, "Stacks loaded, swapping cursor, scrolling to end.");
 			
 			adapter.swapCursor(data);
-		}
-		else if (loader.getId() == PLANS_LOADER) {
-			Log.d(LOG_TAG, data.getCount() + " plans loaded");
-			SparseArray<String> plans = new SparseArray<String>();
-			
-			/**
-			 * The idea is to append. if empty add. if not empty append.
-			 */
-			if (data.moveToFirst()) {
-				do {
-					final int stack = data.getInt(data.getColumnIndex(Plans.STACK));
-					final String plan = plans.get(stack);
-					final int dayCode = data.getInt(data.getColumnIndex(Plans.DAY)); 
-					final String day = Plans.getDayShort(dayCode);
-					
-					if (plan == null) {
-						plans.put(stack, day);
-					} else if (!plan.contains(day)) {
-						plans.put(stack, plan + " " + day); 
-					}
-					Log.d(LOG_TAG, "key: "+ stack+ ", plan: "+ plans.get(stack));
-				} while (data.moveToNext());
-			}
-			
-			// Update views already visible
-			adapter.setCachedPlans(plans);
-			adapter.notifyDataSetChanged();			
 		}
 	}	
 	
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 		if (loader.getId() == STACKS_LOADER) {
-			Log.d(LOG_TAG, "Closing last Stacks cursor, so setting adapter cursor to null.");
+			Log.d(TAG, "Closing last Stacks cursor, so setting adapter cursor to null.");
 			adapter.swapCursor(null);
 		}
 	}

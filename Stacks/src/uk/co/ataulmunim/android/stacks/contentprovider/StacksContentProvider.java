@@ -26,12 +26,9 @@ public class StacksContentProvider extends SimpleContentProvider {
     	final GenericDBHelper stacksHelper = new GenericDBHelper(Stacks.class);
     	final ForeignKeyDBHelper datesHelper = new ForeignKeyDBHelper(Stacks.class, Dates.class,
     			Dates.STACK);
-    	final ForeignKeyDBHelper plansHelper = new ForeignKeyDBHelper(Stacks.class, Plans.class,
-    			Plans.STACK);
     	
     	addDirAndItemUri(stacksHelper, Stacks.PATH);
     	addChildDirAndItemUri(datesHelper, Stacks.PATH,  Dates.PATH);
-    	addChildDirAndItemUri(plansHelper, Stacks.PATH,  Plans.PATH);
     	    	
     	// TODO: add search interface
     }

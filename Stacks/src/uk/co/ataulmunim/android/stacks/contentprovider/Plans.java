@@ -6,9 +6,7 @@ import edu.mit.mobile.android.content.ProviderUtils;
 import edu.mit.mobile.android.content.UriPath;
 import edu.mit.mobile.android.content.column.DBColumn;
 import edu.mit.mobile.android.content.column.DBForeignKeyColumn;
-import edu.mit.mobile.android.content.column.DatetimeColumn;
 import edu.mit.mobile.android.content.column.IntegerColumn;
-import edu.mit.mobile.android.content.column.TextColumn;
 
 /**
  * Plans is the database table storing information about when to focus on any
@@ -27,9 +25,17 @@ import edu.mit.mobile.android.content.column.TextColumn;
  * found; as such, only one record per key pair should be in this table.
  * 
  * @author ataulm
+ * 
+ * @deprecated This class is deprecated because it won't feature directly in
+ * this app anymore - rather, if and when "This Week (I Will)" is finished,
+ * each Stack will have the ability to be associated with one and only one Plan
+ * in the other app, with a link (Intent) between the two. This class will be
+ * entirely removed prior to production, after it's ensured that it's no longer
+ * needed. 
  *
  */
 @UriPath(Plans.PATH)
+@Deprecated
 public class Plans implements ContentItem {
 	
 	// Column definitions /////////////////////////////////////////////////////

@@ -6,5 +6,6 @@
     <string name="no_items">No shit here.</string>
     <string name="button_add">Add</string>
     <string name="error_insert">Error inserting item. insert() returned null.</string>
-
+    <string name="warning_unexpected_view">ExpandView should only have two views, primary and secondary. Use \"setPrimaryView(View)\" and \"setSecondaryView(View)\" if programmatically using this view widget. If declaring via XML, the element should have exactly two children (of type View, or a subclass) and the primary View should be declared after the the secondary one</string>
+	<string name="warning_unused_method">Cannot use this method on ExpandView. Use \"setPrimaryView(View)\" and \"setSecondaryView(View)\". Method:</string>
 </resources>

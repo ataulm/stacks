@@ -18,11 +18,7 @@ import android.widget.TextView;
 
 public class StacksCursorAdapter extends SimpleCursorAdapter {
 
-	public static final String LOG_TAG = "StacksCursorAdapter";
-	/**
-	 * Saves Plans data to avoid requerying the content provider when the user scrolls the list.
-	 */
-	private SparseArray<String> cachedPlans;
+	public static final String TAG = "StacksCursorAdapter";
 	
 	/**
 	 * Standard constructor, with additional flag to register content observer.
@@ -46,7 +42,7 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 		View row = super.getView(position, convertView, parent);
 		ViewHolder holder = (ViewHolder) row.getTag();
 		
-		int stackId = getCursor().getInt(getCursor().getColumnIndex(Stacks._ID));		
+		// int stackId = getCursor().getInt(getCursor().getColumnIndex(Stacks._ID));		
 		
 		if (holder == null) {
 			holder = new ViewHolder(row);
@@ -60,23 +56,7 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 		}
 		else holder.actionItems.setVisibility(View.VISIBLE);
 		
-		// Plans
-		if (cachedPlans != null && cachedPlans.get(stackId) != null) {
-			holder.plans.setText(cachedPlans.get(stackId));
-		}
-		else holder.plans.setText("");
-		
 		return row;
-	}
-	
-	/**
-	 * Updates the cache of Plans from the Fragment so
-	 * {@link StacksCursorAdapter#getView(int, View, ViewGroup)} can update rows with plans.
-	 * 
-	 * @param cachedPlans
-	 */
-	public void setCachedPlans(SparseArray<String> cachedPlans) {
-		this.cachedPlans = cachedPlans;
 	}
 	
     /**
@@ -85,11 +65,9 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
      *
      */
     class ViewHolder {
-    	TextView plans = null;
     	TextView actionItems = null;
     	
     	ViewHolder(View row) {
-    		this.plans = (TextView) row.findViewById(R.id.listitem_plans);
     		this.actionItems = (TextView) row.findViewById(R.id.listitem_actionable_items);
     	}
     }
