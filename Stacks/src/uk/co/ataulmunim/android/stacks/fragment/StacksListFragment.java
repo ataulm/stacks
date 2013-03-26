@@ -123,6 +123,8 @@ public class StacksListFragment extends SherlockListFragment
 	@Override
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 		final String name = v.getText().toString().trim();
+		if (name.length() == 0) return true;
+		
 		Log.d(LOG_TAG, "Adding " + name);
 		Crud.addStack(getActivity(), name, null, stackId);
 		v.setText("");
