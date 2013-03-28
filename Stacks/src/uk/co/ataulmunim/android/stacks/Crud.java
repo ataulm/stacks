@@ -1,5 +1,7 @@
 package uk.co.ataulmunim.android.stacks;
 
+import java.util.UUID;
+
 import uk.co.ataulmunim.android.stacks.contentprovider.Dates;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import android.content.ContentResolver;
@@ -39,12 +41,13 @@ public abstract class Crud {
 	 * @param context
 	 * @param parent
 	 */
-	public static Uri addStack(Context context, String name, String notes, int parent) {
+	public static Uri addStack(Context context, String shortcode, String notes, int parent) {
 		Log.d(LOG_TAG, "Trying to add stack");
 		
 		// place your content inside a ContentValues object.
 	    final ContentValues values = new ContentValues();
-	    values.put(Stacks.NAME, name);
+	    values.put(Stacks.UUID, UUID.randomUUID().toString());
+	    values.put(Stacks.SHORTCODE, shortcode);
 	    values.put(Stacks.NOTES, notes);
 	    values.put(Stacks.PARENT, parent);
 	    values.put(Stacks.ACTION_ITEMS, 0);

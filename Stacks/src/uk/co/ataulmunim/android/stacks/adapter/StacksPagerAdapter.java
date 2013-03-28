@@ -13,6 +13,7 @@ public class StacksPagerAdapter extends FragmentPagerAdapter{
 
 	public static final int STACKS_PAGE = 0;
 	public static final int EDIT_PAGE = 1;
+	
 	// Each StacksPagerAdapter is associated with a StacksListFragment and StacksEditFragment
 	private final Fragment[] content = {new StacksListFragment(), new StacksEditFragment()};
 	

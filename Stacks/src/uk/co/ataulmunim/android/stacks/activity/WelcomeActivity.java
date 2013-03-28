@@ -3,17 +3,13 @@ package uk.co.ataulmunim.android.stacks.activity;
 import uk.co.ataulmunim.android.stacks.Crud;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.util.Log;
-
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.commonsware.cwac.loaderex.acl.SharedPreferencesLoader;

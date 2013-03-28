@@ -34,7 +34,7 @@ public class StacksListFragment extends SherlockListFragment
 	public static final String LOG_TAG = "StacksListFragment";
 	
 	public static final String[] STACKS_PROJECTION = {
-		Stacks._ID,	Stacks.NAME, Stacks.ACTION_ITEMS
+		Stacks._ID,	Stacks.SHORTCODE, Stacks.ACTION_ITEMS
 	};
 	
 	public static final int STACKS_LOADER = 0;
@@ -92,7 +92,7 @@ public class StacksListFragment extends SherlockListFragment
 					getActivity(),
 					R.layout.list_item_stacks,
 					null,
-					new String[] {Stacks.NAME, Stacks.ACTION_ITEMS},
+					new String[] {Stacks.SHORTCODE, Stacks.ACTION_ITEMS},
 					new int[] { R.id.listitem_name, R.id.listitem_actionable_items }
 					);		
         setListAdapter(adapter);        
@@ -148,14 +148,16 @@ public class StacksListFragment extends SherlockListFragment
 			Log.d(LOG_TAG, "Loading stacks under stack " + stackId);
 			final String where = Stacks.PARENT + "=" + stackId +
 					" AND " + Stacks.DELETED + "<> 1" + " AND " + 
-					Stacks._ID + "<>" + Stacks.ROOT_STACK_ID; // Don't show default stack as child
+					Stacks._ID + "<>" + Stacks.ROOT_STACK_ID; // Never show default stack as child
 			
-			cursorLoader = new CursorLoader(getActivity(),
+			cursorLoader = new CursorLoader(
+					getActivity(),
 					Stacks.CONTENT_URI,
 					STACKS_PROJECTION,
 					where,
 					null,
-					Stacks.LOCAL_SORT);
+					Stacks.LOCAL_SORT
+			);
 		}
 		
 		return cursorLoader;

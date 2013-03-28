@@ -36,7 +36,7 @@ public class StacksEditFragment extends SherlockFragment
 	public static final String TAG = "StacksListFragment";
 	
 	public static final String[] STACKS_PROJECTION = {
-		Stacks._ID,	Stacks.NAME, Stacks.ACTION_ITEMS
+		Stacks._ID,	Stacks.SHORTCODE, Stacks.ACTION_ITEMS
 	};
 	
 	public static final int STACKS_LOADER = 0;
