@@ -34,5 +34,4 @@ public class StacksPagerAdapter extends FragmentPagerAdapter{
 	public int getCount() {
 		return content.length;
 	}
-
 }
