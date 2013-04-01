@@ -1,7 +1,11 @@
 package uk.co.ataulmunim.android.stacks.fragment;
 
+import java.util.ArrayList;
+
 import uk.co.ataulmunim.android.stacks.Crud;
+import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
 import uk.co.ataulmunim.android.stacks.adapter.StacksCursorAdapter;
+import uk.co.ataulmunim.android.stacks.adapter.StacksPagerAdapter;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import android.app.Activity;
 import android.content.ContentUris;
@@ -34,7 +38,7 @@ public class StacksListFragment extends SherlockListFragment
 	public static final String LOG_TAG = "StacksListFragment";
 	
 	public static final String[] STACKS_PROJECTION = {
-		Stacks._ID,	Stacks.SHORTCODE, Stacks.ACTION_ITEMS
+		Stacks._ID,	Stacks.SHORTCODE, Stacks.ACTION_ITEMS, Stacks.NOTES
 	};
 	
 	public static final int STACKS_LOADER = 0;
@@ -48,20 +52,20 @@ public class StacksListFragment extends SherlockListFragment
 	
 	private StacksCursorAdapter adapter;
 	private int stackId = Stacks.ROOT_STACK_ID; // id of the current stack in the Stacks table
+
+	// List of objects wanting notification when STACKS_LOADER loader updates
+	private ArrayList<OnStackUpdateListener> stackUpdateListeners;
 	
 	public static StacksListFragment newInstance() {
 		return new StacksListFragment();
     }
-	
-	
+		
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
         Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_stack_view, container, false);
     }
-	
-	
 	
 	/**
 	 * Called after onCreateView(), after the parent activity is created
@@ -86,6 +90,8 @@ public class StacksListFragment extends SherlockListFragment
 						"Stays unchanged as Stacks.ROOT_STACK_ID.");
 			}	
 		}
+		
+		stackUpdateListeners = new ArrayList<OnStackUpdateListener>();
 		
 		// Create an empty adapter we will use to display the loaded data.
 		adapter = new StacksCursorAdapter(
@@ -170,6 +176,18 @@ public class StacksListFragment extends SherlockListFragment
 			
 			adapter.swapCursor(data);
 			getListView().smoothScrollToPosition(adapter.getCount());
+			
+			final String shortcode = data.getString(data.getColumnIndex(
+					Stacks.SHORTCODE));
+			final String notes = data.getString(data.getColumnIndex(
+					Stacks.NOTES));
+			
+			((StacksActivity) getActivity()).setShortcode(shortcode);
+			((StacksActivity) getActivity()).setNotes(notes);
+			
+			for (OnStackUpdateListener lis : stackUpdateListeners) {
+				lis.onStackUpdated();
+			}
 		}
 	}	
 	
@@ -182,4 +200,15 @@ public class StacksListFragment extends SherlockListFragment
 	}
 	
 	// Loaders end ////////////////////////////////////////////////////////////////////////////////
+	
+	public void addOnStackUpdateListener(OnStackUpdateListener listener) {
+		if (!stackUpdateListeners.contains(listener)) {
+			stackUpdateListeners.add(listener);
+		}
+	}
+	public void removeOnStackUpdateListener(OnStackUpdateListener listener) {
+		if (stackUpdateListeners.contains(listener)) {
+			stackUpdateListeners.remove(listener);
+		}
+	}
 }

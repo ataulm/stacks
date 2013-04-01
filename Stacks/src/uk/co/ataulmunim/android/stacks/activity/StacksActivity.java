@@ -19,7 +19,10 @@ public class StacksActivity extends SherlockFragmentActivity {
 	private static int instanceCounter = 0;
 	
 	private StacksPagerAdapter adapter;
-	private FreezableViewPager pager; 
+	private FreezableViewPager pager;
+	
+	private String shortcode;
+	private String notes;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -76,5 +79,39 @@ public class StacksActivity extends SherlockFragmentActivity {
 	@Override
 	public void onPause() {
 		super.onPause();
+	}
+	
+	/**
+	 * Used to initialise the shortcode input in StacksEditFragment without
+	 * having to query the content provider for it.
+	 * @return
+	 */
+	public String getShortcode() {
+		return shortcode;
+	}
+	
+	/**
+	 * Set (and updated) in StacksListFragment#onLoadFinished().
+	 * @param shortcode
+	 */
+	public void setShortcode(String shortcode) {
+		this.shortcode = shortcode;
+	}
+	
+	/**
+	 * Used to initialise the notes input in StacksEditFragment without having
+	 * to query the content provider for it.
+	 * @return
+	 */
+	public String getNotes() {
+		return notes;
+	}
+	
+	/**
+	 * Set (and updated) in StacksListFragment#onLoadFinished().
+	 * @param shortcode
+	 */
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
 }

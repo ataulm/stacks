@@ -1,42 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#4FBF22">    
+    android:background="#1B91E0">    
 
-    <LinearLayout
+    <!-- Shortcode -->
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
-        
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            android:editable="false"
-            />
-        
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Notes"
-            android:editable="false"
-            />
-        
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Scheduled"
-            android:editable="false"
-            />
-        
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Dates"
-            android:editable="false"
-            />            
-    </LinearLayout>
-
-</ScrollView>
+        android:text="@string/label_shortcode"
+        />
+    
+    <EditText
+        android:id="@+id/input_shortcode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    
+    <!-- Notes -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_notes"
+        />
+    
+    <EditText
+        android:id="@+id/input_notes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+    
+    <!-- Associated Dates -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_dates"
+        />
+    
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_empty_dates"
+        />
+    
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#8CC5DB"
+        />
+</LinearLayout>

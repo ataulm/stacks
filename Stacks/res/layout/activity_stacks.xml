@@ -7,18 +7,11 @@
     android:background="#4FBF22"
     >
     
+    <!-- StacksViewFragment and StacksEditFragment are in this pager -->
     <uk.co.ataulmunim.android.view.FreezableViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
-    <!-- 
-	<fragment
-	    xmlns:android="http://schemas.android.com/apk/res/android"
-	    class="uk.co.ataulmunim.android.stacks.fragment.StacksListFragment"
-		android:id="@+id/stacklist"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		/>
-	 -->
+    
 </LinearLayout>

@@ -71,21 +71,6 @@ public abstract class Crud {
 	}
 
 	/**
-	 * Temporary method to add pre-determined stacks
-	 * TODO: assess and remove
-	 * @param context
-	 * @param parent
-	 * @return
-	 */
-	public static Uri genStack(Context context, int parent) {
-		return addStack(context, "A new item", "A new item which has been auto-generated", parent);
-	}
-	
-	public static Uri genDates(Context context, int stack, long date) {
-		return null;		
-	}
-	
-	/**
 	 * Gets the children of the Stack with the passed id, if they are not marked for deletion.
 	 * 
 	 * Returns a Cursor of _IDs from the Stacks table where the Stacks match the passed parent id,

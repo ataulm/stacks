@@ -1,5 +1,6 @@
 package uk.co.ataulmunim.android.stacks.fragment;
 import uk.co.ataulmunim.android.stacks.Crud;
+import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
 import uk.co.ataulmunim.android.stacks.adapter.StacksCursorAdapter;
 import uk.co.ataulmunim.android.stacks.contentprovider.Plans;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
@@ -31,7 +32,7 @@ import com.nicedistractions.shortstacks.R;
 
 
 public class StacksEditFragment extends SherlockFragment
-	implements LoaderManager.LoaderCallbacks<Cursor> {
+	implements LoaderManager.LoaderCallbacks<Cursor>, OnStackUpdateListener {
 	
 	public static final String TAG = "StacksListFragment";
 	
@@ -134,6 +135,17 @@ public class StacksEditFragment extends SherlockFragment
 			adapter.swapCursor(null);
 		}
 	}
-	
+
 	// Loaders end ////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Called when the CursorLoader in StacksListFragment has been updated.
+	 */
+	@Override
+	public void onStackUpdated() {
+		String shortcode = ((StacksActivity) getActivity()).getShortcode();
+		String notes = ((StacksActivity) getActivity()).getNotes();
+		
+		// TODO: update the EditTexts iff they're mid-completion		
+	}
 }
