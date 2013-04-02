@@ -31,24 +31,15 @@ import com.actionbarsherlock.app.SherlockListFragment;
 import com.nicedistractions.shortstacks.R;
 
 
-public class StacksEditFragment extends SherlockFragment
+public class StacksEditFragment extends SherlockListFragment
 	implements LoaderManager.LoaderCallbacks<Cursor>, OnStackUpdateListener {
 	
 	public static final String TAG = "StacksListFragment";
 	
 	public static final String[] STACKS_PROJECTION = {
-		Stacks._ID,	Stacks.SHORTCODE, Stacks.ACTION_ITEMS
+		Stacks._ID,	Stacks.SHORTCODE, Stacks.NOTES
 	};
 	
-	public static final int STACKS_LOADER = 0;
-	public static final int DATES_LOADER = 1;
-	
-	/**
-	 * Determines whether or not to close the soft input keyboard when adding Stacks to the list.
-	 * A value of TRUE will leave it open, but this can be set in shared preferences.
-	 * TODO: set in shared prefs
-	 */
-	private boolean quickAddMode;
 	
 	private StacksCursorAdapter adapter;
 	private int stackId = Stacks.ROOT_STACK_ID; // id of the current stack in the Stacks table
@@ -73,40 +64,60 @@ public class StacksEditFragment extends SherlockFragment
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		Log.i(TAG, "onActivityCreated()");
+				
+		final TextView shortcodeTextView = (TextView) getView().findViewById(
+				R.id.input_shortcode);
+		final TextView notesTextView = (TextView) getView().findViewById(
+				R.id.input_notes);
 		
-		final Intent intent = getActivity().getIntent();
-		final Uri stackUri = intent.getData();
+		// TODO: It'll only be in a semi-modified state if the user rotates
 		
-		// TODO: differentiate between INTENTs by performing different actions
-		final String action = intent.getAction();
-		
-		if (stackUri != null) {
-			try {
-				stackId = Integer.parseInt(stackUri.getLastPathSegment());	
-			} catch (NumberFormatException e) {
-				Log.w(TAG, "stackUri.getLastPathSegment() was not cool. (" +
-						stackUri.getLastPathSegment() + ")." +
-						"Stays unchanged as Stacks.ROOT_STACK_ID.");
-			}	
+		// Pre-fill the inputs with the current values, unless user input
+		if (shortcodeTextView.getText().length() != 0) {
+			String shortcode = ((StacksActivity) getActivity()).getShortcode();
+			shortcodeTextView.setText(shortcode);
 		}
+		
+		if (notesTextView.getText().length() != 0) {
+			String notes = ((StacksActivity) getActivity()).getNotes();
+			notesTextView.setText(notes);
+		} 
+		
+		
+		//shortcode.setText(text);
+		
+		stackId = ((StacksActivity) getActivity()).getStackId();
+		
+		// Create an empty adapter we will use to display the loaded data.
+		adapter = new StacksCursorAdapter(
+					getActivity(),
+					R.layout.list_item_stacks,
+					null,
+					new String[] {Stacks.SHORTCODE, Stacks.ACTION_ITEMS},
+					new int[] {
+						R.id.listitem_name,
+						R.id.listitem_actionable_items
+					}
+		);		
+        setListAdapter(adapter);
         
         // Prepare the loader.  Either re-connect with an existing one, or start a new one.
         //getActivity().getSupportLoaderManager().initLoader(STACKS_LOADER, null, this);
 	}
 	
 	
-	// Loaders ////////////////////////////////////////////////////////////////////////////////////
+	// Loaders ////////////////////////////////////////////////////////////////
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		CursorLoader cursorLoader = null;
 		
-		if (id == STACKS_LOADER) {
+		if (id == StacksActivity.STACKS_LOADER) {
 			Log.d(TAG, "Loading stacks under stack " + stackId);
+			
 			final String where = Stacks.PARENT + "=" + stackId +
-					" AND " + Stacks.DELETED + "<> 1" + " AND " + 
-					Stacks._ID + "<>" + Stacks.ROOT_STACK_ID; // Don't show default stack as child
+					" AND " + Stacks.DELETED + "<> 1" +
+					" AND " + Stacks._ID + "<>" + Stacks.ROOT_STACK_ID;
 			
 			cursorLoader = new CursorLoader(getActivity(),
 					Stacks.CONTENT_URI,
@@ -121,7 +132,7 @@ public class StacksEditFragment extends SherlockFragment
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		if (loader.getId() == STACKS_LOADER) {
+		if (loader.getId() == StacksActivity.STACKS_LOADER) {
 			Log.d(TAG, "Stacks loaded, swapping cursor, scrolling to end.");
 			
 			adapter.swapCursor(data);
@@ -130,13 +141,13 @@ public class StacksEditFragment extends SherlockFragment
 	
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		if (loader.getId() == STACKS_LOADER) {
+		if (loader.getId() == StacksActivity.STACKS_LOADER) {
 			Log.d(TAG, "Closing last Stacks cursor, so setting adapter cursor to null.");
 			adapter.swapCursor(null);
 		}
 	}
 
-	// Loaders end ////////////////////////////////////////////////////////////////////////////////
+	// Loaders end ////////////////////////////////////////////////////////////
 
 	/**
 	 * Called when the CursorLoader in StacksListFragment has been updated.

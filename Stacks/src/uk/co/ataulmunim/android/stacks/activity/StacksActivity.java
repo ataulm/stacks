@@ -1,6 +1,8 @@
 package uk.co.ataulmunim.android.stacks.activity;
 
+import uk.co.ataulmunim.android.stacks.Crud;
 import uk.co.ataulmunim.android.stacks.adapter.StacksPagerAdapter;
+import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import uk.co.ataulmunim.android.view.FreezableViewPager;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -8,6 +10,8 @@ import com.actionbarsherlock.view.Menu;
 import com.nicedistractions.shortstacks.R;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -15,8 +19,10 @@ import com.actionbarsherlock.view.MenuItem;
 import android.widget.Toast;
 
 public class StacksActivity extends SherlockFragmentActivity {
+	public static final int STACKS_LOADER = 0;
+	public static final int DATES_LOADER = 1;
+	
 	private static final String TAG = "StacksActivity";
-	private static int instanceCounter = 0;
 	
 	private StacksPagerAdapter adapter;
 	private FreezableViewPager pager;
@@ -24,12 +30,33 @@ public class StacksActivity extends SherlockFragmentActivity {
 	private String shortcode;
 	private String notes;
 	
+	private int stackId = Stacks.ROOT_STACK_ID;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stacks);
 			
-		Log.d(TAG, "Number of instances: " + ++instanceCounter);
+		final Intent intent = getIntent();
+		final Uri stackUri = intent.getData();
+		
+		// TODO: differentiate between INTENTs by performing different actions
+		// final String action = intent.getAction();
+		
+		if (stackUri != null) {
+			try {
+				stackId = Integer.parseInt(stackUri.getLastPathSegment());	
+			} catch (NumberFormatException e) {
+				Log.w(TAG, 
+						"Invalid stack Uri passed ("
+						+ stackUri.getLastPathSegment()
+						+ "). Stays unchanged as Stacks.ROOT_STACK_ID.");
+			}	
+		}
+		
+		// Sets `shortcode` and `notes` for this stack 
+		shortcode = Crud.getStackShortcode(getContentResolver(), stackId);
+		notes = Crud.getStackNotes(getContentResolver(), stackId);
 		
 		adapter = new StacksPagerAdapter(getSupportFragmentManager());
 		pager = (FreezableViewPager) findViewById(R.id.pager);
@@ -79,6 +106,14 @@ public class StacksActivity extends SherlockFragmentActivity {
 	@Override
 	public void onPause() {
 		super.onPause();
+	}
+	
+	/**
+	 * Gets the local (SQL) ID of the current stack.
+	 * @return
+	 */
+	public int getStackId() {
+		return stackId;
 	}
 	
 	/**

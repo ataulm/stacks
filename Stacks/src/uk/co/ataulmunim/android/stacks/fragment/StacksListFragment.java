@@ -41,8 +41,7 @@ public class StacksListFragment extends SherlockListFragment
 		Stacks._ID,	Stacks.SHORTCODE, Stacks.ACTION_ITEMS, Stacks.NOTES
 	};
 	
-	public static final int STACKS_LOADER = 0;
-	public static final int DATES_LOADER = 1;
+	
 	
 	/**
 	 * Determines whether or not to close the soft input keyboard when adding Stacks to the list.
@@ -73,23 +72,8 @@ public class StacksListFragment extends SherlockListFragment
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		Log.i(LOG_TAG, "onActivityCreated()");
 		
-		final Intent intent = getActivity().getIntent();
-		final Uri stackUri = intent.getData();
-		
-		// TODO: differentiate between INTENTs by performing different actions
-		final String action = intent.getAction();
-		
-		if (stackUri != null) {
-			try {
-				stackId = Integer.parseInt(stackUri.getLastPathSegment());	
-			} catch (NumberFormatException e) {
-				Log.w(LOG_TAG, "stackUri.getLastPathSegment() was not cool. (" +
-						stackUri.getLastPathSegment() + ")." +
-						"Stays unchanged as Stacks.ROOT_STACK_ID.");
-			}	
-		}
+		stackId = ((StacksActivity) getActivity()).getStackId();
 		
 		stackUpdateListeners = new ArrayList<OnStackUpdateListener>();
 		
@@ -101,11 +85,11 @@ public class StacksListFragment extends SherlockListFragment
 					new String[] {Stacks.SHORTCODE, Stacks.ACTION_ITEMS},
 					new int[] { R.id.listitem_name, R.id.listitem_actionable_items }
 					);		
-        setListAdapter(adapter);        
+        setListAdapter(adapter);
         getListView().setOnItemClickListener(this);
         
         // Prepare the loader.  Either re-connect with an existing one, or start a new one.
-        getActivity().getSupportLoaderManager().initLoader(STACKS_LOADER, null, this);
+        getActivity().getSupportLoaderManager().initLoader(StacksActivity.STACKS_LOADER, null, this);
         
         // TODO: Get/set quickAddMode via SharedPreferences
         quickAddMode = true;
@@ -150,11 +134,12 @@ public class StacksListFragment extends SherlockListFragment
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		CursorLoader cursorLoader = null;
 		
-		if (id == STACKS_LOADER) {
+		if (id == StacksActivity.STACKS_LOADER) {
 			Log.d(LOG_TAG, "Loading stacks under stack " + stackId);
+			
 			final String where = Stacks.PARENT + "=" + stackId +
-					" AND " + Stacks.DELETED + "<> 1" + " AND " + 
-					Stacks._ID + "<>" + Stacks.ROOT_STACK_ID; // Never show default stack as child
+					" AND " + Stacks.DELETED + "<> 1" +
+					" AND " + Stacks._ID + "<>" + Stacks.ROOT_STACK_ID;
 			
 			cursorLoader = new CursorLoader(
 					getActivity(),
@@ -171,29 +156,17 @@ public class StacksListFragment extends SherlockListFragment
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		if (loader.getId() == STACKS_LOADER) {
+		if (loader.getId() == StacksActivity.STACKS_LOADER) {
 			Log.d(LOG_TAG, "Stacks loaded, swapping cursor, scrolling to end.");
 			
 			adapter.swapCursor(data);
 			getListView().smoothScrollToPosition(adapter.getCount());
-			
-			final String shortcode = data.getString(data.getColumnIndex(
-					Stacks.SHORTCODE));
-			final String notes = data.getString(data.getColumnIndex(
-					Stacks.NOTES));
-			
-			((StacksActivity) getActivity()).setShortcode(shortcode);
-			((StacksActivity) getActivity()).setNotes(notes);
-			
-			for (OnStackUpdateListener lis : stackUpdateListeners) {
-				lis.onStackUpdated();
-			}
 		}
 	}	
 	
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		if (loader.getId() == STACKS_LOADER) {
+		if (loader.getId() == StacksActivity.STACKS_LOADER) {
 			Log.d(LOG_TAG, "Closing last Stacks cursor, so setting adapter cursor to null.");
 			adapter.swapCursor(null);
 		}
