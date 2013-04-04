@@ -4,6 +4,7 @@ import android.net.Uri;
 import edu.mit.mobile.android.content.ContentItem;
 import edu.mit.mobile.android.content.ProviderUtils;
 import edu.mit.mobile.android.content.UriPath;
+import edu.mit.mobile.android.content.column.BooleanColumn;
 import edu.mit.mobile.android.content.column.DBColumn;
 import edu.mit.mobile.android.content.column.DBForeignKeyColumn;
 import edu.mit.mobile.android.content.column.DatetimeColumn;
@@ -36,7 +37,9 @@ public class Dates implements ContentItem {
     // date				long		date to store (milliseconds since Epoch)
     // ------------------------------------------------------------------------    
     // about			string		single line description about this date
-    // ========================================================================
+	// ------------------------------------------------------------------------    
+    // notification		boolean		should produce notification?		
+	// ========================================================================
 	
 	/**
 	 * The stack item that this date is associated with - a foreign key mapping
@@ -60,6 +63,13 @@ public class Dates implements ContentItem {
 	 */
 	@DBColumn(type = TextColumn.class)
     public static final String ABOUT = "about";
+	
+	/**
+	 * Flag to indicate whether this date should invoke a notification when it
+	 * arrives.
+	 */
+	@DBColumn(type = BooleanColumn.class, defaultValue = "0")
+    public static final String NOTIFICATION = "notification";
 	
 	// End of Column definitions //////////////////////////////////////////////
 	

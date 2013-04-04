@@ -21,13 +21,14 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 	public static final String TAG = "StacksCursorAdapter";
 	
 	/**
-	 * Standard constructor, with additional flag to register content observer.
+	 * Standard constructor, with additional flag for no requery.
 	 * 
 	 * @param context
 	 * @param layout
 	 * @param c
 	 * @param from
 	 * @param to
+	 * @param flag to register content observer
 	 */
 	public StacksCursorAdapter(Context context, int layout, Cursor c, String[] from, int[] to) {
 		super(context, layout, c, from, to, 0);

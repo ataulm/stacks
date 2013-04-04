@@ -84,7 +84,10 @@ public class StacksListFragment extends SherlockListFragment
 					null,
 					new String[] {Stacks.SHORTCODE, Stacks.ACTION_ITEMS},
 					new int[] { R.id.listitem_name, R.id.listitem_actionable_items }
-					);		
+					);
+		TextView testHeader = new TextView(getActivity());
+		testHeader.setText("Test header");
+		getListView().addHeaderView(testHeader);
         setListAdapter(adapter);
         getListView().setOnItemClickListener(this);
         

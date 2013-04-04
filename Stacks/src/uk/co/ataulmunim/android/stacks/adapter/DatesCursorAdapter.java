@@ -15,13 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
+/**
+ * Returns views for dates
+ * @author ataulm
+ *
+ */
 public class DatesCursorAdapter extends SimpleCursorAdapter {
 
 	public static final String TAG = "DatesCursorAdapter";
 	
 	/**
-	 * Standard constructor, with additional flag to register content observer.
+	 * Standard constructor, with additional flag for no requery.
 	 * 
 	 * @param context
 	 * @param layout
@@ -35,7 +39,7 @@ public class DatesCursorAdapter extends SimpleCursorAdapter {
 	
 	/**
 	 * Get a View that displays the data at the specified position in the data set.
-	 * In this override, the 
+	 * 
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {

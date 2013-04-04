@@ -2,6 +2,7 @@ package uk.co.ataulmunim.android.stacks.fragment;
 import uk.co.ataulmunim.android.stacks.Crud;
 import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
 import uk.co.ataulmunim.android.stacks.adapter.StacksCursorAdapter;
+import uk.co.ataulmunim.android.stacks.contentprovider.Dates;
 import uk.co.ataulmunim.android.stacks.contentprovider.Plans;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import android.app.Activity;
@@ -19,10 +20,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -36,8 +39,8 @@ public class StacksEditFragment extends SherlockListFragment
 	
 	public static final String TAG = "StacksListFragment";
 	
-	public static final String[] STACKS_PROJECTION = {
-		Stacks._ID,	Stacks.SHORTCODE, Stacks.NOTES
+	public static final String[] DATES_PROJECTION = {
+		Dates._ID, Dates.STACK, Dates.DATE, Dates.ABOUT
 	};
 	
 	
@@ -64,6 +67,16 @@ public class StacksEditFragment extends SherlockListFragment
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		
+		    
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        RelativeLayout header = (RelativeLayout) inflater.inflate(
+        		R.layout.fragment_stack_edit_header,
+        		getListView(),
+        		false
+        );
+        getListView().addHeaderView(header, null, false);
+        
 				
 		final TextView shortcodeTextView = (TextView) getView().findViewById(
 				R.id.input_shortcode);
@@ -73,15 +86,15 @@ public class StacksEditFragment extends SherlockListFragment
 		// TODO: It'll only be in a semi-modified state if the user rotates
 		
 		// Pre-fill the inputs with the current values, unless user input
-		if (shortcodeTextView.getText().length() != 0) {
-			String shortcode = ((StacksActivity) getActivity()).getShortcode();
-			shortcodeTextView.setText(shortcode);
-		}
-		
-		if (notesTextView.getText().length() != 0) {
-			String notes = ((StacksActivity) getActivity()).getNotes();
-			notesTextView.setText(notes);
-		} 
+//		if (shortcodeTextView.getText().length() != 0) {
+//			String shortcode = ((StacksActivity) getActivity()).getShortcode();
+//			shortcodeTextView.setText(shortcode);
+//		}
+//		
+//		if (notesTextView.getText().length() != 0) {
+//			String notes = ((StacksActivity) getActivity()).getNotes();
+//			notesTextView.setText(notes);
+//		} 
 		
 		
 		//shortcode.setText(text);
@@ -99,8 +112,12 @@ public class StacksEditFragment extends SherlockListFragment
 						R.id.listitem_actionable_items
 					}
 		);		
-        setListAdapter(adapter);
-        
+		
+		// TODO: add header view (label, short code, label, notes)
+		// TODO: add footer view (add date button)
+		// getListView().addFooterView(ADD DATE BUTTON);
+		setListAdapter(adapter);
+		
         // Prepare the loader.  Either re-connect with an existing one, or start a new one.
         //getActivity().getSupportLoaderManager().initLoader(STACKS_LOADER, null, this);
 	}
@@ -112,19 +129,18 @@ public class StacksEditFragment extends SherlockListFragment
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		CursorLoader cursorLoader = null;
 		
-		if (id == StacksActivity.STACKS_LOADER) {
-			Log.d(TAG, "Loading stacks under stack " + stackId);
+		if (id == StacksActivity.DATES_LOADER) {
+			Log.d(TAG, "Loading dates for stack " + stackId);
 			
-			final String where = Stacks.PARENT + "=" + stackId +
-					" AND " + Stacks.DELETED + "<> 1" +
-					" AND " + Stacks._ID + "<>" + Stacks.ROOT_STACK_ID;
+			final String where = Dates.STACK + "=" + stackId;
 			
 			cursorLoader = new CursorLoader(getActivity(),
-					Stacks.CONTENT_URI,
-					STACKS_PROJECTION,
+					Dates.CONTENT_URI,
+					DATES_PROJECTION,
 					where,
 					null,
-					Stacks.LOCAL_SORT);
+					Dates.DATE
+			);
 		}
 		
 		return cursorLoader;

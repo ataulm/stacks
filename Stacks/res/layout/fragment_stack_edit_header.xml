@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    
+    <!-- Shortcode -->
+    <TextView
+        android:id="@+id/label_shortcode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_shortcode"
+        />
+    
+    <EditText
+        android:id="@+id/input_shortcode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/label_shortcode"
+        android:inputType="textAutoComplete"
+        />
+    
+    <!-- Notes -->
+    <TextView
+        android:id="@+id/label_notes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_shortcode"
+        android:text="@string/label_notes"
+        />
+    
+    <EditText
+        android:id="@+id/input_notes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/label_notes"
+        android:inputType="datetime"
+        />
+
+    <!-- Associated Dates -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_notes"
+        android:text="@string/label_dates"
+        />
+</RelativeLayout>

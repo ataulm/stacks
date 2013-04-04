@@ -18,7 +18,7 @@ public class StacksContentProvider extends SimpleContentProvider {
             getSearchPath(SEARCH_PATH));
 
     // Every time you update your database schema, you must increment the database version
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     
     public StacksContentProvider() {
     	super(AUTHORITY, DB_VERSION);
