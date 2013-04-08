@@ -3,6 +3,8 @@ package uk.co.ataulmunim.android.stacks.activity;
 import uk.co.ataulmunim.android.stacks.Crud;
 import uk.co.ataulmunim.android.stacks.adapter.StacksPagerAdapter;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
+import uk.co.ataulmunim.android.stacks.fragment.StacksEditFragment;
+import uk.co.ataulmunim.android.stacks.fragment.StacksListFragment;
 import uk.co.ataulmunim.android.view.FreezableViewPager;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -16,16 +18,28 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import com.actionbarsherlock.view.MenuItem;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import android.widget.Toast;
 
 public class StacksActivity extends SherlockFragmentActivity {
+	public static final String TAG = "StacksActivity";
+	
 	public static final int STACKS_LOADER = 0;
 	public static final int DATES_LOADER = 1;
 	
-	private static final String TAG = "StacksActivity";
-	
 	private StacksPagerAdapter adapter;
 	private FreezableViewPager pager;
+	
+	private StacksListFragment listFragment;
+    private StacksEditFragment editFragment;
+    
+    /**
+     * Flag indicating if the user has been warned that there are unsaved
+     * changes (user pressed System Back).
+     */
+    private boolean userWarnedAboutBack;
 	
 	private String shortcode;
 	private String notes;
@@ -65,6 +79,11 @@ public class StacksActivity extends SherlockFragmentActivity {
 		adapter = new StacksPagerAdapter(getSupportFragmentManager());
 		pager = (FreezableViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
+        
+        editFragment = (StacksEditFragment) adapter.getItem(
+        		StacksPagerAdapter.EDIT_PAGE);
+        listFragment = (StacksListFragment) adapter.getItem(
+        		StacksPagerAdapter.STACKS_PAGE);
 	}
 	
     @Override
@@ -75,42 +94,51 @@ public class StacksActivity extends SherlockFragmentActivity {
         return true;
     }
     
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_edit:
-                Toast.makeText(this, "Entering edit mode", Toast.LENGTH_SHORT).show();
                 pager.setCurrentItem(StacksPagerAdapter.EDIT_PAGE);
+                pager.setFrozen(true);
+                // TODO: launch DISCARD | DONE                
+                
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
     
+    
+    private void discardChanges() {
+    	Log.i(TAG, "discarding changes in EditFragment");
+    	pager.setFrozen(false);
+    	// TODO: close DISCARD | DONE, revert EditTexts
+    }
+    
+    
     @Override
     public void onBackPressed() {
-    	if (pager.getCurrentItem() == StacksPagerAdapter.EDIT_PAGE) {
-    		// TODO: there should be some user notification at this point
-    		// so the user doesn't feel like it's unresponsive, perhaps
-    		// a crouton.
-    		Log.i(TAG, "Back pressed");
-    		// toggle the frozen state - this is just for testing time, we
-    		// don't want to get stuck on the screen.
-    		// TODO: when the pager enters EDIT MODE, it should freeze.
-    		pager.setFrozen(!pager.isFrozen());
-    		Toast.makeText(this, "Pager frozen: " + pager.isFrozen(), Toast.LENGTH_SHORT).show();
+    	if (pager.isFrozen()) {
+    		Log.i(TAG, "Back pressed in frozen pager");
+    		    		
+    		if (!userWarnedAboutBack) {
+    			// TODO: crouton warning, "unsaved changes will be lost"
+    			Crouton.makeText(this, R.string.warn_unsaved_changes,
+    					Style.ALERT).show();
+        		userWarnedAboutBack = true;	
+    		} else {
+    			Crouton.cancelAllCroutons();
+    			Crouton.makeText(this, R.string.unsaved_changes, Style.ALERT)
+    					.show();
+    			discardChanges();
+    			userWarnedAboutBack = false;
+    			// LAYOUT: back pressed in EditFragment to discard changes
+    			// returns to previous Fragment
+    			pager.setCurrentItem(StacksPagerAdapter.STACKS_PAGE);
+    		}
     		
     	} else super.onBackPressed();
     }
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-	}
-	
-	@Override
-	public void onPause() {
-		super.onPause();
-	}
 	
 	/**
 	 * Gets the local (SQL) ID of the current stack.
@@ -121,8 +149,8 @@ public class StacksActivity extends SherlockFragmentActivity {
 	}
 	
 	/**
-	 * Used to initialise the shortcode input in StacksEditFragment without
-	 * having to query the content provider for it.
+	 * Used to initialise the shortcode input in {@link StacksEditFragment}
+	 * without having to query the content provider for it.
 	 * @return
 	 */
 	public String getShortcode() {
@@ -130,7 +158,7 @@ public class StacksActivity extends SherlockFragmentActivity {
 	}
 	
 	/**
-	 * Set (and updated) in StacksListFragment#onLoadFinished().
+	 * Set (and updated) in {@link StacksListFragment#onLoadFinished(android.support.v4.content.Loader, android.database.Cursor)}.
 	 * @param shortcode
 	 */
 	public void setShortcode(String shortcode) {
@@ -138,8 +166,8 @@ public class StacksActivity extends SherlockFragmentActivity {
 	}
 	
 	/**
-	 * Used to initialise the notes input in StacksEditFragment without having
-	 * to query the content provider for it.
+	 * Used to initialise the notes input in {@link StacksEditFragment} without
+	 * having to query the content provider for it.
 	 * @return
 	 */
 	public String getNotes() {
@@ -147,7 +175,7 @@ public class StacksActivity extends SherlockFragmentActivity {
 	}
 	
 	/**
-	 * Set (and updated) in StacksListFragment#onLoadFinished().
+	 * Set (and updated) in {@link StacksListFragment#onLoadFinished(android.support.v4.content.Loader, android.database.Cursor)}.
 	 * @param shortcode
 	 */
 	public void setNotes(String notes) {

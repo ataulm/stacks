@@ -117,8 +117,7 @@ public class StacksEditFragment extends SherlockListFragment
         // Prepare the loader.  Either re-connect with an existing one, or start a new one.
         //getActivity().getSupportLoaderManager().initLoader(STACKS_LOADER, null, this);
 	}
-	
-	
+		
 	// Loaders ////////////////////////////////////////////////////////////////
 
 	@Override

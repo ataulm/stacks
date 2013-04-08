@@ -138,7 +138,7 @@ public class StacksListFragment extends SherlockListFragment
 			if (notes.getMaxLines() != Integer.MAX_VALUE) {
 				notes.setMaxLines(Integer.MAX_VALUE);
 			} else {
-				notes.setMaxLines(R.integer.notes_line_height);
+				notes.setMaxLines(getResources().getInteger(R.integer.notes_line_height));
 			}
 		} else {
 			final Uri stack = ContentUris.withAppendedId(Stacks.CONTENT_URI, id);

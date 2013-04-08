@@ -10,11 +10,13 @@
 	<!-- StacksListFragment -->
 	<string name="button_add">Add</string>
 	<string name="hint_add">Add an item</string>
+	<string name="unsaved_changes">Changes not saved</string>
 	
 	<!-- StacksEditFragment -->
 	<string name="label_shortcode">Shortcode</string>
 	<string name="label_notes">Notes</string>
 	<string name="label_dates">Associated Dates</string>
 	<string name="button_add_date">Add date</string>
+	<string name="warn_unsaved_changes">Unsaved changes will be lost</string>
 	
 </resources>

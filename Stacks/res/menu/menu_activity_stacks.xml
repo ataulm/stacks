@@ -18,24 +18,4 @@
     <item android:id="@+id/menu_item_edit"
         android:showAsAction="ifRoom|withText"
         android:title="Edit" />
-    
-    <item android:id="@+id/menu_item_share"
-        android:showAsAction="ifRoom|withText"
-        android:title="Share" />
-    
-    <item android:id="@+id/menu_item_more1"
-        android:showAsAction="ifRoom|withText"
-        android:title="More 1" />
-    
-    <item android:id="@+id/menu_item_more2"
-        android:showAsAction="ifRoom|withText"
-        android:title="More 2" />
-    
-    <item android:id="@+id/menu_item_more3"
-        android:showAsAction="ifRoom|withText"
-        android:title="More 3" />
-    
-    <item android:id="@+id/menu_item_more4"
-        android:showAsAction="ifRoom|withText"
-        android:title="More 4" />
 </menu>
