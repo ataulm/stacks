@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#8CC5DB"
-        />
+        android:background="#8CC5DB" />
     
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,8 +24,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:imeOptions="actionDone"
+            android:imeActionLabel="@string/button_add"
             android:inputType="text|textAutoCorrect"
-            android:hint="Add an item" />            
+            android:hint="@string/hint_add" />            
     </LinearLayout>
 
 </LinearLayout>

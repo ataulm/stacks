@@ -60,7 +60,7 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 		return row;
 	}
 	
-    /**
+    /** 
      * The ViewHolder pattern allows reduction in number of findViewById() calls we need to do
      * @author ataulm
      *

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Shortcode -->
+    <TextView
+        android:id="@+id/shortcode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="&lt;shortcode should go here&gt;"
+        />
+    
+    <TextView
+        android:id="@+id/notes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="@integer/notes_line_height"
+        android:onClick="toggleNotesMaxLines"
+        android:ellipsize="end"
+        android:text="&lt;notes should go here, but initially visibility is gone because it's not necessarily true that this stack will even have notes. The good thing is that if there are notes, it'll only show two lines, will auto ellipsize the textview which is enough to give the user some visual indication that they can click on it (and it'll expand!)&gt;"
+        />    
+</LinearLayout>

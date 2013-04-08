@@ -1,35 +1,20 @@
 package uk.co.ataulmunim.android.stacks.fragment;
-import uk.co.ataulmunim.android.stacks.Crud;
 import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
 import uk.co.ataulmunim.android.stacks.adapter.StacksCursorAdapter;
 import uk.co.ataulmunim.android.stacks.contentprovider.Dates;
-import uk.co.ataulmunim.android.stacks.contentprovider.Plans;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
-import android.app.Activity;
-import android.content.ContentUris;
-import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.util.SparseArray;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
-
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.nicedistractions.shortstacks.R;
 
@@ -37,7 +22,7 @@ import com.nicedistractions.shortstacks.R;
 public class StacksEditFragment extends SherlockListFragment
 	implements LoaderManager.LoaderCallbacks<Cursor>, OnStackUpdateListener {
 	
-	public static final String TAG = "StacksListFragment";
+	public static final String TAG = "StacksEditFragment";
 	
 	public static final String[] DATES_PROJECTION = {
 		Dates._ID, Dates.STACK, Dates.DATE, Dates.ABOUT
@@ -47,10 +32,11 @@ public class StacksEditFragment extends SherlockListFragment
 	private StacksCursorAdapter adapter;
 	private int stackId = Stacks.ROOT_STACK_ID; // id of the current stack in the Stacks table
 	
+	/*
 	public static StacksEditFragment newInstance() {
 		return new StacksEditFragment();
     }
-	
+	*/
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
@@ -67,15 +53,25 @@ public class StacksEditFragment extends SherlockListFragment
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
-		    
+		  
+		// Inflate the header and footer views
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        RelativeLayout header = (RelativeLayout) inflater.inflate(
+        LinearLayout header = (LinearLayout) inflater.inflate(
         		R.layout.fragment_stack_edit_header,
-        		getListView(),
-        		false
+        		null
         );
+        Button footer = (Button) inflater.inflate(
+        		R.layout.fragment_stack_edit_footer,
+        		null
+        );
+        
+        // Add them to the ListView - *here* these show even if list is empty
         getListView().addHeaderView(header, null, false);
+        getListView().addFooterView(footer, null, false);
+        
+        
+        
+        
         
 				
 		final TextView shortcodeTextView = (TextView) getView().findViewById(
@@ -86,15 +82,15 @@ public class StacksEditFragment extends SherlockListFragment
 		// TODO: It'll only be in a semi-modified state if the user rotates
 		
 		// Pre-fill the inputs with the current values, unless user input
-//		if (shortcodeTextView.getText().length() != 0) {
-//			String shortcode = ((StacksActivity) getActivity()).getShortcode();
-//			shortcodeTextView.setText(shortcode);
-//		}
-//		
-//		if (notesTextView.getText().length() != 0) {
-//			String notes = ((StacksActivity) getActivity()).getNotes();
-//			notesTextView.setText(notes);
-//		} 
+		if (shortcodeTextView.getText().length() != 0) {
+			String shortcode = ((StacksActivity) getActivity()).getShortcode();
+			shortcodeTextView.setText(shortcode);
+		}
+		
+		if (notesTextView.getText().length() != 0) {
+			String notes = ((StacksActivity) getActivity()).getNotes();
+			notesTextView.setText(notes);
+		}
 		
 		
 		//shortcode.setText(text);

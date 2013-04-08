@@ -5,12 +5,15 @@
     android:orientation="vertical"
     android:background="#1B91E0">    
     
+    <!-- 
     <TextView
         android:id="@android:id/empty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/label_empty_dates"
         />
+        
+         -->
     
     <ListView
         android:id="@android:id/list"

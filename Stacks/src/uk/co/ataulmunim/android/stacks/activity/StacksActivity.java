@@ -58,6 +58,10 @@ public class StacksActivity extends SherlockFragmentActivity {
 		shortcode = Crud.getStackShortcode(getContentResolver(), stackId);
 		notes = Crud.getStackNotes(getContentResolver(), stackId);
 		
+		// shortcode must have a valid value, notes can be empty but not null
+		if (shortcode == null) Log.e(TAG, "Shortcode value not resolved.");
+		if (notes == null) notes = "";
+		
 		adapter = new StacksPagerAdapter(getSupportFragmentManager());
 		pager = (FreezableViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);

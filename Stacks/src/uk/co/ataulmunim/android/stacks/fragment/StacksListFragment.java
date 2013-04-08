@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import uk.co.ataulmunim.android.stacks.Crud;
 import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
 import uk.co.ataulmunim.android.stacks.adapter.StacksCursorAdapter;
-import uk.co.ataulmunim.android.stacks.adapter.StacksPagerAdapter;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import android.app.Activity;
 import android.content.ContentUris;
@@ -25,6 +24,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -35,13 +35,12 @@ import com.nicedistractions.shortstacks.R;
 public class StacksListFragment extends SherlockListFragment
 	implements LoaderManager.LoaderCallbacks<Cursor>, OnEditorActionListener, OnItemClickListener {
 	
-	public static final String LOG_TAG = "StacksListFragment";
+	public static final String TAG = "StacksListFragment";
+	public static final String HEADER_TAG = "header";
 	
 	public static final String[] STACKS_PROJECTION = {
 		Stacks._ID,	Stacks.SHORTCODE, Stacks.ACTION_ITEMS, Stacks.NOTES
 	};
-	
-	
 	
 	/**
 	 * Determines whether or not to close the soft input keyboard when adding Stacks to the list.
@@ -66,6 +65,9 @@ public class StacksListFragment extends SherlockListFragment
         return inflater.inflate(R.layout.fragment_stack_view, container, false);
     }
 	
+
+
+	
 	/**
 	 * Called after onCreateView(), after the parent activity is created
 	 */
@@ -73,7 +75,35 @@ public class StacksListFragment extends SherlockListFragment
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		stackId = ((StacksActivity) getActivity()).getStackId();
+		
+		
+		
+		// Inflate the header and footer views
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        LinearLayout header = (LinearLayout) inflater.inflate(
+        		R.layout.fragment_stack_view_header,
+        		null
+        );
+        header.setTag(HEADER_TAG);
+        
+        // Add header to the ListView - *here* these show even if list is empty
+        getListView().addHeaderView(header);
+		
+		TextView shortcodeView = (TextView) header.findViewById(R.id.shortcode);
+        TextView notesView = (TextView) header.findViewById(R.id.notes);
+        
+        String shortcode = ((StacksActivity) getActivity()).getShortcode();
+        String notes = ((StacksActivity) getActivity()).getNotes();
+        
+        shortcodeView.setText(shortcode);
+        if (notes.length() > 0) {
+        	notesView.setVisibility(View.VISIBLE);
+        	notesView.setText(notes);
+        }
+		
+        
+		
+        stackId = ((StacksActivity) getActivity()).getStackId();
 		
 		stackUpdateListeners = new ArrayList<OnStackUpdateListener>();
 		
@@ -85,9 +115,6 @@ public class StacksListFragment extends SherlockListFragment
 					new String[] {Stacks.SHORTCODE, Stacks.ACTION_ITEMS},
 					new int[] { R.id.listitem_name, R.id.listitem_actionable_items }
 					);
-		TextView testHeader = new TextView(getActivity());
-		testHeader.setText("Test header");
-		getListView().addHeaderView(testHeader);
         setListAdapter(adapter);
         getListView().setOnItemClickListener(this);
         
@@ -104,10 +131,20 @@ public class StacksListFragment extends SherlockListFragment
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		Log.d(LOG_TAG, "List item clicked, stackId: " + id);
-		final Uri stack = ContentUris.withAppendedId(Stacks.CONTENT_URI, id);
-        final Intent viewStack = new Intent(Intent.ACTION_VIEW, stack);
-        startActivity(viewStack);
+		Log.d(TAG, "List item clicked, stackId: " + id);
+		
+		if (view.getTag().equals(HEADER_TAG)) {
+			TextView notes = (TextView) view.findViewById(R.id.notes);
+			if (notes.getMaxLines() != Integer.MAX_VALUE) {
+				notes.setMaxLines(Integer.MAX_VALUE);
+			} else {
+				notes.setMaxLines(R.integer.notes_line_height);
+			}
+		} else {
+			final Uri stack = ContentUris.withAppendedId(Stacks.CONTENT_URI, id);
+	        final Intent viewStack = new Intent(Intent.ACTION_VIEW, stack);
+	        startActivity(viewStack);
+		}
 	}
 	
 	/**
@@ -118,12 +155,12 @@ public class StacksListFragment extends SherlockListFragment
 		final String name = v.getText().toString().trim();
 		if (name.length() == 0) return true;
 		
-		Log.d(LOG_TAG, "Adding " + name);
+		Log.d(TAG, "Adding " + name);
 		Crud.addStack(getActivity(), name, null, stackId);
 		v.setText("");
 		
 		if (!quickAddMode) {
-			Log.d(LOG_TAG, "quickAddMode false, hiding keyboard.");
+			Log.d(TAG, "quickAddMode false, hiding keyboard.");
 			InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
 					Activity.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
@@ -138,7 +175,7 @@ public class StacksListFragment extends SherlockListFragment
 		CursorLoader cursorLoader = null;
 		
 		if (id == StacksActivity.STACKS_LOADER) {
-			Log.d(LOG_TAG, "Loading stacks under stack " + stackId);
+			Log.d(TAG, "Loading stacks under stack " + stackId);
 			
 			final String where = Stacks.PARENT + "=" + stackId +
 					" AND " + Stacks.DELETED + "<> 1" +
@@ -160,7 +197,7 @@ public class StacksListFragment extends SherlockListFragment
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		if (loader.getId() == StacksActivity.STACKS_LOADER) {
-			Log.d(LOG_TAG, "Stacks loaded, swapping cursor, scrolling to end.");
+			Log.d(TAG, "Stacks loaded, swapping cursor, scrolling to end.");
 			
 			adapter.swapCursor(data);
 			getListView().smoothScrollToPosition(adapter.getCount());
@@ -170,7 +207,7 @@ public class StacksListFragment extends SherlockListFragment
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 		if (loader.getId() == StacksActivity.STACKS_LOADER) {
-			Log.d(LOG_TAG, "Closing last Stacks cursor, so setting adapter cursor to null.");
+			Log.d(TAG, "Closing last Stacks cursor, so setting adapter cursor to null.");
 			adapter.swapCursor(null);
 		}
 	}
