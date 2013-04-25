@@ -1,16 +1,10 @@
 package uk.co.ataulmunim.android.stacks.adapter;
 
-import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
-
 import com.nicedistractions.shortstacks.R;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
-import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -21,7 +15,7 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 	public static final String TAG = "StacksCursorAdapter";
 	
 	/**
-	 * Standard constructor, with additional flag for no requery.
+	 * Standard constructor, with additional flag (0) for no requery.
 	 * 
 	 * @param context
 	 * @param layout
@@ -50,6 +44,10 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 			row.setTag(holder);
 		}
 		
+		// TODO: remove this after testing
+		holder.actionItems.setText("17");
+		
+		
 		// Actionable items
 		if (holder.actionItems.getText().toString() != "" &&
 				Integer.parseInt(holder.actionItems.getText().toString()) < 1) {
@@ -61,7 +59,14 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 	}
 	
     /** 
-     * The ViewHolder pattern allows reduction in number of findViewById() calls we need to do
+     * The ViewHolder pattern allows reduction in number of `findViewById()`
+     * calls we need to make, by storing a reference to the required View here.
+     * <p>
+     * When we retrieve a row in `getView()`, we check if it has an associated
+     * tag using {@link View#getTag()}. If not, we set the ViewHolder as the
+     * tag, otherwise, we retrieve the existing ViewHolder, which contains the
+     * references to the Views we're after.
+     *  
      * @author ataulm
      *
      */
@@ -69,7 +74,8 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
     	TextView actionItems = null;
     	
     	ViewHolder(View row) {
-    		this.actionItems = (TextView) row.findViewById(R.id.listitem_actionable_items);
+    		this.actionItems = (TextView) row.findViewById(
+    				R.id.listitem_actionable_items);
     	}
     }
 }

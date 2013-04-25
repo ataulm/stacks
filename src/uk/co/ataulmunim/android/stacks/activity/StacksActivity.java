@@ -25,10 +25,6 @@ import android.widget.Toast;
 
 public class StacksActivity extends SherlockFragmentActivity {
 	public static final String TAG = "StacksActivity";
-	public static final Style CROUTON_RED_SHORT = new Style.Builder()
-			.setDuration(3000)
-			.setBackgroundColorValue(Style.holoRedLight)
-			.build();
 	
 	public static final int STACKS_LOADER = 0;
 	public static final int DATES_LOADER = 1;
@@ -48,7 +44,7 @@ public class StacksActivity extends SherlockFragmentActivity {
 	private String shortcode;
 	private String notes;
 	
-	private int stackId = Stacks.ROOT_STACK_ID;
+	private int stackId = Stacks.ROOT_STACK_ID;  
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -108,7 +104,7 @@ public class StacksActivity extends SherlockFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_item_edit:
+            case R.id.ab_menu_edit:
                 pager.setCurrentItem(StacksPagerAdapter.EDIT_PAGE);
                 pager.setFrozen(true);
                 // TODO: launch DISCARD | DONE                
@@ -125,14 +121,20 @@ public class StacksActivity extends SherlockFragmentActivity {
     		Log.i(TAG, "Back pressed in frozen pager");
     		    		
     		if (!userWarnedAboutBack) {
+    			Style shortWarnStyle = new Style.Builder(Style.WARNING)
+    					.setDuration(Style.DURATION_SHORT).build();
+    			
     			// TODO: crouton warning, "unsaved changes will be lost"
-    			Crouton.makeText(this, R.string.warn_unsaved_changes,
-    					CROUTON_RED_SHORT).show();
+    			Crouton.makeText(this,
+    					R.string.warn_unsaved_changes,
+    					shortWarnStyle).show();
     			
         		userWarnedAboutBack = true;	
     		} else {
     			Crouton.clearCroutonsForActivity(this);
-    			Crouton.makeText(this, R.string.unsaved_changes, Style.ALERT)
+    			Style shortInfoStyle = new Style.Builder(Style.INFO)
+    					.setDuration(Style.DURATION_SHORT).build();	
+    			Crouton.makeText(this, R.string.unsaved_changes, shortInfoStyle)
     					.show();
     			discardChanges();
     			userWarnedAboutBack = false;

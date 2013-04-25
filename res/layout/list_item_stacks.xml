@@ -4,30 +4,59 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:padding="16dp" >
     
-    <TextView
-        android:id="@+id/listitem_name"
+    <LinearLayout 
+        android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1.0"
-        android:gravity="center_vertical"
-        android:background="#BC8CDB" />
+        >
+        
+	    <TextView
+	        android:id="@+id/listitem_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_vertical"
+	        android:textIsSelectable="false"
+	        android:background="@color/Gray" />
+	    
+	    <TextView
+	        android:id="@+id/listitem_notes"
+	        android:layout_width="wrap_content"
+	        android:singleLine="true"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_vertical"
+	        android:textIsSelectable="false"
+	        android:text="Sample text yo, should be at least a line long but maybe it's longer hmm? Did you think of that?"
+	        android:background="#BC8CDB" />
+        
+    </LinearLayout>
     
-    <TextView
-        android:id="@+id/listitem_actionable_items"
+    <LinearLayout 
+        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="#E4F294"
-        android:text="#"
-        android:gravity="center" />
+        >
+        
+	    <TextView
+	        android:id="@+id/listitem_actionable_items"
+	        android:layout_width="48dp"
+	        android:layout_height="48dp"
+	        android:textIsSelectable="false"
+	        android:gravity="center" />
+	    
+	    <ImageView
+	        android:id="@+id/listitem_more"
+	        android:layout_width="48dp"
+	        android:layout_height="48dp"
+	        android:src="@drawable/btn_quick_action_arrow_light"
+	        android:contentDescription="@string/btn_quick_action"
+	        android:gravity="center" />
+        
+    </LinearLayout>
     
-    <TextView
-        android:id="@+id/listitem_more"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="#94E0DD"
-        android:text="More"
-        android:gravity="center" />
     
 </LinearLayout>

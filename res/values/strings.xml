@@ -19,4 +19,10 @@
 	<string name="button_add_date">Add date</string>
 	<string name="warn_unsaved_changes">Press back again to return without saving</string>
 	
+	<!-- Actionbar -->
+	<string name="ab_menu_edit">Edit</string>
+	
+	<!-- Content Descriptions -->
+	<string name="btn_quick_action">Quick action</string>
+	
 </resources>
