@@ -25,6 +25,10 @@ import android.widget.Toast;
 
 public class StacksActivity extends SherlockFragmentActivity {
 	public static final String TAG = "StacksActivity";
+	public static final Style CROUTON_RED_SHORT = new Style.Builder()
+			.setDuration(3000)
+			.setBackgroundColorValue(Style.holoRedLight)
+			.build();
 	
 	public static final int STACKS_LOADER = 0;
 	public static final int DATES_LOADER = 1;
@@ -87,6 +91,12 @@ public class StacksActivity extends SherlockFragmentActivity {
 	}
 	
     @Override
+	public void onDestroy() {
+		Crouton.clearCroutonsForActivity(this);
+		super.onDestroy();
+	}
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
         getSupportMenuInflater().inflate(R.menu.menu_activity_stacks, menu);
@@ -109,13 +119,6 @@ public class StacksActivity extends SherlockFragmentActivity {
     }
     
     
-    private void discardChanges() {
-    	Log.i(TAG, "discarding changes in EditFragment");
-    	pager.setFrozen(false);
-    	// TODO: close DISCARD | DONE, revert EditTexts
-    }
-    
-    
     @Override
     public void onBackPressed() {
     	if (pager.isFrozen()) {
@@ -124,10 +127,11 @@ public class StacksActivity extends SherlockFragmentActivity {
     		if (!userWarnedAboutBack) {
     			// TODO: crouton warning, "unsaved changes will be lost"
     			Crouton.makeText(this, R.string.warn_unsaved_changes,
-    					Style.ALERT).show();
+    					CROUTON_RED_SHORT).show();
+    			
         		userWarnedAboutBack = true;	
     		} else {
-    			Crouton.cancelAllCroutons();
+    			Crouton.clearCroutonsForActivity(this);
     			Crouton.makeText(this, R.string.unsaved_changes, Style.ALERT)
     					.show();
     			discardChanges();
@@ -139,8 +143,8 @@ public class StacksActivity extends SherlockFragmentActivity {
     		
     	} else super.onBackPressed();
     }
-	
-	/**
+    
+    /**
 	 * Gets the local (SQL) ID of the current stack.
 	 * @return
 	 */
@@ -180,5 +184,11 @@ public class StacksActivity extends SherlockFragmentActivity {
 	 */
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+
+	private void discardChanges() {
+		Log.i(TAG, "discarding changes in EditFragment");
+		pager.setFrozen(false);
+		// TODO: close DISCARD | DONE, revert EditTexts
 	}
 }
