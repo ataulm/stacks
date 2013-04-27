@@ -48,11 +48,23 @@ public class StacksListFragment extends SherlockListFragment
 	 */
 	private boolean quickAddMode;
 	
+	
+	/**
+	 * Determines whether or not to scroll to the end of the list after the
+	 * data set has been updated. Initially false so it doesn't scroll when the
+	 * activity is first opened, but true after that.
+	 */
+	private boolean scrollToEnd;
+	
 	private StacksCursorAdapter adapter;
 	private int stackId = Stacks.ROOT_STACK_ID; // id of the current stack in the Stacks table
 
 	// List of objects wanting notification when STACKS_LOADER loader updates
 	private ArrayList<OnStackUpdateListener> stackUpdateListeners;
+
+	// Indicates whether the header view (shortcode and notes) is expanded 
+	private boolean headerViewExpanded;
+	
 	
 	public static StacksListFragment newInstance() {
 		return new StacksListFragment();
@@ -135,7 +147,7 @@ public class StacksListFragment extends SherlockListFragment
 		
 		if (view.getTag().equals(HEADER_TAG)) {
 			TextView notes = (TextView) view.findViewById(R.id.notes);
-			if (notes.getMaxLines() != Integer.MAX_VALUE) {
+			if (headerViewExpanded) {
 				notes.setMaxLines(Integer.MAX_VALUE);
 			} else {
 				notes.setMaxLines(getResources().getInteger(R.integer.notes_line_height));
@@ -193,6 +205,7 @@ public class StacksListFragment extends SherlockListFragment
 		
 		return cursorLoader;
 	}
+	
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
@@ -200,7 +213,11 @@ public class StacksListFragment extends SherlockListFragment
 			Log.d(TAG, "Stacks loaded, swapping cursor, scrolling to end.");
 			
 			adapter.swapCursor(data);
-			getListView().smoothScrollToPosition(adapter.getCount());
+			if (scrollToEnd) {
+				getListView().smoothScrollToPosition(adapter.getCount());
+			} else {
+				scrollToEnd = true;
+			}
 		}
 	}	
 	

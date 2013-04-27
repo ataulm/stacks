@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tell Android that the class "FontTextView" can be styled, 
+         and which attributes it supports -->
+    <declare-styleable name="FontTextView">
+        <attr name="typeface"/>
+    </declare-styleable>
+    
+    <!-- Define the values for the attribute -->
+    <attr name="typeface" format="enum">
+        <enum name="robotoLight" value="0"/>
+        <enum name="robotoThin" value="1"/>
+    </attr>
+</resources>

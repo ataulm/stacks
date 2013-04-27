@@ -1,30 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">    
+    android:layout_height="match_parent" >    
 
-    <!-- Main stack view -->
+    
+    <EditText
+        android:id="@+id/add_stack_field" 
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:imeOptions="actionDone"
+        android:imeActionLabel="@string/button_add"
+        android:inputType="text|textAutoCorrect"
+        android:hint="@string/hint_add" />
+    
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-    
-    <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-        
-        <EditText
-            android:id="@+id/add_stack_field" 
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:imeOptions="actionDone"
-            android:imeActionLabel="@string/button_add"
-            android:inputType="text|textAutoCorrect"
-            android:hint="@string/hint_add" />            
-    </LinearLayout>
-
-</LinearLayout>
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/add_stack_field"/>
+    
+</RelativeLayout>
