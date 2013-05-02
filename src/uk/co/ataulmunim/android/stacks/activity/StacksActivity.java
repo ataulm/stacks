@@ -19,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import com.actionbarsherlock.view.MenuItem;
 
+import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import android.widget.Toast;
@@ -114,28 +115,48 @@ public class StacksActivity extends SherlockFragmentActivity {
         return super.onOptionsItemSelected(item);
     }
     
+    private static final Style warnStyle;
+    private static final Configuration shortConfiguration;
+    static {
+    	warnStyle = new Style.Builder(Style.INFO).build();
+    	shortConfiguration = new Configuration.Builder()
+				.setDuration(Configuration.DURATION_SHORT).build();
+    }
     
+    /*
+     * TODO:
+     * Remove swipe to edit screen.
+     * To move to the edit screen, the user can press the edit action.
+     * 
+     * In the edit screen, it displays a DISCARD/DONE bar at all times.
+     * The fields will be pre-populated with the name and notes.
+     * 
+     * Without edited fields:
+     * If (DISCARD/system-back/DONE): return to the stack without action.
+     * 
+     * With edited fields:
+     * If (DISCARD/system-back): return to stack, show "Undo discard changes"
+     * popup, which returns to edit fragment, with all the changes intact.
+     * 
+     * If (DONE): return to stack, showing "Undo changes" which will revert all
+     * the changes.
+     * 
+     * @see android.support.v4.app.FragmentActivity#onBackPressed()
+     */
     @Override
     public void onBackPressed() {
     	if (pager.isFrozen()) {
     		Log.i(TAG, "Back pressed in frozen pager");
     		    		
     		if (!userWarnedAboutBack) {
-    			Style shortWarnStyle = new Style.Builder(Style.WARNING)
-    					.setDuration(Style.DURATION_SHORT).build();
-    			
-    			// TODO: crouton warning, "unsaved changes will be lost"
-    			Crouton.makeText(this,
-    					R.string.warn_unsaved_changes,
-    					shortWarnStyle).show();
-    			
-        		userWarnedAboutBack = true;	
+    			Crouton.makeText(this, R.string.warn_unsaved_changes, warnStyle)
+    					.setConfiguration(shortConfiguration).show();
+    			// TODO: if the user edits text now, it should revert to false
+    			userWarnedAboutBack = true;	
     		} else {
     			Crouton.clearCroutonsForActivity(this);
-    			Style shortInfoStyle = new Style.Builder(Style.INFO)
-    					.setDuration(Style.DURATION_SHORT).build();	
-    			Crouton.makeText(this, R.string.unsaved_changes, shortInfoStyle)
-    					.show();
+    			Crouton.makeText(this, R.string.unsaved_changes, Style.INFO)
+						.setConfiguration(shortConfiguration).show();
     			discardChanges();
     			userWarnedAboutBack = false;
     			// LAYOUT: back pressed in EditFragment to discard changes
