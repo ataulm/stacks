@@ -7,6 +7,7 @@ import uk.co.ataulmunim.android.stacks.fragment.StacksEditFragment;
 import uk.co.ataulmunim.android.stacks.fragment.StacksListFragment;
 import uk.co.ataulmunim.android.view.FreezableViewPager;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.nicedistractions.shortstacks.R;
@@ -108,11 +109,19 @@ public class StacksActivity extends SherlockFragmentActivity {
             case R.id.ab_menu_edit:
                 pager.setCurrentItem(StacksPagerAdapter.EDIT_PAGE);
                 pager.setFrozen(true);
+                inflateDoneDiscardActionBar();
                 // TODO: launch DISCARD | DONE                
                 
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    
+    private void inflateDoneDiscardActionBar() {
+    	getSupportActionBar().setDisplayOptions(
+    			ActionBar.DISPLAY_SHOW_CUSTOM,
+    			ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME
+    					| ActionBar.DISPLAY_SHOW_TITLE);
     }
     
     private static final Style warnStyle;
