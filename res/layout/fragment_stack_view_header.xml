@@ -23,7 +23,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLines="@integer/notes_line_height"
-        android:onClick="toggleNotesMaxLines"
         android:ellipsize="end"
         android:text="@string/lorem_paragraph"
         android:layout_marginBottom="16dp"

@@ -26,6 +26,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -139,7 +140,8 @@ public class StacksListFragment extends SherlockListFragment
 	}
 	
 	/**
-	 * Opens the clicked Stack in a new StacksActivity.
+	 * Opens the clicked Stack in a new StacksActivity, or toggles the expanded
+	 * property of the Stack's header view.
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -147,8 +149,9 @@ public class StacksListFragment extends SherlockListFragment
 		
 		if (view.getTag().equals(HEADER_TAG)) {
 			TextView notes = (TextView) view.findViewById(R.id.notes);
-			if (headerViewExpanded) {
+			if (!headerViewExpanded) {
 				notes.setMaxLines(Integer.MAX_VALUE);
+				headerViewExpanded = true;
 			} else {
 				notes.setMaxLines(getResources().getInteger(R.integer.notes_line_height));
 			}

@@ -13,19 +13,20 @@
 	<string name="unsaved_changes">Changes were not saved</string>
 	
 	<!-- StacksEditFragment -->
+	<string name="button_discard">Discard</string>
+    <string name="button_done">Done</string>    
 	<string name="label_shortcode">Shortcode</string>
 	<string name="label_notes">Notes</string>
 	<string name="label_dates">Associated Dates</string>
 	<string name="button_add_date">Add date</string>
-	<string name="warn_unsaved_changes">Press back again to return without saving</string>
+	<string name="warn_unsaved_changes">Press back again to discard changes</string>
 	
 	<!-- Actionbar -->
 	<string name="ab_menu_edit">Edit</string>
 	
 	<!-- Content Descriptions -->
 	<string name="btn_quick_action">Quick action</string>
-	
-	
+		
 	<!-- Lorem Ipsum -->
 	<string name="lorem_title">Lorem Ipsum</string>
 	<string name="lorem_sentence">Lorem ipsum dolor sit amet</string>

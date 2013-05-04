@@ -1,5 +1,6 @@
 package uk.co.ataulmunim.android.stacks.fragment;
 import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
+import uk.co.ataulmunim.android.stacks.activity.StacksActivity.UserWarnedAboutBack;
 import uk.co.ataulmunim.android.stacks.adapter.StacksCursorAdapter;
 import uk.co.ataulmunim.android.stacks.contentprovider.Dates;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
@@ -8,11 +9,14 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -20,7 +24,7 @@ import com.nicedistractions.shortstacks.R;
 
 
 public class StacksEditFragment extends SherlockListFragment
-	implements LoaderManager.LoaderCallbacks<Cursor>, OnStackUpdateListener {
+	implements LoaderManager.LoaderCallbacks<Cursor>, OnStackUpdateListener, TextWatcher {
 	
 	public static final String TAG = "StacksEditFragment";
 	
@@ -28,7 +32,7 @@ public class StacksEditFragment extends SherlockListFragment
 		Dates._ID, Dates.STACK, Dates.DATE, Dates.ABOUT
 	};
 	
-	
+	private StacksActivity activity;
 	private StacksCursorAdapter adapter;
 	private int stackId = Stacks.ROOT_STACK_ID; // id of the current stack in the Stacks table
 	
@@ -53,9 +57,11 @@ public class StacksEditFragment extends SherlockListFragment
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		
+		activity = (StacksActivity) getActivity();
 		  
 		// Inflate the header and footer views
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = activity.getLayoutInflater();
         LinearLayout header = (LinearLayout) inflater.inflate(
         		R.layout.fragment_stack_edit_header,
         		null
@@ -68,38 +74,22 @@ public class StacksEditFragment extends SherlockListFragment
         // Add them to the ListView - *here* these show even if list is empty
         getListView().addHeaderView(header, null, false);
         getListView().addFooterView(footer, null, false);
+         
+        // TODO: add listeners to all input fields
+        shortcodeInput = (EditText) getView().findViewById(R.id.input_shortcode);
+        notesInput = (EditText) getView().findViewById(R.id.input_notes);
         
+        shortcodeInput.addTextChangedListener(this);
+        notesInput.addTextChangedListener(this);
         
-        
-        
-        
-				
-		final TextView shortcodeTextView = (TextView) getView().findViewById(
-				R.id.input_shortcode);
-		final TextView notesTextView = (TextView) getView().findViewById(
-				R.id.input_notes);
-		
-		// TODO: It'll only be in a semi-modified state if the user rotates
-		
-		// Pre-fill the inputs with the current values, unless user input
-		if (shortcodeTextView.getText().length() != 0) {
-			String shortcode = ((StacksActivity) getActivity()).getShortcode();
-			shortcodeTextView.setText(shortcode);
-		}
-		
-		if (notesTextView.getText().length() != 0) {
-			String notes = ((StacksActivity) getActivity()).getNotes();
-			notesTextView.setText(notes);
-		}
-		
-		
-		//shortcode.setText(text);
-		
-		stackId = ((StacksActivity) getActivity()).getStackId();
+        // FIXME: this destroys user progress on orientation change
+        updateInputFields();
+
+        stackId = activity.getStackId();
 		
 		// Create an empty adapter we will use to display the loaded data.
 		adapter = new StacksCursorAdapter(
-					getActivity(),
+		            activity,
 					R.layout.list_item_stacks,
 					null,
 					new String[] {Stacks.SHORTCODE, Stacks.ACTION_ITEMS},
@@ -109,13 +99,28 @@ public class StacksEditFragment extends SherlockListFragment
 					}
 		);		
 		
-		// TODO: add header view (label, short code, label, notes)
-		// TODO: add footer view (add date button)
-		// getListView().addFooterView(ADD DATE BUTTON);
 		setListAdapter(adapter);
 		
         // Prepare the loader.  Either re-connect with an existing one, or start a new one.
         //getActivity().getSupportLoaderManager().initLoader(STACKS_LOADER, null, this);
+	}
+	
+	private EditText shortcodeInput;
+	private EditText notesInput;
+	
+	/**
+	 * Input fields are updated to latest saved information.
+	 * Called when the edit action is pressed, or onActivityCreated
+	 */
+	public void updateInputFields() {
+	    String shortcode = activity.getShortcode();
+        shortcodeInput.setText(shortcode);
+        
+        String notes = activity.getNotes();
+        notesInput.setText(notes);
+        
+        // Reset this after updates to counteract TextWatcher
+        activity.setUserWarnedAboutBack(UserWarnedAboutBack.UNSET);
 	}
 		
 	// Loaders ////////////////////////////////////////////////////////////////
@@ -129,7 +134,7 @@ public class StacksEditFragment extends SherlockListFragment
 			
 			final String where = Dates.STACK + "=" + stackId;
 			
-			cursorLoader = new CursorLoader(getActivity(),
+			cursorLoader = new CursorLoader(activity,
 					Dates.CONTENT_URI,
 					DATES_PROJECTION,
 					where,
@@ -165,9 +170,20 @@ public class StacksEditFragment extends SherlockListFragment
 	 */
 	@Override
 	public void onStackUpdated() {
-		String shortcode = ((StacksActivity) getActivity()).getShortcode();
-		String notes = ((StacksActivity) getActivity()).getNotes();
-		
-		// TODO: update the EditTexts iff they're mid-completion		
+		updateInputFields();
 	}
+	
+	/* no op */
+	@Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+	/* no op */
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        Log.d(TAG, "after text changed");
+        activity.setUserWarnedAboutBack(UserWarnedAboutBack.NO);               
+    }
 }
