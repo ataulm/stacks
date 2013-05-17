@@ -4,11 +4,12 @@ import uk.co.ataulmunim.android.stacks.activity.StacksActivity.UserWarnedAboutBa
 import uk.co.ataulmunim.android.stacks.adapter.StacksCursorAdapter;
 import uk.co.ataulmunim.android.stacks.contentprovider.Dates;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
+import android.app.ListFragment;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -19,11 +20,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.actionbarsherlock.app.SherlockListFragment;
 import com.nicedistractions.shortstacks.R;
 
 
-public class StacksEditFragment extends SherlockListFragment
+public class StacksEditFragment extends ListFragment
 	implements LoaderManager.LoaderCallbacks<Cursor>, OnStackUpdateListener, TextWatcher {
 	
 	public static final String TAG = "StacksEditFragment";

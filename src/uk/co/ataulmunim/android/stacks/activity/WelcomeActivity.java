@@ -3,20 +3,20 @@ package uk.co.ataulmunim.android.stacks.activity;
 import uk.co.ataulmunim.android.stacks.Crud;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.commonsware.cwac.loaderex.acl.SharedPreferencesLoader;
+import android.view.Menu;
+import android.app.LoaderManager;
+import android.content.Loader;
+import com.commonsware.cwac.loaderex.SharedPreferencesLoader;
 import com.nicedistractions.shortstacks.R;
 
 
-public class WelcomeActivity extends SherlockFragmentActivity implements
+public class WelcomeActivity extends Activity implements
 		LoaderManager.LoaderCallbacks<SharedPreferences> {
 	
 	public static final String LOG_TAG = "WelcomeActivity";
@@ -27,7 +27,7 @@ public class WelcomeActivity extends SherlockFragmentActivity implements
 		super.onCreate(savedInstanceState);
 		
 		// Checks SharedPrefs to see if default stack created yet
-		getSupportLoaderManager().initLoader(0, null, this);
+		getLoaderManager().initLoader(0, null, this);
 	}
 	
 	
@@ -35,7 +35,7 @@ public class WelcomeActivity extends SherlockFragmentActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
     	// TODO: create a welcome actionbar
-        getSupportMenuInflater().inflate(R.menu.menu_activity_stacks, menu);
+        getMenuInflater().inflate(R.menu.menu_activity_stacks, menu);
         return true;
     }
 	

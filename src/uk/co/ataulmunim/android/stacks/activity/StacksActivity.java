@@ -7,23 +7,22 @@ import uk.co.ataulmunim.android.stacks.fragment.StacksEditFragment;
 import uk.co.ataulmunim.android.stacks.fragment.StacksListFragment;
 import uk.co.ataulmunim.android.view.FreezableViewPager;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
 import com.nicedistractions.shortstacks.R;
 
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.actionbarsherlock.view.MenuItem;
 
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -32,7 +31,7 @@ import android.widget.Toast;
 
 
 
-public class StacksActivity extends SherlockFragmentActivity {
+public class StacksActivity extends Activity {
 	public static final String TAG = "StacksActivity";
 	
 	public enum UserWarnedAboutBack { YES, NO, UNSET };
@@ -82,7 +81,7 @@ public class StacksActivity extends SherlockFragmentActivity {
 		if (shortcode == null) Log.e(TAG, "Shortcode value not resolved.");
 		if (notes == null) notes = "";
 		
-		adapter = new StacksPagerAdapter(getSupportFragmentManager());
+		adapter = new StacksPagerAdapter(getFragmentManager());
 		pager = (FreezableViewPager) findViewById(R.id.pager);
 		pager.setFrozen(true);
         pager.setAdapter(adapter);
@@ -102,20 +101,21 @@ public class StacksActivity extends SherlockFragmentActivity {
 	    this.menu = menu;
 	    super.onCreateOptionsMenu(menu);
         
-	    getSupportMenuInflater().inflate(R.menu.menu_activity_stacks, menu);
+	    getMenuInflater().inflate(R.menu.menu_activity_stacks, menu);
                  
         return true;
     }
 	private Menu menu;
 	
+	// TODO: there's a proper method like onPrepareOptionsMenu, search for invalidateOptionsMenu() or something
 	private void reinflateOptionsMenu() {
-	    getSupportActionBar().setDisplayOptions(
+	    getActionBar().setDisplayOptions(
                 ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE,
                 ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME
                         | ActionBar.DISPLAY_SHOW_TITLE
         );
 	    
-	    getSupportMenuInflater().inflate(R.menu.menu_activity_stacks, menu);
+	    getMenuInflater().inflate(R.menu.menu_activity_stacks, menu);
 	}
     
     
@@ -141,7 +141,7 @@ public class StacksActivity extends SherlockFragmentActivity {
      * Inflates the DISCARD/DONE action bar, setting listeners for the buttons.
      */
     private void setDoneDiscardBar() {
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getActionBar();
         
         LayoutInflater inflater;
         
@@ -190,9 +190,14 @@ public class StacksActivity extends SherlockFragmentActivity {
     }
     
     private static final Configuration shortConfig;
+    private static final Style what;
     static {
     	shortConfig = new Configuration.Builder()
 				.setDuration(Configuration.DURATION_SHORT).build();
+    	what = new Style.Builder(Style.INFO)
+    		.setHeightDimensionResId(R.dimen.abs__action_bar_default_height)
+    		.build();
+    	// todo: set a proper height, with dedicated dimension
     }
     
     private void softDiscardChanges() {
@@ -227,7 +232,7 @@ public class StacksActivity extends SherlockFragmentActivity {
     	        && userWarned == UserWarnedAboutBack.YES) {
     	    
     	    Crouton.clearCroutonsForActivity(this);
-    	    Crouton.makeText(this, R.string.unsaved_changes, Style.INFO,
+    	    Crouton.makeText(this, R.string.unsaved_changes, what,
                     shortConfig).show();
     	    softDiscardChanges();  
     	    userWarned = UserWarnedAboutBack.NO;

@@ -7,14 +7,15 @@ import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
 import uk.co.ataulmunim.android.stacks.adapter.StacksCursorAdapter;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import android.app.Activity;
+import android.app.ListFragment;
 import android.content.ContentUris;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
+import android.app.LoaderManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -29,11 +30,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.actionbarsherlock.app.SherlockListFragment;
 import com.nicedistractions.shortstacks.R;
 
 
-public class StacksListFragment extends SherlockListFragment
+public class StacksListFragment extends ListFragment
 	implements LoaderManager.LoaderCallbacks<Cursor>, OnEditorActionListener, OnItemClickListener {
 	
 	public static final String TAG = "StacksListFragment";
@@ -132,7 +132,7 @@ public class StacksListFragment extends SherlockListFragment
         getListView().setOnItemClickListener(this);
         
         // Prepare the loader.  Either re-connect with an existing one, or start a new one.
-        getActivity().getSupportLoaderManager().initLoader(StacksActivity.STACKS_LOADER, null, this);
+        getActivity().getLoaderManager().initLoader(StacksActivity.STACKS_LOADER, null, this);
         
         // TODO: Get/set quickAddMode via SharedPreferences
         quickAddMode = true;
