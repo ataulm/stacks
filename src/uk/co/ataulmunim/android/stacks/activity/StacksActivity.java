@@ -6,9 +6,9 @@ import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import uk.co.ataulmunim.android.stacks.fragment.StacksEditFragment;
 import uk.co.ataulmunim.android.stacks.fragment.StacksListFragment;
 import uk.co.ataulmunim.android.view.FreezableViewPager;
+import uk.co.ataulmunim.android.widget.CroutonEx;
 
 import com.nicedistractions.shortstacks.R;
-
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -22,8 +22,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
-
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -162,8 +160,8 @@ public class StacksActivity extends Activity {
                     @Override
                     public void onClick(View v) {
                         // TODO: save changes, update EditFragment to reflect new content
-                        Crouton.makeText(StacksActivity.this, "Changes saved",
-                                Style.CONFIRM, shortConfig).show();
+                        CroutonEx.makeText(StacksActivity.this, "Changes saved",
+                                CroutonEx.CONFIRM, shortConfig, true).show();
                         pager.setCurrentItem(StacksPagerAdapter.STACKS_PAGE);
                         reinflateOptionsMenu();
                     }
@@ -195,9 +193,8 @@ public class StacksActivity extends Activity {
     	shortConfig = new Configuration.Builder()
 				.setDuration(Configuration.DURATION_SHORT).build();
     	what = new Style.Builder(Style.INFO)
-    		.setHeightDimensionResId(R.dimen.abs__action_bar_default_height)
+    		.setHeight(48) // TODO: use a dimen resource
     		.build();
-    	// todo: set a proper height, with dedicated dimension
     }
     
     private void softDiscardChanges() {
@@ -232,8 +229,8 @@ public class StacksActivity extends Activity {
     	        && userWarned == UserWarnedAboutBack.YES) {
     	    
     	    Crouton.clearCroutonsForActivity(this);
-    	    Crouton.makeText(this, R.string.unsaved_changes, what,
-                    shortConfig).show();
+    	    CroutonEx.makeText(this, R.string.unsaved_changes, what,
+                    shortConfig, true).show();
     	    softDiscardChanges();  
     	    userWarned = UserWarnedAboutBack.NO;
     	    
@@ -241,8 +238,8 @@ public class StacksActivity extends Activity {
     	        && userWarned == UserWarnedAboutBack.NO) {
     	    
     	    Crouton.clearCroutonsForActivity(this);
-    	    Crouton.makeText(this, R.string.warn_unsaved_changes, Style.WARN,
-    	            shortConfig).show();
+    	    CroutonEx.makeText(this, R.string.warn_unsaved_changes, CroutonEx.WARN,
+    	            shortConfig, true).show();
     	    userWarned = UserWarnedAboutBack.YES;
     	    
     	} else if (pager.getCurrentItem() == StacksPagerAdapter.EDIT_PAGE
