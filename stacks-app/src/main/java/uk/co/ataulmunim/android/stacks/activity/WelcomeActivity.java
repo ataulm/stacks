@@ -28,6 +28,8 @@ public class WelcomeActivity extends Activity implements
 		
 		// Checks SharedPrefs to see if default stack created yet
 		getLoaderManager().initLoader(0, null, this);
+		
+		//TODO: Add 50% more unicorns.
 	}
 	
 	

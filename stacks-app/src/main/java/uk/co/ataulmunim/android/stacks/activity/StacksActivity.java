@@ -10,6 +10,8 @@ import uk.co.ataulmunim.android.widget.CroutonEx;
 
 import com.nicedistractions.shortstacks.R;
 
+import com.better.code;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
