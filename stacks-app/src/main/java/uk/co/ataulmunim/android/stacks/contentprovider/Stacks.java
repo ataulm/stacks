@@ -79,7 +79,7 @@ public class Stacks implements ContentItem {
 	/**
 	 * A description about the Stack
 	 */
-	@DBColumn(type = TextColumn.class)
+	@DBColumn(type = TextColumn.class, defaultValue = "")
     public static final String NOTES = "notes";
 	
 	/**
@@ -93,7 +93,7 @@ public class Stacks implements ContentItem {
 	 * The number of action items in this Stack and its children. An action
 	 * item is a leaf node.
 	 */
-	@DBColumn(type = IntegerColumn.class)
+	@DBColumn(type = IntegerColumn.class, defaultValue = "0")
     public static final String ACTION_ITEMS = "actionitems";
 	
 	/**

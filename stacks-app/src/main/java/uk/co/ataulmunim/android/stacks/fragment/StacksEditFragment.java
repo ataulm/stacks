@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+
 import com.nicedistractions.shortstacks.R;
 
 
@@ -113,7 +113,7 @@ public class StacksEditFragment extends ListFragment
 	 * Called when the edit action is pressed, or onActivityCreated
 	 */
 	public void updateInputFields() {
-	    String shortcode = activity.getShortcode();
+	    String shortcode = activity.getShortCode();
         shortcodeInput.setText(shortcode);
         
         String notes = activity.getNotes();

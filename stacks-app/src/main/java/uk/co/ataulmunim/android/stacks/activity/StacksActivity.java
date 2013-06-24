@@ -1,6 +1,7 @@
 package uk.co.ataulmunim.android.stacks.activity;
 
 import uk.co.ataulmunim.android.stacks.Crud;
+import uk.co.ataulmunim.android.stacks.Stack;
 import uk.co.ataulmunim.android.stacks.adapter.StacksPagerAdapter;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import uk.co.ataulmunim.android.stacks.fragment.StacksEditFragment;
@@ -31,20 +32,18 @@ import android.widget.Toast;
 
 public class StacksActivity extends Activity {
 	public static final String TAG = "StacksActivity";
-	
-	public enum UserWarnedAboutBack { YES, NO, UNSET };
-	/* "Press back to lose unsaved changes" */
+
+    /* "Press back to lose unsaved changes" */
+    public enum UserWarnedAboutBack { YES, NO, UNSET };
 	private UserWarnedAboutBack userWarned = UserWarnedAboutBack.UNSET;
 	
 	public static final int STACKS_LOADER = 0;
-	
 	public static final int DATES_LOADER = 1;
 	
 	private StacksPagerAdapter adapter;
 	private FreezableViewPager pager;
-	
-	private String shortcode;
-	private String notes;
+
+    private Stack stack;
 	
 	// Set with the default value, updated in the intent
 	private int stackId = Stacks.ROOT_STACK_ID;  
@@ -62,22 +61,12 @@ public class StacksActivity extends Activity {
 		
 		if (stackUri != null) {
 			try {
-				stackId = Integer.parseInt(stackUri.getLastPathSegment());	
+				int stackId = Integer.parseInt(stackUri.getLastPathSegment());
 			} catch (NumberFormatException e) {
-				Log.w(TAG, 
-						"Invalid stack Uri passed ("
-						+ stackUri.getLastPathSegment()
-						+ "). Stays unchanged as Stacks.ROOT_STACK_ID.");
-			}	
+				Log.w(TAG, "Invalid stack Uri passed (" + stackUri.getLastPathSegment() + ").");
+			}
 		}
-		
-		// Sets `shortcode` and `notes` for this stack 
-		shortcode = Crud.getStackShortcode(getContentResolver(), stackId);
-		notes = Crud.getStackNotes(getContentResolver(), stackId);
-		
-		// shortcode must have a valid value, notes can be empty but not null
-		if (shortcode == null) Log.e(TAG, "Shortcode value not resolved.");
-		if (notes == null) notes = "";
+        stack = Stack.getStack(this, stackId);
 		
 		adapter = new StacksPagerAdapter(getFragmentManager());
 		pager = (FreezableViewPager) findViewById(R.id.pager);
@@ -98,7 +87,11 @@ public class StacksActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
 	    this.menu = menu;
 	    super.onCreateOptionsMenu(menu);
-        
+        getActionBar().setDisplayOptions(
+                ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE,
+                ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME
+                        | ActionBar.DISPLAY_SHOW_TITLE
+        );
 	    getMenuInflater().inflate(R.menu.menu_activity_stacks, menu);
                  
         return true;
@@ -163,7 +156,7 @@ public class StacksActivity extends Activity {
                         CroutonEx.makeText(StacksActivity.this, "Changes saved",
                                 CroutonEx.CONFIRM, shortConfig, true).show();
                         pager.setCurrentItem(StacksPagerAdapter.STACKS_PAGE);
-                        reinflateOptionsMenu();
+                        invalidateOptionsMenu();
                     }
                 });
         
@@ -199,8 +192,7 @@ public class StacksActivity extends Activity {
     
     private void softDiscardChanges() {
         pager.setCurrentItem(StacksPagerAdapter.STACKS_PAGE);
-        
-        reinflateOptionsMenu();
+        invalidateOptionsMenu();
     }
     
     /*
@@ -260,7 +252,7 @@ public class StacksActivity extends Activity {
 	 * @return
 	 */
 	public int getStackId() {
-		return stackId;
+		return stack.getId();
 	}
 	
 	/**
@@ -268,16 +260,8 @@ public class StacksActivity extends Activity {
 	 * without having to query the content provider for it.
 	 * @return
 	 */
-	public String getShortcode() {
-		return shortcode;
-	}
-	
-	/**
-	 * Set (and updated) in {@link StacksListFragment#onLoadFinished(android.support.v4.content.Loader, android.database.Cursor)}.
-	 * @param shortcode
-	 */
-	public void setShortcode(String shortcode) {
-		this.shortcode = shortcode;
+	public String getShortCode() {
+		return stack.getShortCode();
 	}
 	
 	/**
@@ -286,15 +270,7 @@ public class StacksActivity extends Activity {
 	 * @return
 	 */
 	public String getNotes() {
-		return notes;
-	}
-	
-	/**
-	 * Set (and updated) in {@link StacksListFragment#onLoadFinished(android.support.v4.content.Loader, android.database.Cursor)}.
-	 * @param shortcode
-	 */
-	public void setNotes(String notes) {
-		this.notes = notes;
+		return stack.getNotes();
 	}
 
 	private void discardChanges() {

@@ -70,42 +70,6 @@ public abstract class Crud {
 		
 	}
 
-    /**
-     * Gets the shortcode for the given stack id.
-     * @param cr
-     * @param stackId
-     * @return
-     */
-    public static String getStackShortcode(ContentResolver cr, int stackId) {
-    	Cursor result = cr.query(
-    			Stacks.CONTENT_URI,
-    			new String[] { Stacks.SHORTCODE },
-    			Stacks._ID + "=" + stackId,
-    			null,
-    			null
-    	);
-    	result.moveToFirst();
-    	return result.getString(result.getColumnIndex(Stacks.SHORTCODE));
-    }
-    
-    /**
-     * Gets the notes for the given stack id.
-     * @param cr
-     * @param stackId
-     * @return
-     */
-    public static String getStackNotes(ContentResolver cr, int stackId) {
-    	Cursor result = cr.query(
-    			Stacks.CONTENT_URI,
-    			new String[] { Stacks.NOTES },
-    			Stacks._ID + "=" + stackId,
-    			null,
-    			null
-    	);
-    	result.moveToFirst();
-    	return result.getString(result.getColumnIndex(Stacks.NOTES));
-    }
-	
 	/**
 	 * Adds a date item associated with a stack.
 	 * @param context

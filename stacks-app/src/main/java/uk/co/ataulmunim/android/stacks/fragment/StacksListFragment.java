@@ -27,7 +27,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.nicedistractions.shortstacks.R;
@@ -105,7 +104,7 @@ public class StacksListFragment extends ListFragment
 		TextView shortcodeView = (TextView) header.findViewById(R.id.shortcode);
         TextView notesView = (TextView) header.findViewById(R.id.notes);
         
-        String shortcode = ((StacksActivity) getActivity()).getShortcode();
+        String shortcode = ((StacksActivity) getActivity()).getShortCode();
         String notes = ((StacksActivity) getActivity()).getNotes();
         
         shortcodeView.setText(shortcode);
