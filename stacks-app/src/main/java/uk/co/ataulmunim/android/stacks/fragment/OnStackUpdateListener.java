@@ -5,6 +5,4 @@ import android.database.Cursor;
 
 public interface OnStackUpdateListener {
 	public void onStackUpdated();
-
-	void onLoadFinished(Loader<Cursor> loader, Cursor data);
 }

@@ -135,5 +135,4 @@ public class Stacks implements ContentItem {
 	// This is a helpful tool connecting back to the "child" of this object. This is similar
     // to Django's relation manager, although we need to define it ourselves.
     public static final ForeignKeyManager DATES = new ForeignKeyManager(Dates.class);
-    public static final ForeignKeyManager PLANS = new ForeignKeyManager(Plans.class);
 }

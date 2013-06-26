@@ -3,22 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >    
 
-    
-    <EditText
-        android:id="@+id/add_stack_field" 
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:imeOptions="actionDone"
-        android:imeActionLabel="@string/button_add"
-        android:inputType="text|textAutoCorrect"
-        android:hint="@string/hint_add" />
-    
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_above="@id/add_stack_field"/>
+        android:layout_alignParentTop="true"/>
     
 </RelativeLayout>

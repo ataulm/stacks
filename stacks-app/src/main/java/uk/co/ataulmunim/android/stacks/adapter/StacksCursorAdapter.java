@@ -37,23 +37,10 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 		View row = super.getView(position, convertView, parent);
 		ViewHolder holder = (ViewHolder) row.getTag();
 		
-		// int stackId = getCursor().getInt(getCursor().getColumnIndex(Stacks._ID));		
-		
 		if (holder == null) {
 			holder = new ViewHolder(row);
 			row.setTag(holder);
 		}
-		
-		// TODO: remove this after testing
-		holder.actionItems.setText("17");
-		
-		
-		// Actionable items
-		if (holder.actionItems.getText().toString() != "" &&
-				Integer.parseInt(holder.actionItems.getText().toString()) < 1) {
-			holder.actionItems.setVisibility(View.GONE);
-		}
-		else holder.actionItems.setVisibility(View.VISIBLE);
 		
 		return row;
 	}
@@ -74,8 +61,8 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
     	TextView actionItems = null;
     	
     	ViewHolder(View row) {
-    		this.actionItems = (TextView) row.findViewById(
-    				R.id.listitem_actionable_items);
+//    		this.actionItems = (TextView) row.findViewById(
+//    				R.id.listitem_actionable_items);
     	}
     }
 }

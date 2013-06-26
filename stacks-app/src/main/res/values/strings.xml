@@ -7,12 +7,12 @@
     <string name="warning_unexpected_view">ExpandView should only have two views, primary and secondary. Use \"setPrimaryView(View)\" and \"setSecondaryView(View)\" if programmatically using this view widget. If declaring via XML, the element should have exactly two children (of type View, or a subclass) and the primary View should be declared after the the secondary one</string>
 	<string name="warning_unused_method">Cannot use this method on ExpandView. Use \"setPrimaryView(View)\" and \"setSecondaryView(View)\". Method:</string>
 	
-	<!-- StacksListFragment -->
+	<!-- StackViewFragment -->
 	<string name="button_add">Add</string>
 	<string name="hint_add">Add an item</string>
 	<string name="unsaved_changes">Changes were not saved</string>
 	
-	<!-- StacksEditFragment -->
+	<!-- StackEditFragment -->
 	<string name="button_discard">Discard</string>
     <string name="button_done">Done</string>    
 	<string name="label_shortcode">Shortcode</string>

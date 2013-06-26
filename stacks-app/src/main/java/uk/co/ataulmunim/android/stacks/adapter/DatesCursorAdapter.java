@@ -72,7 +72,7 @@ public class DatesCursorAdapter extends SimpleCursorAdapter {
     	TextView actionItems = null;
     	
     	ViewHolder(View row) {
-    		this.actionItems = (TextView) row.findViewById(R.id.listitem_actionable_items);
+    		//this.actionItems = (TextView) row.findViewById(R.id.listitem_actionable_items);
     	}
     }
 }

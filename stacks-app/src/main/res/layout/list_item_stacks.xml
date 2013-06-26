@@ -1,101 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- a single row item for a Stacks listview -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/com.nicedistractions.shortstacks"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:paddingLeft="16dp"
-	android:paddingRight="16dp"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     >
-	<RelativeLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:background="@color/group_one"
-	    android:paddingLeft="16dp"
-	    android:paddingRight="8dp"
-	    android:paddingTop="8dp"
-	    android:paddingBottom="8dp" >
-	
-	    <RelativeLayout
-	        android:id="@+id/secondary_elements"
-	        android:layout_width="48dp"
-	        android:layout_height="96dp"
-	        android:layout_alignParentRight="true" >
-	
-	        <uk.co.ataulmunim.android.view.FontTextView	            
-	            android:id="@+id/listitem_actionable_items"
-	            android:layout_width="match_parent"
-	            android:layout_height="48dp"
-	            android:layout_alignBottom="@+id/listitem_notes"
-	            android:layout_alignParentLeft="true"
-	            android:layout_marginBottom="16dp"
-	            android:textColor="@color/group_two"
-	            android:gravity="center"
-	            android:textIsSelectable="false"
-	            android:textSize="24sp"
-	            custom:typeface="robotoThin" />
-	
-	        <!-- Quick action button - specific ID is required (SlideExpandableListView lib) -->
-	        <RelativeLayout
-	            android:id="@+id/expandable_toggle_button"
-	            android:layout_width="match_parent"
-	            android:layout_height="48dp"
-	            android:layout_alignParentLeft="true"
-	            android:layout_below="@id/listitem_actionable_items"
-	            android:layout_alignParentRight="true" >
-	
-	            <ImageView
-	                android:id="@+id/listitem_more"
-	                android:layout_width="12dp"
-	                android:layout_height="12dp"
-					android:layout_alignParentBottom="true"
-	                android:layout_alignParentRight="true"
-	                android:contentDescription="@string/btn_quick_action"
-	                android:gravity="center"
-	                android:src="@drawable/btn_quick_action_arrow_light" />
-	        </RelativeLayout>
-	    </RelativeLayout>
-	
-	    <RelativeLayout
-	        android:id="@+id/primary_elements"
-	        android:layout_width="match_parent"
-	        android:layout_height="96dp"
-	        android:layout_toLeftOf="@+id/secondary_elements" >
-	
-	        <uk.co.ataulmunim.android.view.FontTextView
-	            android:id="@+id/listitem_name"
-	            android:layout_width="match_parent"
-	            android:layout_height="48dp"
-	            android:gravity="center_vertical"
-	            android:textColor="@color/group_two"
-	            android:textIsSelectable="false"
-	            android:textSize="24sp"
-	            custom:typeface="robotoLight"  />
-	
-	        <uk.co.ataulmunim.android.view.FontTextView
-	            android:id="@+id/listitem_notes"
-	            android:layout_width="match_parent"
-	            android:layout_height="48dp"
-	            android:gravity="center_vertical"
-	            android:layout_below="@id/listitem_name"
-	            android:textColor="@color/group_two"
-	            android:singleLine="true"
-	            android:ellipsize="end"            
-	            android:text="@string/lorem_paragraph"
-	            custom:typeface="robotoThin" />
-	    </RelativeLayout>
-	
-	    <!-- Quick action expanded view - specific ID is required (SlideExpandableListView lib) -->
-	
-	    <RelativeLayout
-	        android:id="@+id/expandable"
-	        android:layout_width="match_parent"
-	        android:layout_height="0dp"
-	        android:layout_below="@id/primary_elements" >
-	
-	        <!-- TODO - options inside the hidden view -->
-	
-	    </RelativeLayout>
-	
-	</RelativeLayout>
-</FrameLayout>
+
+    <!-- TODO: add drag-handle icon -->
+    <ImageView
+        android:id="@+id/drag_handle"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_drag_handle"
+        android:layout_alignParentLeft="true"
+        />
+
+    <uk.co.ataulmunim.android.view.FontTextView
+        android:id="@+id/listitem_name"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/group_two"
+        android:textIsSelectable="false"
+        android:textSize="24sp"
+        custom:typeface="robotoLight"
+        android:layout_toRightOf="@id/drag_handle"
+        />
+
+    <!-- TODO: add context-menu icon -->
+    <ImageView
+        android:id="@+id/context_menu_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_drag_handle"
+        android:layout_alignParentRight="true"
+        />
+</RelativeLayout>

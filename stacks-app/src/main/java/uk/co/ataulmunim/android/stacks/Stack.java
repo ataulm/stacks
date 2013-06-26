@@ -24,6 +24,9 @@ import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
  * Created by ataulm on 24/06/13.
  */
 public class Stack {
+    // _ID of the root-level stack
+    public static final int DEFAULT_STACK_ID = 1;
+
     private static final String TAG = "STACK";
     private final int id;
     private int parent;
@@ -34,7 +37,6 @@ public class Stack {
     private final long createdDate;
     private long modifiedDate;
     private int position;
-
 
     private Stack(int id, long createdDate) {
         this.id = id;
@@ -70,7 +72,8 @@ public class Stack {
     }
 
     public String getNotes() {
-        return notes;
+        if (notes != null && notes.length() > 0) return notes;
+        return "";
     }
 
     public boolean isStarred() {
@@ -125,5 +128,26 @@ public class Stack {
         return stackUri;
     }
 
+    public static Stack setNotes(Context context, int stackId, String notes) {
+        final ContentValues values = new ContentValues();
+        values.put(Stacks.NOTES, notes);
 
+        context.getContentResolver().update(Stacks.CONTENT_URI, values,
+                Stacks._ID + "=" + stackId, null);
+
+        return getStack(context, stackId);
+    }
+
+    /**
+     * Adds the root level stack.
+     *
+     * This is created when the application is first opened, and its presence is checked whenever
+     * StackView is opened without a specific
+     *
+     * @param context
+     * @return
+     */
+    public static Uri createDefaultStack(Context context) {
+        return add(context, "Stacks", DEFAULT_STACK_ID);
+    }
 }

@@ -1,7 +1,7 @@
 package uk.co.ataulmunim.android.stacks.adapter;
 
-import uk.co.ataulmunim.android.stacks.fragment.StacksEditFragment;
-import uk.co.ataulmunim.android.stacks.fragment.StacksListFragment;
+import uk.co.ataulmunim.android.stacks.fragment.StackEditFragment;
+import uk.co.ataulmunim.android.stacks.fragment.StackViewFragment;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -15,8 +15,8 @@ public class StacksPagerAdapter extends FragmentPagerAdapter{
 	public static final int STACKS_PAGE = 0;
 	public static final int EDIT_PAGE = 1;
 	
-	// Each StacksPagerAdapter is associated with a StacksListFragment and StacksEditFragment
-	private final Fragment[] content = {new StacksListFragment(), new StacksEditFragment()};
+	// Each StacksPagerAdapter is associated with a StackViewFragment and StackEditFragment
+	private final Fragment[] content = {new StackViewFragment(), new StackEditFragment()};
 	
 	public StacksPagerAdapter(FragmentManager fragmentManager) {
 		super(fragmentManager);

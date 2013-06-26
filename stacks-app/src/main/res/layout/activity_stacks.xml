@@ -7,7 +7,7 @@
     android:background="@color/group_three"
     >
     
-    <!-- StacksViewFragment and StacksEditFragment are in this pager -->
+    <!-- StacksViewFragment and StackEditFragment are in this pager -->
     <uk.co.ataulmunim.android.view.FreezableViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"

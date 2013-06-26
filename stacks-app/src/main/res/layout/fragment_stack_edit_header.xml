@@ -12,14 +12,14 @@
         android:layout_height="wrap_content"
         android:text="@string/label_shortcode"
         />
-    
+
     <EditText
         android:id="@+id/input_shortcode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textAutoCorrect"
         />
-    
+
     <!-- Notes -->
     <TextView
         android:id="@+id/label_notes"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:text="@string/label_notes"
         />
-    
+
     <EditText
         android:id="@+id/input_notes"
         android:layout_width="match_parent"
@@ -41,6 +41,6 @@
         android:layout_height="wrap_content"
         android:text="@string/label_dates"
         />
-    
+
 </LinearLayout>
- 
+
