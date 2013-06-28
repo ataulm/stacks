@@ -2,6 +2,7 @@ package uk.co.ataulmunim.android.stacks.fragment;
 
 import java.util.ArrayList;
 
+import android.widget.*;
 import uk.co.ataulmunim.android.stacks.Stack;
 import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
 import uk.co.ataulmunim.android.stacks.adapter.StacksCursorAdapter;
@@ -22,12 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.nicedistractions.shortstacks.R;
@@ -65,16 +61,9 @@ public class StackViewFragment extends ListFragment
 
 	// Indicates whether the Stack Info view (header) is expanded
 	private boolean stackInfoViewExpanded;
-	
-	
-//	public static StackViewFragment newInstance() {
-//		return new StackViewFragment();
-//    }
-		
+
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, 
-        Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_stack_view, container, false);
     }
 
@@ -89,12 +78,10 @@ public class StackViewFragment extends ListFragment
 		// Inflate the stackInfoView and footer views
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        LinearLayout stackInfoView = (LinearLayout) inflater.inflate(
-                R.layout.fragment_stack_view_header, null);
+        RelativeLayout stackInfoView = (RelativeLayout) inflater.inflate(R.layout.fragment_stack_view_header, null);
         stackInfoView.setTag(HEADER_TAG);
 
-        EditText newStackInput = (EditText) inflater.inflate(R.layout.fragment_stack_view_footer,
-                null);
+        EditText newStackInput = (EditText) inflater.inflate(R.layout.fragment_stack_view_footer, null);
         newStackInput.setTag(FOOTER_TAG);
 
         getListView().addHeaderView(stackInfoView, null, false);
@@ -113,15 +100,14 @@ public class StackViewFragment extends ListFragment
 					null,
 					new String[] {Stacks.SHORTCODE},
 					new int[] { R.id.listitem_name }
-					);
+	    );
         setListAdapter(adapter);
         getListView().setOnItemClickListener(this);
         getListView().setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         
         // Prepare the loader.  Either re-connect with an existing one, or start a new one.
         getActivity().getLoaderManager().initLoader(StacksActivity.STACKS_LOADER, null, this);
-        
-        // TODO: Get/set quickAddMode via SharedPreferences
+
         quickAddMode = true;
         newStackInput.setOnEditorActionListener(this);
 	}
@@ -129,10 +115,29 @@ public class StackViewFragment extends ListFragment
     private void updateHeaderView(ViewGroup stackInfoView) {
         Stack stack = ((StacksActivity) getActivity()).getStack();
 
-        TextView shortCode = (TextView) stackInfoView.findViewById(R.id.shortcode);
+        TextView shortCode = (TextView) stackInfoView.findViewById(R.id.short_code);
         TextView notes = (TextView) stackInfoView.findViewById(R.id.notes);
 
-        notes.setText(stack.getNotes());
+        String notesText = stack.getNotes();
+        if (notesText.length() > 0) {
+            notes.setText(stack.getNotes());
+            notes.setVisibility(View.VISIBLE);
+        }
+
+        /*
+        LIMITED_LINES = 2;
+        maxLines is either LIMITED_LINES or INFINITY
+
+        IF no notes, or notes.lines <= LIMITED_LINES, THEN don't show any indicator
+        IF notes.lines > LIMITED_LINES &&
+            IF notes.maxLines == LIMITED_LINES, THEN display "show_more_indicator"
+            IF notes.maxLines > LIMITED_LINES, THEN display "show_less_indicator"
+
+
+
+
+         */
+
         shortCode.setText(stack.getShortCode());
     }
 
