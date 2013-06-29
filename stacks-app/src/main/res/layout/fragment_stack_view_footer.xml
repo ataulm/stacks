@@ -8,6 +8,7 @@
     android:singleLine="true"
     android:inputType="textAutoCorrect"
     android:background="@null"
+    android:paddingBottom="16dp"
     />
 
 <!--    When the DragSort functionality is added, this should have

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- StackView is composed of a set of list items (the listview)
+    and a fixed header, and fixed footer. Neither the header nor
+    footer should be affected by the statelist drawable, so for
+    now, will be removing it entirely (from user POV) by making
+    each state transparent. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false" android:state_focused="true"
+          android:drawable="@android:color/transparent" />
+
+    <item android:state_pressed="true"
+          android:drawable="@android:color/transparent" />
+
+    <item android:state_focused="true"
+          android:drawable="@android:color/transparent" />
+</selector>

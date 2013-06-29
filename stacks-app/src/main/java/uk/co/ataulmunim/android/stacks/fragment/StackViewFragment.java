@@ -39,7 +39,12 @@ public class StackViewFragment extends ListFragment
 	public static final String[] STACKS_PROJECTION = {
 		Stacks._ID,	Stacks.SHORTCODE, Stacks.ACTION_ITEMS, Stacks.NOTES
 	};
-	
+
+    private TextView shortCode;
+    private TextView notes;
+    private ImageView showMoreNotes;
+    private ImageView showLessNotes;
+
 	/**
 	 * Determines whether or not to close the soft input keyboard when adding Stacks to the list.
 	 * A value of TRUE will leave it open, but this can be set in shared preferences.
@@ -60,7 +65,7 @@ public class StackViewFragment extends ListFragment
 	private ArrayList<OnStackUpdateListener> stackUpdateListeners;
 
 	// Indicates whether the Stack Info view (header) is expanded
-	private boolean stackInfoViewExpanded;
+	private boolean isNotesViewUnlimited;
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,13 +86,16 @@ public class StackViewFragment extends ListFragment
         RelativeLayout stackInfoView = (RelativeLayout) inflater.inflate(R.layout.fragment_stack_view_header, null);
         stackInfoView.setTag(HEADER_TAG);
 
-        EditText newStackInput = (EditText) inflater.inflate(R.layout.fragment_stack_view_footer, null);
-        newStackInput.setTag(FOOTER_TAG);
+        findViewsInHeader(stackInfoView);
+        updateHeaderView();
 
-        getListView().addHeaderView(stackInfoView, null, false);
+        EditText newStackInput = (EditText) inflater.inflate(R.layout.fragment_stack_view_footer, null);
+
+        getListView().addHeaderView(stackInfoView, null, true);
         getListView().addFooterView(newStackInput, null, false);
 
-        updateHeaderView(stackInfoView);
+        getListView().setSelector(R.drawable.list_selector); // TODO: we don't want header view to show selected
+
 
         stackId = ((StacksActivity) getActivity()).getStackId();
 		
@@ -112,19 +120,48 @@ public class StackViewFragment extends ListFragment
         newStackInput.setOnEditorActionListener(this);
 	}
 
-    private void updateHeaderView(ViewGroup stackInfoView) {
+    private void findViewsInHeader(View stackInfoView) {
+        shortCode = (TextView) stackInfoView.findViewById(R.id.short_code);
+        notes = (TextView) stackInfoView.findViewById(R.id.notes);
+        showMoreNotes = (ImageView) stackInfoView.findViewById(R.id.show_more_indicator);
+        showLessNotes = (ImageView) stackInfoView.findViewById(R.id.show_less_indicator);
+    }
+
+
+
+
+    private void updateHeaderView() {
         Stack stack = ((StacksActivity) getActivity()).getStack();
-
-        TextView shortCode = (TextView) stackInfoView.findViewById(R.id.short_code);
-        TextView notes = (TextView) stackInfoView.findViewById(R.id.notes);
-
         String notesText = stack.getNotes();
-        if (notesText.length() > 0) {
-            notes.setText(stack.getNotes());
-            notes.setVisibility(View.VISIBLE);
-        }
 
-        /*
+        shortCode.setText(stack.getShortCode());
+
+        if (notesText.length() <= 0) return;
+
+        notes.setText(stack.getNotes());
+
+        if (notes.getVisibility() != View.VISIBLE) notes.setVisibility(View.VISIBLE);
+    }
+
+
+    private void toggleStackInfoExpanded() {
+        Log.i(TAG, "toggleStackInfoExpanded() called");
+        Log.i(TAG, "Pre: isNotesViewUnlimited == " + isNotesViewUnlimited);
+        int limitedLines = getResources().getInteger(R.integer.notes_line_height);
+
+        if (!isNotesViewUnlimited) {
+            notes.setMaxLines(Integer.MAX_VALUE);
+            showMoreNotes.setVisibility(View.INVISIBLE);
+            showLessNotes.setVisibility(View.VISIBLE);
+            isNotesViewUnlimited = true;
+        } else {
+            notes.setMaxLines(limitedLines);
+            showMoreNotes.setVisibility(View.VISIBLE);
+            showLessNotes.setVisibility(View.INVISIBLE);
+            isNotesViewUnlimited = false;
+        }
+        Log.i(TAG, "Post: isNotesViewUnlimited == " + isNotesViewUnlimited);
+           /*
         LIMITED_LINES = 2;
         maxLines is either LIMITED_LINES or INFINITY
 
@@ -132,14 +169,10 @@ public class StackViewFragment extends ListFragment
         IF notes.lines > LIMITED_LINES &&
             IF notes.maxLines == LIMITED_LINES, THEN display "show_more_indicator"
             IF notes.maxLines > LIMITED_LINES, THEN display "show_less_indicator"
-
-
-
-
          */
-
-        shortCode.setText(stack.getShortCode());
     }
+
+
 
     /**
 	 * Opens the clicked Stack in a new StacksActivity, or toggles the expanded
@@ -150,7 +183,7 @@ public class StackViewFragment extends ListFragment
 		Log.d(TAG, "List item clicked, stackId: " + id);
 		
 		if (view.getTag().equals(HEADER_TAG)) {
-            toggleStackInfoExpanded(view);
+            toggleStackInfoExpanded();
 		} else {
 			final Uri stack = ContentUris.withAppendedId(Stacks.CONTENT_URI, id);
 	        final Intent viewStack = new Intent(Intent.ACTION_VIEW, stack);
@@ -158,15 +191,6 @@ public class StackViewFragment extends ListFragment
 		}
 	}
 
-    private void toggleStackInfoExpanded(View view) {
-        TextView notes = (TextView) view.findViewById(R.id.notes);
-        if (!stackInfoViewExpanded) {
-            notes.setMaxLines(Integer.MAX_VALUE);
-            stackInfoViewExpanded = true;
-        } else {
-            notes.setMaxLines(getResources().getInteger(R.integer.notes_line_height));
-        }
-    }
 
     /**
 	 * Adds a stack as a child to the current stack.
