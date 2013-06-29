@@ -99,7 +99,7 @@ public class StackViewFragment extends ListFragment
 					R.layout.list_item_stacks,
 					null,
 					new String[] {Stacks.SHORTCODE},
-					new int[] { R.id.listitem_name }
+					new int[] { R.id.listitem_shortcode}
 	    );
         setListAdapter(adapter);
         getListView().setOnItemClickListener(this);

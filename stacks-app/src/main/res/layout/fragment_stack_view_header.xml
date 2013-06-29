@@ -3,6 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="48dp"
         >
 
     <!-- ShortCode -->
@@ -16,20 +17,12 @@
             android:layout_alignParentTop="true"
             />
 
-    <ImageView
-            android:id="@+id/edit_button"
-            android:src="@drawable/ic_menu_edit"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            />
-
     <!-- Notes/description -->
     <TextView
             android:id="@+id/notes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/short_code"
             android:maxLines="@integer/notes_line_height"
             android:ellipsize="end"
             android:text="@string/lorem_paragraph"
@@ -38,20 +31,25 @@
 
     <ImageView
             android:id="@+id/show_more_indicator"
-            android:src="@drawable/ic_menu_edit"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:src="@drawable/ic_menu_expander_minimized_black"
+            android:alpha="0.4"
+            android:layout_below="@id/notes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             />
 
     <ImageView
             android:id="@+id/show_less_indicator"
-            android:src="@drawable/ic_menu_edit"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:src="@drawable/ic_menu_expander_maximized_black"
+            android:alpha="0.4"
+            android:layout_below="@id/notes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
+            android:visibility="invisible"
             />
 
 

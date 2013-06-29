@@ -19,8 +19,10 @@
 	<color name="color_one">#212121</color> <!-- dark grey -->
 	<color name="color_three">#191919</color> <!-- darkest grey -->
 	<color name="color_two">#FFFFFF</color> <!-- white -->
-	
-	<color name="group_one">@color/color_one</color>
+    <color name="color_four">#60000000</color> <!-- 40% grey? -->
+
+
+    <color name="group_one">@color/color_one</color>
 	<color name="group_two">@color/color_two</color>
 	<color name="group_three">@color/color_three</color>    
     

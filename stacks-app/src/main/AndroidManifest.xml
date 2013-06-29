@@ -13,6 +13,7 @@
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
+        android:theme="@style/Theme.TranslucentActionBar"
         android:label="@string/app_name" >
         
         <!-- Each ContentProvider must be defined in the manifest, so that Android 

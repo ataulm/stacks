@@ -7,4 +7,8 @@
     android:hint="New stack"
     android:singleLine="true"
     android:inputType="textAutoCorrect"
+    android:background="@null"
     />
+
+<!--    When the DragSort functionality is added, this should have
+        paddingLeft equal to that of the drag handle icon (probably 32dp) -->

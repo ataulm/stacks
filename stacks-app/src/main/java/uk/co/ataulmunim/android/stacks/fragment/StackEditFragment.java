@@ -92,7 +92,7 @@ public class StackEditFragment extends ListFragment
 					null,
 					new String[] {Stacks.SHORTCODE},
 					new int[] {
-						R.id.listitem_name
+						R.id.listitem_shortcode
                     }
 		);		
 		
