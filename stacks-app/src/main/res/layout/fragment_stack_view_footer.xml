@@ -3,12 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/input_add_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="0dp"
     android:hint="New stack"
     android:singleLine="true"
     android:inputType="textAutoCorrect"
     android:background="@null"
-    android:paddingBottom="16dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
     />
 
 <!--    When the DragSort functionality is added, this should have

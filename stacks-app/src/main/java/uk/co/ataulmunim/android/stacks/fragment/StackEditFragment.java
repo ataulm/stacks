@@ -1,4 +1,5 @@
 package uk.co.ataulmunim.android.stacks.fragment;
+import android.widget.RelativeLayout;
 import uk.co.ataulmunim.android.stacks.Stack;
 import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
 import uk.co.ataulmunim.android.stacks.activity.StacksActivity.UserWarnedAboutBack;
@@ -21,13 +22,9 @@ import com.nicedistractions.shortstacks.R;
 
 
 public class StackEditFragment extends ListFragment
-	implements OnStackUpdateListener, TextWatcher {
+	implements TextWatcher {
 	
 	public static final String TAG = "StackEditFragment";
-
-	public static final String[] DATES_PROJECTION = {
-		Dates._ID, Dates.STACK, Dates.DATE, Dates.ABOUT
-	};
 
 	private StacksActivity activity;
 	private StacksCursorAdapter adapter;
@@ -36,12 +33,7 @@ public class StackEditFragment extends ListFragment
     private EditText shortCodeInput;
     private EditText notesInput;
 
-	/*
-	public static StackEditFragment newInstance() {
-		return new StackEditFragment();
-    }
-	*/
-	
+
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
         Bundle savedInstanceState) {
@@ -62,20 +54,15 @@ public class StackEditFragment extends ListFragment
 		  
 		// Inflate the header and footer views
         LayoutInflater inflater = activity.getLayoutInflater();
-        LinearLayout header = (LinearLayout) inflater.inflate(
+        RelativeLayout header = (RelativeLayout) inflater.inflate(
         		R.layout.fragment_stack_edit_header,
-        		null
-        );
-        Button footer = (Button) inflater.inflate(
-        		R.layout.fragment_stack_edit_footer,
         		null
         );
         
         // Add them to the ListView - *here* these show even if list is empty
         getListView().addHeaderView(header, null, false);
-        getListView().addFooterView(footer, null, false);
+
          
-        // TODO: add listeners to all input fields
         shortCodeInput = (EditText) getView().findViewById(R.id.input_shortcode);
         notesInput = (EditText) getView().findViewById(R.id.input_notes);
         
@@ -94,13 +81,11 @@ public class StackEditFragment extends ListFragment
 					new int[] {
 						R.id.listitem_shortcode
                     }
-		);		
-		
-		setListAdapter(adapter);
-	}
-	
+		);
 
-	
+        setListAdapter(adapter);
+	}
+
 	/**
 	 * Input fields are updated to latest saved information.
 	 * Called when the edit action is pressed, or onActivityCreated
@@ -114,16 +99,7 @@ public class StackEditFragment extends ListFragment
         activity.setUserWarnedAboutBack(UserWarnedAboutBack.UNSET);
 	}
 
-
-	/**
-	 * Called when the CursorLoader in StackViewFragment has been updated.
-	 */
-	@Override
-	public void onStackUpdated() {
-		updateInputFields();
-	}
-
-	/* no op */
+    /* no op */
 	@Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
@@ -135,5 +111,11 @@ public class StackEditFragment extends ListFragment
     public void afterTextChanged(Editable s) {
         Log.d(TAG, "after text changed");
         activity.setUserWarnedAboutBack(UserWarnedAboutBack.NO);               
+    }
+
+    public void commitChanges(Stack stack) {
+        stack.setNotes(getActivity(), notesInput.getText().toString());
+        stack.setShortCode(getActivity(), shortCodeInput.getText().toString());
+        stack.notifyDatasetChanged();
     }
 }

@@ -2,6 +2,9 @@
 <resources>
     <style name="Theme.TranslucentActionBar" parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/Widget.ActionBar.Translucent</item>
+    </style>
+
+    <style name="Theme.TranslucentActionBar.Overlay" parent="Theme.TranslucentActionBar">
         <item name="android:windowActionBarOverlay">true</item>
     </style>
 </resources>

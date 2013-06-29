@@ -4,6 +4,7 @@ import uk.co.ataulmunim.android.stacks.Stack;
 import uk.co.ataulmunim.android.stacks.adapter.StacksPagerAdapter;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import uk.co.ataulmunim.android.stacks.fragment.StackEditFragment;
+import uk.co.ataulmunim.android.stacks.fragment.StackViewFragment;
 import uk.co.ataulmunim.android.view.FreezableViewPager;
 import uk.co.ataulmunim.android.widget.CroutonEx;
 
@@ -192,11 +193,7 @@ public class StacksActivity extends Activity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // TODO: save changes, update EditFragment to reflect new content
-                        CroutonEx.makeText(StacksActivity.this, "Changes saved",
-                                CroutonEx.CONFIRM, shortConfig, true).show();
-                        pager.setCurrentItem(StacksPagerAdapter.STACKS_PAGE);
-                        invalidateOptionsMenu();
+                        acceptEdits();
                     }
                 }
         );
@@ -216,6 +213,14 @@ public class StacksActivity extends Activity {
         final int matchParent = ViewGroup.LayoutParams.MATCH_PARENT;
         actionBar.setCustomView(doneDiscard, new ActionBar.LayoutParams(
                 matchParent, matchParent));
+    }
+
+    private void acceptEdits() {
+        CroutonEx.makeText(this, "Changes saved", CroutonEx.CONFIRM, shortConfig, true).show();
+        ((StackEditFragment) adapter.getItem(StacksPagerAdapter.EDIT_PAGE)).commitChanges(stack);
+
+        pager.setCurrentItem(StacksPagerAdapter.STACKS_PAGE);
+        invalidateOptionsMenu();
     }
 
     private void softDiscardChanges() {

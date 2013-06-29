@@ -18,8 +18,9 @@
 	<color name="color_three">#191919</color> <!-- darkest grey -->
 	<color name="color_two">#FFFFFF</color> <!-- white -->
     <color name="color_four">#95000000</color> <!-- 80% grey -->
+    <color name="color_five">#8FFF</color> <!-- 50% white -->
 
-    <color name="group_one">@color/color_one</color>
+    <color name="text_on_dark">@color/color_five</color>
 	<color name="group_two">@color/color_two</color>
 	<color name="group_three">@color/color_three</color>
 </resources>

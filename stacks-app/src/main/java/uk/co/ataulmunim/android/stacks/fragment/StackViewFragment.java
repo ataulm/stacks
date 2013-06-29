@@ -30,7 +30,8 @@ import com.nicedistractions.shortstacks.R;
 
 
 public class StackViewFragment extends ListFragment
-	implements LoaderManager.LoaderCallbacks<Cursor>, OnEditorActionListener, OnItemClickListener {
+	implements LoaderManager.LoaderCallbacks<Cursor>, Stack.OnStackChangedListener, OnEditorActionListener,
+        OnItemClickListener {
 	
 	public static final String TAG = "StackViewFragment";
 	public static final String HEADER_TAG = "header";
@@ -40,8 +41,8 @@ public class StackViewFragment extends ListFragment
 		Stacks._ID,	Stacks.SHORTCODE, Stacks.ACTION_ITEMS, Stacks.NOTES
 	};
 
-    private TextView shortCode;
-    private TextView notes;
+    private TextView shortCodeView;
+    private TextView notesView;
     private ImageView showMoreNotes;
     private ImageView showLessNotes;
 
@@ -92,7 +93,7 @@ public class StackViewFragment extends ListFragment
         EditText newStackInput = (EditText) inflater.inflate(R.layout.fragment_stack_view_footer, null);
 
         getListView().addHeaderView(stackInfoView, null, true);
-        getListView().addFooterView(newStackInput, null, false);
+        getListView().addFooterView(newStackInput, null, true);
 
         getListView().setSelector(R.drawable.list_selector); // TODO: we don't want header view to show selected
 
@@ -116,13 +117,15 @@ public class StackViewFragment extends ListFragment
         // Prepare the loader.  Either re-connect with an existing one, or start a new one.
         getActivity().getLoaderManager().initLoader(StacksActivity.STACKS_LOADER, null, this);
 
+        ((StacksActivity) getActivity()).getStack().addOnStackChangedListener(this);
+
         quickAddMode = true;
         newStackInput.setOnEditorActionListener(this);
 	}
 
     private void findViewsInHeader(View stackInfoView) {
-        shortCode = (TextView) stackInfoView.findViewById(R.id.short_code);
-        notes = (TextView) stackInfoView.findViewById(R.id.notes);
+        shortCodeView = (TextView) stackInfoView.findViewById(R.id.short_code);
+        notesView = (TextView) stackInfoView.findViewById(R.id.notes);
         showMoreNotes = (ImageView) stackInfoView.findViewById(R.id.show_more_indicator);
         showLessNotes = (ImageView) stackInfoView.findViewById(R.id.show_less_indicator);
     }
@@ -130,46 +133,48 @@ public class StackViewFragment extends ListFragment
 
 
 
-    private void updateHeaderView() {
+    public void updateHeaderView() {
         Stack stack = ((StacksActivity) getActivity()).getStack();
-        String notesText = stack.getNotes();
+        String notes = stack.getNotes();
+        String shortCode = stack.getShortCode();
+        int limitedLines = getResources().getInteger(R.integer.notes_line_height);
 
-        shortCode.setText(stack.getShortCode());
+        shortCodeView.setText(shortCode);
 
-        if (notesText.length() <= 0) return;
+        if (notes.length() <= 0) {
+            notesView.setVisibility(View.GONE);
+            showMoreNotes.setVisibility(View.GONE);
+            showLessNotes.setVisibility(View.GONE);
+            return;
+        }
 
-        notes.setText(stack.getNotes());
+        if (notesView.getVisibility() != View.VISIBLE) notesView.setVisibility(View.VISIBLE);
 
-        if (notes.getVisibility() != View.VISIBLE) notes.setVisibility(View.VISIBLE);
+        notesView.setText(stack.getNotes());
+        notesView.setMaxLines(limitedLines);
+        isNotesViewUnlimited = false;
+
+        if (notesView.getLineCount() > limitedLines) {
+            showMoreNotes.setVisibility(View.VISIBLE);
+            showLessNotes.setVisibility(View.GONE);
+        }
     }
 
 
     private void toggleStackInfoExpanded() {
-        Log.i(TAG, "toggleStackInfoExpanded() called");
-        Log.i(TAG, "Pre: isNotesViewUnlimited == " + isNotesViewUnlimited);
         int limitedLines = getResources().getInteger(R.integer.notes_line_height);
 
         if (!isNotesViewUnlimited) {
-            notes.setMaxLines(Integer.MAX_VALUE);
+            notesView.setMaxLines(Integer.MAX_VALUE);
             showMoreNotes.setVisibility(View.INVISIBLE);
             showLessNotes.setVisibility(View.VISIBLE);
             isNotesViewUnlimited = true;
         } else {
-            notes.setMaxLines(limitedLines);
+            notesView.setMaxLines(limitedLines);
             showMoreNotes.setVisibility(View.VISIBLE);
             showLessNotes.setVisibility(View.INVISIBLE);
             isNotesViewUnlimited = false;
         }
-        Log.i(TAG, "Post: isNotesViewUnlimited == " + isNotesViewUnlimited);
-           /*
-        LIMITED_LINES = 2;
-        maxLines is either LIMITED_LINES or INFINITY
-
-        IF no notes, or notes.lines <= LIMITED_LINES, THEN don't show any indicator
-        IF notes.lines > LIMITED_LINES &&
-            IF notes.maxLines == LIMITED_LINES, THEN display "show_more_indicator"
-            IF notes.maxLines > LIMITED_LINES, THEN display "show_less_indicator"
-         */
     }
 
 
@@ -263,16 +268,11 @@ public class StackViewFragment extends ListFragment
 	}
 	
 	// Loaders end ////////////////////////////////////////////////////////////////////////////////
-	
-	public void addOnStackUpdateListener(OnStackUpdateListener listener) {
-		if (!stackUpdateListeners.contains(listener)) {
-			stackUpdateListeners.add(listener);
-		}
-	}
 
-	public void removeOnStackUpdateListener(OnStackUpdateListener listener) {
-		if (stackUpdateListeners.contains(listener)) {
-			stackUpdateListeners.remove(listener);
-		}
-	}
+
+    @Override
+    public void onStackChanged(Stack stack) {
+        Log.d(TAG, "onStackChanged() called");
+        updateHeaderView();
+    }
 }

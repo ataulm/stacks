@@ -30,6 +30,7 @@
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
         android:paddingRight="20dp"
+        android:textColor="@color/text_on_dark"
         android:text="@string/button_discard" />
  
 </FrameLayout>

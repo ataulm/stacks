@@ -1,46 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
 
-    <!-- Shortcode -->
-    <TextView
-        android:id="@+id/label_shortcode"
+
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/label_shortcode"
-        />
+        >
 
-    <EditText
-        android:id="@+id/input_shortcode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textAutoCorrect"
-        />
+        <!-- ShortCode -->
+        <TextView
+                android:id="@+id/label_shortcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_shortcode"
+                />
 
-    <!-- Notes -->
-    <TextView
-        android:id="@+id/label_notes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_notes"
-        />
+        <EditText
+                android:id="@+id/input_shortcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label_shortcode"
+                android:inputType="textAutoCorrect"
+                />
 
-    <EditText
-        android:id="@+id/input_notes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine|textAutoCorrect"
-        />
+        <!-- Notes -->
+        <TextView
+                android:id="@+id/label_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/input_shortcode"
+                android:text="@string/label_notes"
+                />
 
-    <!-- Associated Dates -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_dates"
-        />
+        <EditText
+                android:id="@+id/input_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/label_notes"
+                android:inputType="textMultiLine|textAutoCorrect"
+                />
 
-</LinearLayout>
-
+        <!-- Associated Dates -->
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_dates"
+                android:layout_below="@id/input_notes"
+                android:visibility="gone"
+                />
+</RelativeLayout>

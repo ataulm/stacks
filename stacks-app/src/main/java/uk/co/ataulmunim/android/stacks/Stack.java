@@ -9,7 +9,9 @@ import android.util.Log;
 
 import com.nicedistractions.shortstacks.R;
 
+import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 
@@ -24,6 +26,11 @@ import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
  * Created by ataulm on 24/06/13.
  */
 public class Stack {
+    public interface OnStackChangedListener {
+        public void onStackChanged(Stack stack);
+    }
+
+
     // _ID of the root-level stack
     public static final int DEFAULT_STACK_ID = 1;
 
@@ -38,46 +45,25 @@ public class Stack {
     private long modifiedDate;
     private int position;
 
+    private ArrayList<OnStackChangedListener> onChangedListeners;
+
     private Stack(int id, long createdDate) {
         this.id = id;
         this.createdDate = createdDate;
+        onChangedListeners = new ArrayList<OnStackChangedListener>();
     }
 
     public int getId() {
         return id;
     }
 
-    public int getPosition() {
-        return position;
-    }
-
-    public int getParent() {
-        return parent;
-    }
-
     public String getShortCode() {
         return shortCode;
-    }
-
-    public long getCreatedDate() {
-        return createdDate;
-    }
-
-    public long getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public int getActionItems() {
-        return actionItems;
     }
 
     public String getNotes() {
         if (notes != null && notes.length() > 0) return notes;
         return "";
-    }
-
-    public boolean isStarred() {
-        return isStarred;
     }
 
     public static Stack getStack(Context context, int id) {
@@ -128,14 +114,31 @@ public class Stack {
         return stackUri;
     }
 
-    public static Stack setNotes(Context context, int stackId, String notes) {
+    public Stack setNotes(Context context, String notes) {
+        this.notes = notes;
         final ContentValues values = new ContentValues();
         values.put(Stacks.NOTES, notes);
 
         context.getContentResolver().update(Stacks.CONTENT_URI, values,
-                Stacks._ID + "=" + stackId, null);
+                Stacks._ID + "=" + id, null);
 
-        return getStack(context, stackId);
+        return getStack(context, id);
+    }
+
+    public Stack setShortCode(Context context, String shortCode) {
+        if (shortCode.length() > 0) {
+            this.shortCode = shortCode;
+        } else {
+            return null;
+        }
+
+        final ContentValues values = new ContentValues();
+        values.put(Stacks.SHORTCODE, shortCode);
+
+        context.getContentResolver().update(Stacks.CONTENT_URI, values,
+                Stacks._ID + "=" + id, null);
+
+        return getStack(context, id);
     }
 
     /**
@@ -149,5 +152,18 @@ public class Stack {
      */
     public static Uri createDefaultStack(Context context) {
         return add(context, "Stacks", DEFAULT_STACK_ID);
+    }
+
+    /**
+     * Call this to trigger a notification to all listeners on this object to update.
+     */
+    public void notifyDatasetChanged() {
+        for (OnStackChangedListener listener:onChangedListeners) {
+            listener.onStackChanged(this);
+        }
+    }
+
+    public void addOnStackChangedListener(OnStackChangedListener listener) {
+        if (!onChangedListeners.contains(listener)) onChangedListeners.add(listener);
     }
 }

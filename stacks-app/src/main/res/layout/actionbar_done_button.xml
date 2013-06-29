@@ -30,5 +30,6 @@
         android:drawableLeft="@drawable/ic_action_done"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
+        android:textColor="@color/text_on_dark"
         android:text="@string/button_done" />
 </FrameLayout>
