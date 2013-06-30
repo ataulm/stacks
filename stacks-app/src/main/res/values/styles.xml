@@ -3,7 +3,7 @@
 <resources>
 
     <style name="Widget.ActionBar.Translucent" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/color_four</item>
+        <item name="android:background">@color/color_4</item>
     </style>
 
 </resources>

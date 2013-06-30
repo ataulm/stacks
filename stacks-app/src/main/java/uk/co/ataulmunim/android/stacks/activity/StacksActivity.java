@@ -1,10 +1,9 @@
 package uk.co.ataulmunim.android.stacks.activity;
 
+import android.widget.FrameLayout;
 import uk.co.ataulmunim.android.stacks.Stack;
 import uk.co.ataulmunim.android.stacks.adapter.StacksPagerAdapter;
-import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import uk.co.ataulmunim.android.stacks.fragment.StackEditFragment;
-import uk.co.ataulmunim.android.stacks.fragment.StackViewFragment;
 import uk.co.ataulmunim.android.view.FreezableViewPager;
 import uk.co.ataulmunim.android.widget.CroutonEx;
 
@@ -35,20 +34,8 @@ public class StacksActivity extends Activity {
         YES, NO, UNSET
     }
 
-    ;
 
     public static final int STACKS_LOADER = 0;
-
-    private static final Configuration shortConfig;
-    private static final Style what;
-
-    static {
-        shortConfig = new Configuration.Builder()
-                .setDuration(Configuration.DURATION_SHORT).build();
-        what = new Style.Builder(Style.INFO)
-                .setHeight(48) // TODO: use a dimen resource
-                .build();
-    }
 
     private StacksPagerAdapter adapter;
     private FreezableViewPager pager;
@@ -134,8 +121,7 @@ public class StacksActivity extends Activity {
                 && userWarned == UserWarnedAboutBack.YES) {
 
             Crouton.clearCroutonsForActivity(this);
-            CroutonEx.makeText(this, R.string.unsaved_changes, what,
-                    shortConfig, true).show();
+            CroutonEx.makeText(this, R.string.unsaved_changes, CroutonEx.INFO).show();
             softDiscardChanges();
             userWarned = UserWarnedAboutBack.NO;
 
@@ -143,8 +129,7 @@ public class StacksActivity extends Activity {
                 && userWarned == UserWarnedAboutBack.NO) {
 
             Crouton.clearCroutonsForActivity(this);
-            CroutonEx.makeText(this, R.string.warn_unsaved_changes, CroutonEx.WARN,
-                    shortConfig, true).show();
+            CroutonEx.makeText(this, R.string.warn_unsaved_changes, CroutonEx.WARN).show();
             userWarned = UserWarnedAboutBack.YES;
 
         } else if (pager.getCurrentItem() == StacksPagerAdapter.EDIT_PAGE
@@ -216,7 +201,8 @@ public class StacksActivity extends Activity {
     }
 
     private void acceptEdits() {
-        CroutonEx.makeText(this, "Changes saved", CroutonEx.CONFIRM, shortConfig, true).show();
+        CroutonEx.makeText(this, "Changes saved", CroutonEx.CONFIRM).show();
+
         ((StackEditFragment) adapter.getItem(StacksPagerAdapter.EDIT_PAGE)).commitChanges(stack);
 
         pager.setCurrentItem(StacksPagerAdapter.STACKS_PAGE);

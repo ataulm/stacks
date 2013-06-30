@@ -1,7 +1,10 @@
 package uk.co.ataulmunim.android.widget;
 
 import android.app.Activity;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import com.nicedistractions.shortstacks.R;
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -30,22 +33,36 @@ public class CroutonEx {
     public static final Style WARN;
     /** Default style for general information. */
     public static final Style INFO;
+
+    public static final Configuration SHORT_CONFIG;
     
     static {
-      ALERT = new Style.Builder()
-        .setBackgroundColorValue(holoRedLight)
-        .build();
-      CONFIRM = new Style.Builder()
-        .setBackgroundColorValue(holoGreenLight)
-        .build();
-      WARN = new Style.Builder()
-        .setBackgroundColorValue(holoOrangeLight)
-        .build();
-      INFO = new Style.Builder()
-        .setBackgroundColorValue(holoBlueLight)
-        .build();
+        ALERT = new Style.Builder()
+                .setBackgroundColorValue(holoRedLight)
+                .build();
+        CONFIRM = new Style.Builder()
+                .setBackgroundColorValue(holoGreenLight)
+                .build();
+        WARN = new Style.Builder()
+                .setBackgroundColorValue(holoOrangeLight)
+                .build();
+        INFO = new Style.Builder()
+                .setBackgroundColorValue(holoBlueLight)
+                .setHeightDimensionResId(R.dimen.actionbar_height)
+                .setGravity(Gravity.CENTER_HORIZONTAL)
+                .build();
+
+        SHORT_CONFIG = new Configuration.Builder().setDuration(Configuration.DURATION_SHORT).build();
     }
-    
+
+    public static Crouton makeText(Activity activity, int textResource, Style style) {
+        return makeText(activity, textResource, style, SHORT_CONFIG, true);
+    }
+
+    public static Crouton makeText(Activity activity, CharSequence text, Style style) {
+        return makeText(activity, text, style, SHORT_CONFIG, true);
+    }
+
     /**
      * Returns a {@link Crouton} specifying text, style and configuration.
      * 
@@ -56,25 +73,25 @@ public class CroutonEx {
      * @param dismissOnClick
      * @return
      */
-    public static Crouton makeText(Activity activity, CharSequence text,
-            Style style, Configuration configuration, boolean dismissOnClick) {
-        
+    public static Crouton makeText(Activity activity, CharSequence text, Style style, Configuration configuration,
+            boolean dismissOnClick) {
+
         Crouton crouton = Crouton.makeText(activity, text, style);
-        crouton.setConfiguration(configuration);        
+        crouton.setConfiguration(configuration);
         if (dismissOnClick) makeDismissOnClick(crouton);
-        
+
         return crouton;
     }
-    
-    public static Crouton makeText(Activity activity, int textResource,
-            Style style, Configuration configuration, boolean dismissOnClick) {
+
+    public static Crouton makeText(Activity activity, int textResource, Style style, Configuration configuration,
+            boolean dismissOnClick) {
         Crouton crouton = Crouton.makeText(activity, textResource, style);
         crouton.setConfiguration(configuration);        
         if (dismissOnClick) makeDismissOnClick(crouton);
         
         return crouton;
     }
-    
+
     /**
      * Adds an onClickListener to dismiss the {@link Crouton} immediately.
      * 
@@ -89,6 +106,4 @@ public class CroutonEx {
             }
         });
     }
-    
-
 }

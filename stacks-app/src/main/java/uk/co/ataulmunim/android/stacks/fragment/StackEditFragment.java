@@ -27,7 +27,6 @@ public class StackEditFragment extends ListFragment
 	public static final String TAG = "StackEditFragment";
 
 	private StacksActivity activity;
-	private StacksCursorAdapter adapter;
 
 
     private EditText shortCodeInput;
@@ -71,19 +70,6 @@ public class StackEditFragment extends ListFragment
         
         // FIXME: this destroys user progress on orientation change
         updateInputFields();
-
-		// Create an empty adapter we will use to display the loaded data.
-		adapter = new StacksCursorAdapter(
-		            activity,
-					R.layout.list_item_stacks,
-					null,
-					new String[] {Stacks.SHORTCODE},
-					new int[] {
-						R.id.listitem_shortcode
-                    }
-		);
-
-        setListAdapter(adapter);
 	}
 
 	/**

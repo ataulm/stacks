@@ -11,6 +11,9 @@
 	<string name="button_add">Add</string>
 	<string name="hint_add">Add an item</string>
 	<string name="unsaved_changes">Changes were not saved</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_move">Move</string>
+    <string name="menu_delete">Delete</string>
 	
 	<!-- StackEditFragment -->
 	<string name="button_discard">Discard</string>

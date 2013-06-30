@@ -1,7 +1,6 @@
 package uk.co.ataulmunim.android.stacks.fragment;
 
-import java.util.ArrayList;
-
+import android.view.*;
 import android.widget.*;
 import uk.co.ataulmunim.android.stacks.Stack;
 import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
@@ -9,6 +8,8 @@ import uk.co.ataulmunim.android.stacks.adapter.StacksCursorAdapter;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import android.app.Activity;
 import android.app.ListFragment;
+
+
 import android.content.ContentUris;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -18,20 +19,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.LoaderManager;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.nicedistractions.shortstacks.R;
+import uk.co.ataulmunim.android.widget.CroutonEx;
 
 
 public class StackViewFragment extends ListFragment
 	implements LoaderManager.LoaderCallbacks<Cursor>, Stack.OnStackChangedListener, OnEditorActionListener,
-        OnItemClickListener {
+        OnItemClickListener, View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 	
 	public static final String TAG = "StackViewFragment";
 	public static final String HEADER_TAG = "header";
@@ -45,6 +44,11 @@ public class StackViewFragment extends ListFragment
     private TextView notesView;
     private ImageView showMoreNotes;
     private ImageView showLessNotes;
+
+    /**
+     * When user presses the context menu overflow button, the list item position is stored here
+     */
+    private int itemClickedForPopupMenu;
 
 	/**
 	 * Determines whether or not to close the soft input keyboard when adding Stacks to the list.
@@ -61,9 +65,6 @@ public class StackViewFragment extends ListFragment
 
 	private StacksCursorAdapter adapter;
 	private int stackId = Stacks.ROOT_STACK_ID; // id of the current stack in the Stacks table
-
-	// List of objects wanting notification when STACKS_LOADER loader updates
-	private ArrayList<OnStackUpdateListener> stackUpdateListeners;
 
 	// Indicates whether the Stack Info view (header) is expanded
 	private boolean isNotesViewUnlimited;
@@ -100,15 +101,14 @@ public class StackViewFragment extends ListFragment
 
         stackId = ((StacksActivity) getActivity()).getStackId();
 		
-		stackUpdateListeners = new ArrayList<OnStackUpdateListener>();
-		
 		// Create an empty adapter we will use to display the loaded data.
 		adapter = new StacksCursorAdapter(
-					getActivity(),
-					R.layout.list_item_stacks,
-					null,
-					new String[] {Stacks.SHORTCODE},
-					new int[] { R.id.listitem_shortcode}
+                getActivity(),
+                R.layout.list_item_stacks,
+                null,
+                new String[] {Stacks.SHORTCODE},
+                new int[] { R.id.listitem_shortcode},
+                this
 	    );
         setListAdapter(adapter);
         getListView().setOnItemClickListener(this);
@@ -121,7 +121,16 @@ public class StackViewFragment extends ListFragment
 
         quickAddMode = true;
         newStackInput.setOnEditorActionListener(this);
+
+        registerForContextMenu(getListView());
 	}
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.menu_stackview_listitem, menu);
+    }
 
     private void findViewsInHeader(View stackInfoView) {
         shortCodeView = (TextView) stackInfoView.findViewById(R.id.short_code);
@@ -274,5 +283,41 @@ public class StackViewFragment extends ListFragment
     public void onStackChanged(Stack stack) {
         Log.d(TAG, "onStackChanged() called");
         updateHeaderView();
+    }
+
+    @Override
+    public void onClick(View v) {
+        Log.d(TAG, "mini overflow clicked");
+        itemClickedForPopupMenu = (Integer) v.getTag(R.id.tag_stack_position);
+
+        PopupMenu popup = new PopupMenu(getActivity(), v);
+        popup.setOnMenuItemClickListener(this);
+        popup.inflate(R.menu.menu_stackview_listitem);
+        popup.show();
+    }
+
+
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        // getListAdapter().getItem(itemClickedForPopupMenu);
+
+        switch (item.getItemId()) {
+            case R.id.edit:
+                showCrouton("Edit pressed");
+                return true;
+            case R.id.delete:
+                showCrouton("Delete pressed");
+                return true;
+            case R.id.move:
+                showCrouton("Move pressed");
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private void showCrouton(String message) {
+        CroutonEx.makeText(getActivity(), message, CroutonEx.INFO).show();
     }
 }

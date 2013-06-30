@@ -1,5 +1,6 @@
 package uk.co.ataulmunim.android.stacks.adapter;
 
+import android.widget.ImageView;
 import com.nicedistractions.shortstacks.R;
 
 import android.content.Context;
@@ -8,13 +9,16 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
+import uk.co.ataulmunim.android.stacks.fragment.StackViewFragment;
 
 
 public class StacksCursorAdapter extends SimpleCursorAdapter {
 
 	public static final String TAG = "StacksCursorAdapter";
-	
-	/**
+    private final View.OnClickListener listener;
+
+    /**
 	 * Standard constructor, with additional flag (0) for no requery.
 	 * 
 	 * @param context
@@ -22,15 +26,15 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 	 * @param c
 	 * @param from
 	 * @param to
-	 * @param flag to register content observer
 	 */
-	public StacksCursorAdapter(Context context, int layout, Cursor c, String[] from, int[] to) {
+	public StacksCursorAdapter(Context context, int layout, Cursor c, String[] from, int[] to,
+            StackViewFragment listener) {
 		super(context, layout, c, from, to, 0);
+        this.listener = listener;
 	}
 	
 	/**
 	 * Get a View that displays the data at the specified position in the data set.
-	 * In this override, the 
 	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -40,8 +44,11 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 		if (holder == null) {
 			holder = new ViewHolder(row);
 			row.setTag(holder);
+            holder.miniOverflow.setOnClickListener(listener);
 		}
-		
+        holder.miniOverflow.setTag(R.id.tag_stack_position, position);
+
+
 		return row;
 	}
 	
@@ -58,11 +65,10 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
      *
      */
     class ViewHolder {
-    	TextView actionItems = null;
+    	ImageView miniOverflow = null;
     	
     	ViewHolder(View row) {
-//    		this.actionItems = (TextView) row.findViewById(
-//    				R.id.listitem_actionable_items);
+    		miniOverflow = (ImageView) row.findViewById(R.id.moreoverflow_btn);
     	}
     }
 }

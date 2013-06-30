@@ -14,13 +14,31 @@
     	and edittexts can share color groups, e.g. group_one. When you want to change
 
      -->
-	<color name="color_one">#212121</color> <!-- dark grey -->
-	<color name="color_three">#191919</color> <!-- darkest grey -->
-	<color name="color_two">#FFFFFF</color> <!-- white -->
-    <color name="color_four">#95000000</color> <!-- 80% grey -->
-    <color name="color_five">#8FFF</color> <!-- 50% white -->
+	<color name="color_1">#212121</color> <!-- dark grey -->
+    <color name="color_2">#FFFFFF</color> <!-- white -->
+    <color name="color_3">#191919</color> <!-- darkest grey -->
+    <color name="color_4">#95000000</color> <!-- 80% grey -->
+    <color name="color_5">#8FFF</color> <!-- 50% white -->
 
-    <color name="text_on_dark">@color/color_five</color>
-	<color name="group_two">@color/color_two</color>
-	<color name="group_three">@color/color_three</color>
+    <color name="color_6">#ff4444</color> <!-- holo red light -->
+    <color name="color_7">#99cc00</color> <!-- holo green light -->
+    <color name="color_8">#33b5e5</color> <!-- holo blue light  -->
+    <color name="color_9">#ffbb33</color> <!-- holo orange light -->
+
+    <color name="color_10">#cc0000</color> <!-- holo red dark -->
+    <color name="color_11">#669900</color> <!-- holo green dark -->
+    <color name="color_12">#0099cc</color> <!-- holo blue dark -->
+    <color name="color_13">#ff8800</color> <!-- holo orange dark -->
+
+
+
+    <color name="text_on_dark">@color/color_5</color>
+
+    <color name="crouton_warning">@color/color_9</color>
+    <color name="crouton_error">@color/color_10</color>
+    <color name="crouton_info">@color/color_8</color>
+
+
+	<color name="group_two">@color/color_2</color>
+	<color name="group_three">@color/color_3</color>
 </resources>
