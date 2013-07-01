@@ -39,11 +39,13 @@ public class StackViewFragment extends ListFragment
 	public static final String[] STACKS_PROJECTION = {
 		Stacks._ID,	Stacks.SHORTCODE, Stacks.ACTION_ITEMS, Stacks.NOTES
 	};
+    public static final String NEW_STACK_INPUT = "NEW_STACK_INPUT";
 
     private TextView shortCodeView;
     private TextView notesView;
     private ImageView showMoreNotes;
     private ImageView showLessNotes;
+    private EditText newStackInput;
 
     /**
      * When user presses the context menu overflow button, the list item position is stored here
@@ -91,7 +93,10 @@ public class StackViewFragment extends ListFragment
         findViewsInHeader(stackInfoView);
         updateHeaderView();
 
-        EditText newStackInput = (EditText) inflater.inflate(R.layout.fragment_stack_view_footer, null);
+        newStackInput = (EditText) inflater.inflate(R.layout.fragment_stack_view_footer, null);
+        if (savedInstanceState != null) {
+            newStackInput.setText(savedInstanceState.getString(NEW_STACK_INPUT));
+        }
 
         getListView().addHeaderView(stackInfoView, null, true);
         getListView().addFooterView(newStackInput, null, true);
@@ -167,6 +172,13 @@ public class StackViewFragment extends ListFragment
             showMoreNotes.setVisibility(View.VISIBLE);
             showLessNotes.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(NEW_STACK_INPUT, newStackInput.getText().toString());
+
+        super.onSaveInstanceState(outState);
     }
 
 
