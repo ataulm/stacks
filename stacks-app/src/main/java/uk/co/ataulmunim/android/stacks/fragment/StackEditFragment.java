@@ -24,7 +24,7 @@ import com.nicedistractions.shortstacks.R;
 public class StackEditFragment extends ListFragment
 	implements TextWatcher {
 	
-	public static final String TAG = "StackEditFragment";
+	public static final String TAG = StackEditFragment.class.getSimpleName();
 
 	private StacksActivity activity;
 

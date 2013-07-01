@@ -15,6 +15,8 @@ import de.keyboardsurfer.android.widget.crouton.Style;
  * @author ataulm
  */
 public class CroutonEx {
+    private static final String TAG = CroutonEx.class.getSimpleName();
+
     public static final int holoRedLight = 0xffff4444;
     public static final int holoGreenLight = 0xff99cc00;
     public static final int holoBlueLight = 0xff33b5e5;

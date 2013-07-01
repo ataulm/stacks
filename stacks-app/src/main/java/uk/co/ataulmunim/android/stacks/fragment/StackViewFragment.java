@@ -32,7 +32,7 @@ public class StackViewFragment extends ListFragment
 	implements LoaderManager.LoaderCallbacks<Cursor>, Stack.OnStackChangedListener, OnEditorActionListener,
         OnItemClickListener, View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 	
-	public static final String TAG = "StackViewFragment";
+	public static final String TAG = StackViewFragment.class.getSimpleName();
 	public static final String HEADER_TAG = "header";
     public static final String FOOTER_TAG= "footer";
 	

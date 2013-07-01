@@ -19,7 +19,7 @@ import com.nicedistractions.shortstacks.R;
 public class WelcomeActivity extends Activity implements
 		LoaderManager.LoaderCallbacks<SharedPreferences> {
 	
-	public static final String LOG_TAG = "WelcomeActivity";
+	public static final String LOG_TAG = WelcomeActivity.class.getSimpleName();
 	public static final String PREFS_ROOT_CREATED = "rootCreated";
 
 	@Override

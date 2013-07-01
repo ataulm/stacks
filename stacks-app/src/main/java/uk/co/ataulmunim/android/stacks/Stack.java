@@ -34,7 +34,7 @@ public class Stack {
     // _ID of the root-level stack
     public static final int DEFAULT_STACK_ID = 1;
 
-    private static final String TAG = "STACK";
+    private static final String TAG = Stack.class.getSimpleName();
     private final int id;
     private int parent;
     private String shortCode;

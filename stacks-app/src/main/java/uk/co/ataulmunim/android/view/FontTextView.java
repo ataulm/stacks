@@ -62,6 +62,7 @@ public class FontTextView extends TextView {
  *
  */
 class TypefaceLoader {
+    private static final String TAG = TypefaceLoader.class.getSimpleName();
 	public static final int ROBOTO_LIGHT = 0;
 	public static final int ROBOTO_THIN = 1;
 		

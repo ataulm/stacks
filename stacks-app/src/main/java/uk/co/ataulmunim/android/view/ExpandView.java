@@ -15,7 +15,7 @@ import android.widget.FrameLayout;
 public class ExpandView extends FrameLayout implements OnClickListener,
 		OnGlobalLayoutListener {
 	
-	public static final String TAG = "ExpandView";
+	public static final String TAG = ExpandView.class.getSimpleName();
 	public static final String PRIMARY_TAG = "expandinglayout.primary";
 	public static final String SECONDARY_TAG = "expandinglayout.secondary";
 	

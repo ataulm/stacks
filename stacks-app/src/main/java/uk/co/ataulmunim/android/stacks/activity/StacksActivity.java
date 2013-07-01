@@ -27,7 +27,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 
 
 public class StacksActivity extends Activity {
-    public static final String TAG = "StacksActivity";
+    public static final String TAG = StacksActivity.class.getSimpleName();
 
     /* "Press back to lose unsaved changes" */
     public enum UserWarnedAboutBack {

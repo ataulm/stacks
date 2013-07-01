@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 public class FreezableViewPager extends ViewPager {
+    private static final String TAG = FreezableViewPager.class.getSimpleName();
 
 	private boolean isFrozen;
 	
