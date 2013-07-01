@@ -1,44 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 
-    
-    	Color management is as follows: the top of the file will list a set of colors,
-    	unimaginatively named as `color_<number>`, with an inline comment describing
-    	said color. The values here will be hex colors.
-    	
-    	Underneath this set of colors, will be a set of color groups, named with
-    	`group_<number>`. The values here will be references to color resources which
-    	were defined above.
-    	
-    	In this way, different types of elements will share groups, e.g. all textviews
-    	and edittexts can share color groups, e.g. group_one. When you want to change
+    <!-- Color Palette - Generic -->
+	<color name="dark_grey">#212121</color>
+    <color name="white">#FFFFFF</color>
+    <color name="super_dark_grey">#191919</color>
+    <color name="black_alpha_80">#95000000</color>
+    <color name="white_alpha_50">#8FFF</color>
 
-     -->
-	<color name="color_1">#212121</color> <!-- dark grey -->
-    <color name="color_2">#FFFFFF</color> <!-- white -->
-    <color name="color_3">#191919</color> <!-- darkest grey -->
-    <color name="color_4">#95000000</color> <!-- 80% grey -->
-    <color name="color_5">#8FFF</color> <!-- 50% white -->
+    <!-- Color Palette - HOLO colours -->
+    <color name="holo_red_light">#ff4444</color>
+    <color name="holo_green_light">#99cc00</color>
+    <color name="holo_blue_light">#33b5e5</color>
+    <color name="holo_orange_light">#ffbb33</color>
+    <color name="holo_red_dark">#cc0000</color>
+    <color name="holo_green_dark">#669900</color>
+    <color name="holo_blue_dark">#0099cc</color>
+    <color name="holo_orange_dark">#ff8800</color>
 
-    <color name="color_6">#ff4444</color> <!-- holo red light -->
-    <color name="color_7">#99cc00</color> <!-- holo green light -->
-    <color name="color_8">#33b5e5</color> <!-- holo blue light  -->
-    <color name="color_9">#ffbb33</color> <!-- holo orange light -->
+    <!-- Use these when assigning to an element or style -->
+    <color name="text_on_dark">@color/white_alpha_50</color>
 
-    <color name="color_10">#cc0000</color> <!-- holo red dark -->
-    <color name="color_11">#669900</color> <!-- holo green dark -->
-    <color name="color_12">#0099cc</color> <!-- holo blue dark -->
-    <color name="color_13">#ff8800</color> <!-- holo orange dark -->
+    <color name="crouton_warning">@color/holo_orange_light</color>
+    <color name="crouton_error">@color/holo_red_dark</color>
+    <color name="crouton_info">@color/holo_blue_light</color>
 
 
-
-    <color name="text_on_dark">@color/color_5</color>
-
-    <color name="crouton_warning">@color/color_9</color>
-    <color name="crouton_error">@color/color_10</color>
-    <color name="crouton_info">@color/color_8</color>
-
-
-	<color name="group_two">@color/color_2</color>
-	<color name="group_three">@color/color_3</color>
+	<color name="group_two">@color/white</color>
+	<color name="group_three">@color/super_dark_grey</color>
 </resources>
