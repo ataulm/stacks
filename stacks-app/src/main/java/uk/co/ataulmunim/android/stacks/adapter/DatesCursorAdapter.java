@@ -22,7 +22,7 @@ import android.widget.TextView;
  */
 public class DatesCursorAdapter extends SimpleCursorAdapter {
 
-	public static final String TAG = "DatesCursorAdapter";
+	public static final String TAG = DatesCursorAdapter.class.getSimpleName();
 	
 	/**
 	 * Standard constructor, with additional flag for no requery.

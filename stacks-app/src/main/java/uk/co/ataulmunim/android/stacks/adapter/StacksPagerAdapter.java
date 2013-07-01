@@ -10,7 +10,7 @@ import android.util.Log;
 
 public class StacksPagerAdapter extends FragmentPagerAdapter{
 
-	public static final String LOG_TAG = "StacksPagerAdapter";
+	public static final String TAG = StacksPagerAdapter.class.getSimpleName();
 
 	public static final int STACKS_PAGE = 0;
 	public static final int EDIT_PAGE = 1;
@@ -27,7 +27,7 @@ public class StacksPagerAdapter extends FragmentPagerAdapter{
 	 */
 	@Override
 	public Fragment getItem(int position) {
-		Log.d(LOG_TAG, "Pager requested page: " + position);
+		Log.d(TAG, "Pager requested page: " + position);
 		return content[position % content.length];
 	}
 

@@ -15,7 +15,7 @@ import uk.co.ataulmunim.android.stacks.fragment.StackViewFragment;
 
 public class StacksCursorAdapter extends SimpleCursorAdapter {
 
-	public static final String TAG = "StacksCursorAdapter";
+	public static final String TAG = StacksCursorAdapter.class.getSimpleName();
     private final View.OnClickListener listener;
 
     /**

@@ -1,12 +1,9 @@
 package uk.co.ataulmunim.android.stacks.fragment;
-import android.widget.RelativeLayout;
+import android.app.Fragment;
 import uk.co.ataulmunim.android.stacks.Stack;
 import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
 import uk.co.ataulmunim.android.stacks.activity.StacksActivity.UserWarnedAboutBack;
-import uk.co.ataulmunim.android.stacks.adapter.StacksCursorAdapter;
-import uk.co.ataulmunim.android.stacks.contentprovider.Dates;
-import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
-import android.app.ListFragment;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,34 +11,27 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.nicedistractions.shortstacks.R;
 
 
-public class StackEditFragment extends ListFragment
-	implements TextWatcher {
+public class StackEditFragment extends Fragment implements TextWatcher {
 	
 	public static final String TAG = StackEditFragment.class.getSimpleName();
 
 	private StacksActivity activity;
-
 
     private EditText shortCodeInput;
     private EditText notesInput;
 
 
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, 
-        Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_stack_edit, container, false);
     }
-	
-	
-	
+
 	/**
 	 * Called after onCreateView(), after the parent activity is created
 	 */
@@ -51,18 +41,7 @@ public class StackEditFragment extends ListFragment
 		
 		activity = (StacksActivity) getActivity();
 		  
-		// Inflate the header and footer views
-        LayoutInflater inflater = activity.getLayoutInflater();
-        RelativeLayout header = (RelativeLayout) inflater.inflate(
-        		R.layout.fragment_stack_edit_header,
-        		null
-        );
-        
-        // Add them to the ListView - *here* these show even if list is empty
-        getListView().addHeaderView(header, null, false);
-
-         
-        shortCodeInput = (EditText) getView().findViewById(R.id.input_shortcode);
+		shortCodeInput = (EditText) getView().findViewById(R.id.input_shortcode);
         notesInput = (EditText) getView().findViewById(R.id.input_notes);
         
         shortCodeInput.addTextChangedListener(this);
