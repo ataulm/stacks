@@ -17,6 +17,6 @@
 
     <item android:id="@+id/ab_menu_edit"
         android:icon="@drawable/ic_action_edit_black"
-        android:showAsAction="never"
+        android:showAsAction="ifRoom"
         android:title="@string/ab_menu_edit" />
 </menu>

@@ -50,8 +50,9 @@ public class CroutonEx {
                 .build();
         INFO = new Style.Builder()
                 .setBackgroundColorValue(holoBlueLight)
-                .setHeightDimensionResId(R.dimen.actionbar_height)
-                .setGravity(Gravity.CENTER_HORIZONTAL)
+                .setGravity(Gravity.CENTER)
+                .setWidth(500)
+                //.setHeightDimensionResId(R.dimen.actionbar_height)
                 .build();
 
         SHORT_CONFIG = new Configuration.Builder().setDuration(Configuration.DURATION_SHORT).build();
