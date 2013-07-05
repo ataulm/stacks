@@ -1,6 +1,5 @@
 package uk.co.ataulmunim.android.stacks;
 
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,14 +10,13 @@ import com.nicedistractions.shortstacks.R;
 
 import java.util.ArrayList;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 
 /**
  * A Stack represents a list or listitem (a node in the tree) in Stacks.
  *
- * Every Stack has a shortcode (title/label), and a parent (represented by its integer id in the
+ * Every Stack has a name (title/label), and a parent (represented by its integer id in the
  * database).
  *
  * Stacks may also contain multiline notes.
@@ -37,7 +35,7 @@ public class Stack {
     private static final String TAG = Stack.class.getSimpleName();
     private final int id;
     private int parent;
-    private String shortCode;
+    private String stackName;
     private String notes;
     private boolean isStarred;
     private int actionItems;
@@ -57,8 +55,8 @@ public class Stack {
         return id;
     }
 
-    public String getShortCode() {
-        return shortCode;
+    public String getStackName() {
+        return stackName;
     }
 
     public String getNotes() {
@@ -71,7 +69,7 @@ public class Stack {
         Cursor result = context.getContentResolver().query(
                 Stacks.CONTENT_URI,
                 new String[]{ Stacks.PARENT, Stacks.CREATED_DATE, Stacks.MODIFIED_DATE,
-                        Stacks.ACTION_ITEMS, Stacks.SHORTCODE, Stacks.NOTES, Stacks.PARENT,
+                        Stacks.ACTION_ITEMS, Stacks.STACK_NAME, Stacks.NOTES, Stacks.PARENT,
                         Stacks.STARRED},
                 Stacks._ID + "=" + id,
                 null,
@@ -82,7 +80,7 @@ public class Stack {
         result.moveToFirst();
 
         Stack stack = new Stack(id, result.getLong(result.getColumnIndex(Stacks.CREATED_DATE)));
-        stack.shortCode = result.getString(result.getColumnIndex(Stacks.SHORTCODE));
+        stack.stackName = result.getString(result.getColumnIndex(Stacks.STACK_NAME));
         stack.parent = result.getInt(result.getColumnIndex(Stacks.PARENT));
         stack.notes = result.getString(result.getColumnIndex(Stacks.NOTES));
         stack.isStarred = result.getInt(result.getColumnIndex(Stacks.STARRED)) == 1 ? true :false;
@@ -96,14 +94,14 @@ public class Stack {
      * Inserts a new Stack into the database.
      *
      * @param context the Activity
-     * @param shortCode
+     * @param stackName
      * @param parent
      * @return stackUri the Uri of the added Stack, or null if the insert failed
      */
-    public static Uri add(Context context, String shortCode, int parent) {
+    public static Uri add(Context context, String stackName, int parent) {
         final ContentValues values = new ContentValues();
         values.put(Stacks.UUID, UUID.randomUUID().toString());
-        values.put(Stacks.SHORTCODE, shortCode);
+        values.put(Stacks.STACK_NAME, stackName);
         values.put(Stacks.PARENT, parent);
 
         final Uri stackUri = context.getContentResolver().insert(Stacks.CONTENT_URI, values);
@@ -125,15 +123,15 @@ public class Stack {
         return getStack(context, id);
     }
 
-    public Stack setShortCode(Context context, String shortCode) {
-        if (shortCode.length() > 0) {
-            this.shortCode = shortCode;
+    public Stack setStackName(Context context, String stackName) {
+        if (stackName.length() > 0) {
+            this.stackName = stackName;
         } else {
             return null;
         }
 
         final ContentValues values = new ContentValues();
-        values.put(Stacks.SHORTCODE, shortCode);
+        values.put(Stacks.STACK_NAME, stackName);
 
         context.getContentResolver().update(Stacks.CONTENT_URI, values,
                 Stacks._ID + "=" + id, null);

@@ -22,7 +22,7 @@ public class StackEditFragment extends Fragment implements TextWatcher {
 
 	private StacksActivity activity;
 
-    private EditText shortCodeInput;
+    private EditText stackNameInput;
     private EditText notesInput;
 
 
@@ -41,10 +41,10 @@ public class StackEditFragment extends Fragment implements TextWatcher {
 		
 		activity = (StacksActivity) getActivity();
 		  
-		shortCodeInput = (EditText) getView().findViewById(R.id.input_shortcode);
+	    stackNameInput = (EditText) getView().findViewById(R.id.input_stackname);
         notesInput = (EditText) getView().findViewById(R.id.input_notes);
         
-        shortCodeInput.addTextChangedListener(this);
+        stackNameInput.addTextChangedListener(this);
         notesInput.addTextChangedListener(this);
         
         // FIXME: this destroys user progress on orientation change
@@ -57,7 +57,7 @@ public class StackEditFragment extends Fragment implements TextWatcher {
 	 */
 	public void updateInputFields() {
 	    Stack stack = activity.getStack();
-        shortCodeInput.setText(stack.getShortCode());
+        stackNameInput.setText(stack.getStackName());
         notesInput.setText(stack.getNotes());
         
         // Reset this after updates to counteract TextWatcher
@@ -80,7 +80,7 @@ public class StackEditFragment extends Fragment implements TextWatcher {
 
     public void commitChanges(Stack stack) {
         stack.setNotes(getActivity(), notesInput.getText().toString());
-        stack.setShortCode(getActivity(), shortCodeInput.getText().toString());
+        stack.setStackName(getActivity(), stackNameInput.getText().toString());
         stack.notifyDatasetChanged();
     }
 }

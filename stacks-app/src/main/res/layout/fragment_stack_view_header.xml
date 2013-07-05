@@ -6,9 +6,9 @@
         android:paddingBottom="16dp"
         >
 
-    <!-- ShortCode -->
+    <!-- StackName -->
     <TextView
-            android:id="@+id/short_code"
+            android:id="@+id/stack_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -22,7 +22,7 @@
             android:id="@+id/notes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/short_code"
+            android:layout_below="@id/stack_name"
             android:maxLines="@integer/notes_line_height"
             android:ellipsize="end"
             android:text="@string/lorem_paragraph"
@@ -32,6 +32,18 @@
     <ImageView
             android:id="@+id/show_more_indicator"
             android:src="@drawable/ic_menu_expander_minimized_black"
+            android:alpha="0.4"
+            android:layout_below="@id/notes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:visibility="invisible"
+            />
+
+    <ImageView
+            android:id="@+id/show_more_indicator"
+            android:src="@drawable/ic_menu_expander_flat_black"
             android:alpha="0.4"
             android:layout_below="@id/notes"
             android:layout_width="wrap_content"

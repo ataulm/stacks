@@ -18,7 +18,7 @@
 	<!-- StackEditFragment -->
 	<string name="button_discard">Discard</string>
     <string name="button_done">Done</string>    
-	<string name="label_shortcode">Shortcode</string>
+	<string name="label_stackname">Stack Name</string>
 	<string name="label_notes">Notes</string>
 	<string name="label_dates">Associated Dates</string>
 	<string name="button_add_date">Add date</string>

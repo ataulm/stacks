@@ -34,14 +34,13 @@ public class StackViewFragment extends ListFragment
 	
 	public static final String TAG = StackViewFragment.class.getSimpleName();
 	public static final String HEADER_TAG = "header";
-    public static final String FOOTER_TAG= "footer";
 	
 	public static final String[] STACKS_PROJECTION = {
-		Stacks._ID,	Stacks.SHORTCODE, Stacks.ACTION_ITEMS, Stacks.NOTES
+		Stacks._ID,	Stacks.STACK_NAME, Stacks.ACTION_ITEMS, Stacks.NOTES
 	};
     public static final String NEW_STACK_INPUT = "NEW_STACK_INPUT";
 
-    private TextView shortCodeView;
+    private TextView stackNameView;
     private TextView notesView;
     private ImageView showMoreNotes;
     private ImageView showLessNotes;
@@ -111,8 +110,8 @@ public class StackViewFragment extends ListFragment
                 getActivity(),
                 R.layout.list_item_stacks,
                 null,
-                new String[] {Stacks.SHORTCODE},
-                new int[] { R.id.listitem_shortcode},
+                new String[] {Stacks.STACK_NAME},
+                new int[] { R.id.listitem_stackname},
                 this
 	    );
         setListAdapter(adapter);
@@ -138,7 +137,7 @@ public class StackViewFragment extends ListFragment
     }
 
     private void findViewsInHeader(View stackInfoView) {
-        shortCodeView = (TextView) stackInfoView.findViewById(R.id.short_code);
+        stackNameView = (TextView) stackInfoView.findViewById(R.id.stack_name);
         notesView = (TextView) stackInfoView.findViewById(R.id.notes);
         showMoreNotes = (ImageView) stackInfoView.findViewById(R.id.show_more_indicator);
         showLessNotes = (ImageView) stackInfoView.findViewById(R.id.show_less_indicator);
@@ -150,10 +149,10 @@ public class StackViewFragment extends ListFragment
     public void updateHeaderView() {
         Stack stack = ((StacksActivity) getActivity()).getStack();
         String notes = stack.getNotes();
-        String shortCode = stack.getShortCode();
+        String stackName = stack.getStackName();
         int limitedLines = getResources().getInteger(R.integer.notes_line_height);
 
-        shortCodeView.setText(shortCode);
+        stackNameView.setText(stackName);
 
         if (notes.length() <= 0) {
             notesView.setVisibility(View.GONE);

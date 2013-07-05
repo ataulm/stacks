@@ -107,7 +107,7 @@ public class StacksActivity extends Activity {
     /**
      * Fires a warning if there are unsaved changes, but returns on second press.
      * <p/>
-     * If the user is editing the shortcode or notes properties of the stack and presses back, a
+     * If the user is editing the stack name or notes properties of the stack and presses back, a
      * Crouton is displayed warning the user. The user can press back again to return to the
      * StackViewFragment. If the user makes subsequent changes, the warning flag is reset, and the
      * user will be warned again.

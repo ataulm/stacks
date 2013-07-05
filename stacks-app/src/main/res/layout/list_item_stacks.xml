@@ -21,7 +21,7 @@
     <!-- Drag Handle should set visibility to VISIBLE, once functionality is added  -->
 
     <TextView
-            android:id="@+id/listitem_shortcode"
+            android:id="@+id/listitem_stackname"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
