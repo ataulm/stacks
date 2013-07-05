@@ -1,6 +1,6 @@
 package uk.co.ataulmunim.android.stacks.fragment;
 import android.app.Fragment;
-import uk.co.ataulmunim.android.stacks.Stack;
+import uk.co.ataulmunim.android.stacks.stack.Stack;
 import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
 import uk.co.ataulmunim.android.stacks.activity.StacksActivity.UserWarnedAboutBack;
 
@@ -79,8 +79,8 @@ public class StackEditFragment extends Fragment implements TextWatcher {
     }
 
     public void commitChanges(Stack stack) {
-        stack.setNotes(getActivity(), notesInput.getText().toString());
-        stack.setStackName(getActivity(), stackNameInput.getText().toString());
+        stack.setNotes(getActivity().getContentResolver(), notesInput.getText().toString());
+        stack.setStackName(getActivity().getContentResolver(), stackNameInput.getText().toString());
         stack.notifyDatasetChanged();
     }
 }

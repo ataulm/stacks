@@ -2,7 +2,7 @@ package uk.co.ataulmunim.android.stacks.fragment;
 
 import android.view.*;
 import android.widget.*;
-import uk.co.ataulmunim.android.stacks.Stack;
+import uk.co.ataulmunim.android.stacks.stack.Stack;
 import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
 import uk.co.ataulmunim.android.stacks.adapter.StacksCursorAdapter;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
@@ -226,7 +226,7 @@ public class StackViewFragment extends ListFragment
 		if (name.length() == 0) return true;
 		
 		Log.d(TAG, "Adding " + name);
-        Stack.add(getActivity(), name, stackId);
+        Stack.add(getActivity().getContentResolver(), name, stackId);
         v.setText("");
 		
 		if (!quickAddMode) {

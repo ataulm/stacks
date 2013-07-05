@@ -1,6 +1,6 @@
 package uk.co.ataulmunim.android.stacks.activity;
 
-import uk.co.ataulmunim.android.stacks.Stack;
+import uk.co.ataulmunim.android.stacks.stack.Stack;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -66,7 +66,7 @@ public class WelcomeActivity extends Activity implements
 		boolean rootCreated = prefs.getBoolean(PREFS_ROOT_CREATED, false);
 		if (!rootCreated) {
 			// add the root stack
-            Stack.createDefaultStack(this);
+            Stack.createDefaultStack(getContentResolver());
 
             SharedPreferences.Editor editor = prefs.edit();
 			editor.putBoolean(PREFS_ROOT_CREATED, true);

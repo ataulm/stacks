@@ -1,7 +1,6 @@
 package uk.co.ataulmunim.android.stacks.activity;
 
-import android.widget.FrameLayout;
-import uk.co.ataulmunim.android.stacks.Stack;
+import uk.co.ataulmunim.android.stacks.stack.Stack;
 import uk.co.ataulmunim.android.stacks.adapter.StacksPagerAdapter;
 import uk.co.ataulmunim.android.stacks.fragment.StackEditFragment;
 import uk.co.ataulmunim.android.view.FreezableViewPager;
@@ -21,9 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 
 
 public class StacksActivity extends Activity {
@@ -63,7 +60,7 @@ public class StacksActivity extends Activity {
                 Log.w(TAG, "Invalid stack Uri passed (" + stackUri.getLastPathSegment() + ").");
             }
         }
-        stack = Stack.getStack(this, stackId);
+        stack = Stack.getStack(getContentResolver(), stackId);
 
         adapter = new StacksPagerAdapter(getFragmentManager());
         pager = (FreezableViewPager) findViewById(R.id.pager);

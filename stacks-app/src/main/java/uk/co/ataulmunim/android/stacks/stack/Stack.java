@@ -1,12 +1,10 @@
-package uk.co.ataulmunim.android.stacks;
+package uk.co.ataulmunim.android.stacks.stack;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
-
-import com.nicedistractions.shortstacks.R;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -64,9 +62,9 @@ public class Stack {
         return "";
     }
 
-    public static Stack getStack(Context context, int id) {
+    public static Stack getStack(ContentResolver contentResolver, int id) {
         Log.i(TAG, "Attempting to return Stack with id = " + id);
-        Cursor result = context.getContentResolver().query(
+        Cursor result = contentResolver.query(
                 Stacks.CONTENT_URI,
                 new String[]{ Stacks.PARENT, Stacks.CREATED_DATE, Stacks.MODIFIED_DATE,
                         Stacks.ACTION_ITEMS, Stacks.STACK_NAME, Stacks.NOTES, Stacks.PARENT,
@@ -93,37 +91,34 @@ public class Stack {
     /**
      * Inserts a new Stack into the database.
      *
-     * @param context the Activity
+     * @param contentResolver
      * @param stackName
      * @param parent
      * @return stackUri the Uri of the added Stack, or null if the insert failed
      */
-    public static Uri add(Context context, String stackName, int parent) {
+    public static Uri add(ContentResolver contentResolver, String stackName, int parent) {
         final ContentValues values = new ContentValues();
         values.put(Stacks.UUID, UUID.randomUUID().toString());
         values.put(Stacks.STACK_NAME, stackName);
         values.put(Stacks.PARENT, parent);
 
-        final Uri stackUri = context.getContentResolver().insert(Stacks.CONTENT_URI, values);
-
-        if (stackUri == null) Log.e(TAG, context.getString(R.string.error_insert));
-        else Log.d(TAG, "Added stack: " + stackUri.toString());
+        final Uri stackUri = contentResolver.insert(Stacks.CONTENT_URI, values);
 
         return stackUri;
     }
 
-    public Stack setNotes(Context context, String notes) {
+    public Stack setNotes(ContentResolver contentResolver, String notes) {
         this.notes = notes;
         final ContentValues values = new ContentValues();
         values.put(Stacks.NOTES, notes);
 
-        context.getContentResolver().update(Stacks.CONTENT_URI, values,
+        contentResolver.update(Stacks.CONTENT_URI, values,
                 Stacks._ID + "=" + id, null);
 
-        return getStack(context, id);
+        return getStack(contentResolver, id);
     }
 
-    public Stack setStackName(Context context, String stackName) {
+    public Stack setStackName(ContentResolver contentResolver, String stackName) {
         if (stackName.length() > 0) {
             this.stackName = stackName;
         } else {
@@ -133,10 +128,10 @@ public class Stack {
         final ContentValues values = new ContentValues();
         values.put(Stacks.STACK_NAME, stackName);
 
-        context.getContentResolver().update(Stacks.CONTENT_URI, values,
+        contentResolver.update(Stacks.CONTENT_URI, values,
                 Stacks._ID + "=" + id, null);
 
-        return getStack(context, id);
+        return getStack(contentResolver, id);
     }
 
     /**
@@ -145,11 +140,11 @@ public class Stack {
      * This is created when the application is first opened, and its presence is checked whenever
      * StackView is opened without a specific
      *
-     * @param context
+     * @param contentResolver
      * @return
      */
-    public static Uri createDefaultStack(Context context) {
-        return add(context, "Stacks", DEFAULT_STACK_ID);
+    public static Uri createDefaultStack(ContentResolver contentResolver) {
+        return add(contentResolver, "Stacks", DEFAULT_STACK_ID);
     }
 
     /**
