@@ -149,11 +149,10 @@ public class StacksActivity extends Activity {
     }
 
     private void onEditActionSelected() {
-        CroutonEx.makeText(this, "centerplease", CroutonEx.INFO).show();
-//        pager.setCurrentItem(StacksPagerAdapter.EDIT_PAGE);
-//        menu.clear();
-//        setDoneDiscardBar();
-//        ((StackEditFragment) adapter.getItem(StacksPagerAdapter.EDIT_PAGE)).updateInputFields();
+        pager.setCurrentItem(StacksPagerAdapter.EDIT_PAGE);
+        menu.clear();
+        setDoneDiscardBar();
+        ((StackEditFragment) adapter.getItem(StacksPagerAdapter.EDIT_PAGE)).updateInputFields();
     }
 
     /**

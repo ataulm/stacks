@@ -10,7 +10,7 @@ apply plugin: 'android'
 
 dependencies {
     compile files('libs/android-support-v13.jar')
-    compile files('libs/crouton-1.8.1-gravityfix.jar')
+    compile files('libs/crouton-1.8.1.jar')
     compile files('libs/CWAC-LoaderEx.jar')
     compile files('libs/simplecontentprovider.jar')
 }

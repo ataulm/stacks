@@ -1,5 +1,6 @@
 package uk.co.ataulmunim.android.stacks.fragment;
 import android.app.Fragment;
+import android.content.Intent;
 import uk.co.ataulmunim.android.stacks.stack.Stack;
 import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
 import uk.co.ataulmunim.android.stacks.activity.StacksActivity.UserWarnedAboutBack;
@@ -46,7 +47,7 @@ public class StackEditFragment extends Fragment implements TextWatcher {
         
         stackNameInput.addTextChangedListener(this);
         notesInput.addTextChangedListener(this);
-        
+
         // FIXME: this destroys user progress on orientation change
         updateInputFields();
 	}

@@ -41,18 +41,17 @@ public class CroutonEx {
     static {
         ALERT = new Style.Builder()
                 .setBackgroundColorValue(holoRedLight)
-                .setHeightDimensionResId(R.dimen.actionbar_height)
                 .build();
         CONFIRM = new Style.Builder()
                 .setBackgroundColorValue(holoGreenLight)
-                .setHeightDimensionResId(R.dimen.actionbar_height)
                 .build();
         WARN = new Style.Builder()
                 .setBackgroundColorValue(holoOrangeLight)
-                .setHeightDimensionResId(R.dimen.actionbar_height)
                 .build();
         INFO = new Style.Builder()
-                .setBackgroundColorValue(holoBlueLight)
+//                .setBackgroundColorValue(holoBlueLight)
+                .setGravity(Gravity.CENTER)
+                .setWidth(500)
                 .setHeightDimensionResId(R.dimen.actionbar_height)
                 .build();
 
