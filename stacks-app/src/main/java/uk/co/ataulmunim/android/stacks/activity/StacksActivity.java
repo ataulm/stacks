@@ -1,5 +1,7 @@
 package uk.co.ataulmunim.android.stacks.activity;
 
+import android.content.Context;
+import android.view.inputmethod.InputMethodManager;
 import uk.co.ataulmunim.android.stacks.stack.Stack;
 import uk.co.ataulmunim.android.stacks.adapter.StacksPagerAdapter;
 import uk.co.ataulmunim.android.stacks.fragment.StackEditFragment;
@@ -175,6 +177,7 @@ public class StacksActivity extends Activity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        hideKeyboard();
                         acceptEdits();
                     }
                 }
@@ -184,6 +187,7 @@ public class StacksActivity extends Activity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        hideKeyboard();
                         softDiscardChanges();
                     }
                 }
@@ -196,6 +200,13 @@ public class StacksActivity extends Activity {
         actionBar.setCustomView(doneDiscard, new ActionBar.LayoutParams(
                 matchParent, matchParent));
     }
+
+    private void hideKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
 
     private void acceptEdits() {
         CroutonEx.makeText(this, "Changes saved", CroutonEx.CONFIRM).show();
