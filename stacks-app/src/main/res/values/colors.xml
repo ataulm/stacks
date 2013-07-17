@@ -11,20 +11,33 @@
     <color name="holo_red_light">#ff4444</color>
     <color name="holo_green_light">#99cc00</color>
     <color name="holo_blue_light">#33b5e5</color>
+    <color name="holo_blue_light_80">#9932B6E6</color>
     <color name="holo_orange_light">#ffbb33</color>
     <color name="holo_red_dark">#cc0000</color>
     <color name="holo_green_dark">#669900</color>
     <color name="holo_blue_dark">#0099cc</color>
     <color name="holo_orange_dark">#ff8800</color>
 
-    <!-- Use these when assigning to an element or style -->
+    <!-- Applied colors -->
     <color name="text_on_dark">@color/white_alpha_50</color>
 
     <color name="crouton_warning">@color/holo_orange_light</color>
     <color name="crouton_error">@color/holo_red_dark</color>
-    <color name="crouton_info">@color/holo_blue_light</color>
+    <color name="crouton_info">@color/holo_blue_light_80</color>
+    <color name="crouton_confirm">@color/holo_green_light</color>
 
+    <!--
+    Colors are set using #RRGGBB or #AARRGGBB where AA,RR,GG,BB are the hex
+    conversions of decimal values 0-255.
 
-	<color name="group_two">@color/white</color>
-	<color name="group_three">@color/super_dark_grey</color>
+    Common alpha values in hex:
+        255 -> FF (100% opaque)
+        204 -> CC ( 80% opaque)
+        153 -> 99 ( 60% opaque)
+        128 -> 80 ( 50% opaque)
+        000 -> 00 (  0% opaque or 100% transparent)
+
+    Use ColorPicker.com to pick #RRGGBB values, and prefix the AA values as
+    needed.
+    -->
 </resources>

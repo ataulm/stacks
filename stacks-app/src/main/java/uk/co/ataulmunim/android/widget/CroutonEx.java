@@ -1,9 +1,7 @@
 package uk.co.ataulmunim.android.widget;
 
 import android.app.Activity;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import com.nicedistractions.shortstacks.R;
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -16,16 +14,6 @@ import de.keyboardsurfer.android.widget.crouton.Style;
  */
 public class CroutonEx {
     private static final String TAG = CroutonEx.class.getSimpleName();
-
-    public static final int holoRedLight = 0xffff4444;
-    public static final int holoGreenLight = 0xff99cc00;
-    public static final int holoBlueLight = 0xff33b5e5;
-    public static final int holoOrangeLight = 0xffffbb33;
-    
-    public static final int holoRedDark = 0xffcc0000;
-    public static final int holoGreenDark = 0xff669900;
-    public static final int holoBlueDark = 0xff0099cc;
-    public static final int holoOrangeDark = 0xffff8800;
 
     /** Default style for alerting the user. */
     public static final Style ALERT;
@@ -40,21 +28,22 @@ public class CroutonEx {
     
     static {
         ALERT = new Style.Builder()
-                .setBackgroundColorValue(holoRedLight)
+                .setBackgroundColor(R.color.crouton_error)
                 .setHeightDimensionResId(R.dimen.actionbar_height)
                 .build();
         CONFIRM = new Style.Builder()
-                .setBackgroundColorValue(holoGreenLight)
+                .setBackgroundColor(R.color.crouton_confirm)
                 .setHeightDimensionResId(R.dimen.actionbar_height)
                 .build();
         WARN = new Style.Builder()
-                .setBackgroundColorValue(holoOrangeLight)
+                .setBackgroundColor(R.color.crouton_warning)
                 .setHeightDimensionResId(R.dimen.actionbar_height)
                 .build();
         INFO = new Style.Builder()
-                .setBackgroundColorValue(holoBlueLight)
+                .setBackgroundColor(R.color.crouton_info)
                 .setHeightDimensionResId(R.dimen.actionbar_height)
                 .build();
+
 
         SHORT_CONFIG = new Configuration.Builder().setDuration(Configuration.DURATION_SHORT).build();
     }

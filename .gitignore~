@@ -23,6 +23,7 @@ pom.xml.*
 
 #Gradle
 build
+.gradle
 
 #Ant
 build.xml
