@@ -9,22 +9,32 @@
 
     <!-- Color Palette - HOLO colours -->
     <color name="holo_red_light">#ff4444</color>
+    <color name="holo_red_light_translucent">#CCff4444</color>
+
     <color name="holo_green_light">#99cc00</color>
+    <color name="holo_green_light_translucent">#CC99cc00</color>
+
     <color name="holo_blue_light">#33b5e5</color>
-    <color name="holo_blue_light_80">#9932B6E6</color>
+    <color name="holo_blue_light_translucent">#CC32B6E6</color>
+
     <color name="holo_orange_light">#ffbb33</color>
+    <color name="holo_orange_light_translucent">#CCffbb33</color>
+
     <color name="holo_red_dark">#cc0000</color>
+    <color name="holo_red_dark_translucent">#CCcc0000</color>
+
     <color name="holo_green_dark">#669900</color>
     <color name="holo_blue_dark">#0099cc</color>
     <color name="holo_orange_dark">#ff8800</color>
+    <color name="holo_orange_dark_translucent">#CCff8800</color>
 
     <!-- Applied colors -->
     <color name="text_on_dark">@color/white_alpha_50</color>
 
-    <color name="crouton_warning">@color/holo_orange_light</color>
-    <color name="crouton_error">@color/holo_red_dark</color>
-    <color name="crouton_info">@color/holo_blue_light_80</color>
-    <color name="crouton_confirm">@color/holo_green_light</color>
+    <color name="crouton_warning">@color/holo_orange_dark_translucent</color>
+    <color name="crouton_error">@color/holo_red_dark_translucent</color>
+    <color name="crouton_info">@color/holo_blue_light_translucent</color>
+    <color name="crouton_confirm">@color/holo_green_light_translucent</color>
 
     <!--
     Colors are set using #RRGGBB or #AARRGGBB where AA,RR,GG,BB are the hex
