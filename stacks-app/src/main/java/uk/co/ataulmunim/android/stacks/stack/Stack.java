@@ -22,6 +22,9 @@ import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
  * Created by ataulm on 24/06/13.
  */
 public class Stack {
+    private static final String TAG = Stack.class.getSimpleName();
+
+
     public interface OnStackChangedListener {
         public void onStackChanged(Stack stack);
     }
@@ -30,22 +33,126 @@ public class Stack {
     // _ID of the root-level stack
     public static final int DEFAULT_STACK_ID = 1;
 
-    private static final String TAG = Stack.class.getSimpleName();
+
     private final int id;
     private int parent;
     private String stackName;
     private String notes;
     private boolean isStarred;
     private int actionItems;
-    private final long createdDate;
+    private long createdDate;
     private long modifiedDate;
     private int position;
 
     private ArrayList<OnStackChangedListener> onChangedListeners;
 
-    private Stack(int id, long createdDate) {
+
+    public static class Builder {
+        private int id;
+        private String stackName;
+        private String notes;
+        private int parent;
+        private boolean isStarred;
+        private int actionItems;
+        private long createdDate;
+        private long modifiedDate;
+        private int position;
+
+        public Builder() {
+            id = -1;
+            stackName = "";
+            notes = "";
+            parent = -1;
+            isStarred = false;
+            actionItems = 0;
+            createdDate = 0;
+            modifiedDate = 0;
+            position = 0;
+        }
+
+        public Builder setId(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setStackName(String stackName) {
+            this.stackName = stackName;
+            return this;
+        }
+
+        public Builder setNotes(String notes) {
+            this.notes = notes;
+            return this;
+        }
+
+        public Builder setParent(int parent) {
+            this.parent = parent;
+            return this;
+        }
+
+        public Builder setStarred(boolean isStarred) {
+            this.isStarred = isStarred;
+            return this;
+        }
+
+        public Builder setActionItems(int actionItems) {
+            this.actionItems = actionItems;
+            return this;
+        }
+
+        public Builder setCreatedDate(long createdDate) {
+            this.createdDate = createdDate;
+            return this;
+        }
+
+        public Builder setModifiedDate(long modifiedDate) {
+            this.modifiedDate = modifiedDate;
+            return this;
+        }
+
+        public Builder setPosition(int position) {
+            this.position = position;
+            return this;
+        }
+
+        public final Stack build() {
+            if (id < 0) {
+                throw new IllegalStateException("id must be set.");
+            }
+
+            if (stackName == null ^ stackName.length() == 0) {
+                throw new IllegalStateException("stackName must be set.");
+            }
+
+            Stack stack = new Stack(id, stackName);
+            stack.notes = notes;
+            stack.parent = parent;
+            stack.createdDate = createdDate;
+            stack.modifiedDate = modifiedDate;
+            stack.actionItems = actionItems;
+            stack.isStarred = isStarred;
+            stack.position = position;
+
+            return null;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private Stack(int id, String stackName) {
         this.id = id;
-        this.createdDate = createdDate;
+        this.stackName = stackName;
         onChangedListeners = new ArrayList<OnStackChangedListener>();
     }
 
@@ -60,32 +167,6 @@ public class Stack {
     public String getNotes() {
         if (notes != null && notes.length() > 0) return notes;
         return "";
-    }
-
-    public static Stack getStack(ContentResolver contentResolver, int id) {
-        Log.i(TAG, "Attempting to return Stack with id = " + id);
-        Cursor result = contentResolver.query(
-                Stacks.CONTENT_URI,
-                new String[]{ Stacks.PARENT, Stacks.CREATED_DATE, Stacks.MODIFIED_DATE,
-                        Stacks.ACTION_ITEMS, Stacks.STACK_NAME, Stacks.NOTES, Stacks.PARENT,
-                        Stacks.STARRED},
-                Stacks._ID + "=" + id,
-                null,
-                null
-        );
-
-        if (result.getCount() == 0) return null;
-        result.moveToFirst();
-
-        Stack stack = new Stack(id, result.getLong(result.getColumnIndex(Stacks.CREATED_DATE)));
-        stack.stackName = result.getString(result.getColumnIndex(Stacks.STACK_NAME));
-        stack.parent = result.getInt(result.getColumnIndex(Stacks.PARENT));
-        stack.notes = result.getString(result.getColumnIndex(Stacks.NOTES));
-        stack.isStarred = result.getInt(result.getColumnIndex(Stacks.STARRED)) == 1 ? true :false;
-        stack.actionItems = result.getInt(result.getColumnIndex(Stacks.ACTION_ITEMS));
-        stack.modifiedDate = result.getLong(result.getColumnIndex(Stacks.MODIFIED_DATE));
-
-        return stack;
     }
 
     /**
@@ -115,7 +196,7 @@ public class Stack {
         contentResolver.update(Stacks.CONTENT_URI, values,
                 Stacks._ID + "=" + id, null);
 
-        return getStack(contentResolver, id);
+        return StackPersistor.getStack(contentResolver, id);
     }
 
     public Stack setStackName(ContentResolver contentResolver, String stackName) {
@@ -131,7 +212,7 @@ public class Stack {
         contentResolver.update(Stacks.CONTENT_URI, values,
                 Stacks._ID + "=" + id, null);
 
-        return getStack(contentResolver, id);
+        return StackPersistor.getStack(contentResolver, id);
     }
 
     /**
