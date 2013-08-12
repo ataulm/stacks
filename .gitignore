@@ -35,4 +35,5 @@ proguard-project.txt
 #Other
 .DS_Store
 tmp
+# backup files from gedit
 *~
