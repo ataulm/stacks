@@ -46,7 +46,7 @@ public class Stacks implements ContentItem {
     // --------------------------------------------------------------------------------------------
     // starred			boolean		flag to indicate starred or not.    
     // --------------------------------------------------------------------------------------------
-    // deleted			datetime	timestamp when Stack was marked for	deletion
+    // deleted  		datetime	timestamp when Stack was marked for	deletion
     // --------------------------------------------------------------------------------------------    
     // localsort		integer		list position of this stack in parent stack
     // ============================================================================================

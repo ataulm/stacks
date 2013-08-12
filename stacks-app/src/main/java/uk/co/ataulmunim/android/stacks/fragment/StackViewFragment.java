@@ -25,6 +25,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.nicedistractions.shortstacks.R;
+import uk.co.ataulmunim.android.stacks.stack.StackPersistor;
 import uk.co.ataulmunim.android.widget.CroutonEx;
 
 
@@ -226,7 +227,7 @@ public class StackViewFragment extends ListFragment
 		if (name.length() == 0) return true;
 		
 		Log.d(TAG, "Adding " + name);
-        Stack.add(getActivity().getContentResolver(), name, stackId);
+        StackPersistor.create(getActivity().getContentResolver(), name, stackId);
         v.setText("");
 		
 		if (!quickAddMode) {

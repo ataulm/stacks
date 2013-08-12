@@ -1,14 +1,18 @@
 package uk.co.ataulmunim.android.stacks.stack;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.net.Uri;
 import android.util.Log;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
+
+import java.util.UUID;
 
 /**
  * Handles the insertion, updates and retrieval of Stacks to persistent storage.
  */
-public class StackPersistor {
+public final class StackPersistor {
     private static final String TAG = StackPersistor.class.getSimpleName();
 
     /**
@@ -18,16 +22,18 @@ public class StackPersistor {
      * @param id
      * @return
      */
-    public static Stack getStack(ContentResolver contentResolver, int id) {
-        Log.i(TAG, "Attempting to return Stack with id = " + id);
+    public static final Stack retrieve(ContentResolver contentResolver, int id) {
+        Log.i(TAG, "Retrieving Stack with id: " + id);
         Cursor result = contentResolver.query(
                 Stacks.CONTENT_URI,
                 new String[] {
                         Stacks.PARENT,
                         Stacks.CREATED_DATE,
                         Stacks.MODIFIED_DATE,
+                        Stacks.DELETED,
                         Stacks.ACTION_ITEMS,
                         Stacks.STACK_NAME,
+                        Stacks.LOCAL_SORT,
                         Stacks.NOTES,
                         Stacks.PARENT,
                         Stacks.STARRED },
@@ -40,18 +46,61 @@ public class StackPersistor {
         result.moveToFirst();
 
         Stack stack = new Stack.Builder()
-                .setId(id)
-                .setStackName(result.getString(result.getColumnIndex(Stacks.STACK_NAME)))
-                .setNotes(result.getString(result.getColumnIndex(Stacks.NOTES)))
-                .setParent(result.getInt(result.getColumnIndex(Stacks.PARENT)))
-                .setCreatedDate(result.getLong(result.getColumnIndex(Stacks.CREATED_DATE)))
-                .setModifiedDate(result.getLong(result.getColumnIndex(Stacks.MODIFIED_DATE)))
-                .setStarred(result.getInt(result.getColumnIndex(Stacks.STARRED)) == 1 ? true :false)
-                .setPosition(result.getInt(result.getColumnIndex(Stacks.LOCAL_SORT)))
-                .setActionItems(result.getInt(result.getColumnIndex(Stacks.ACTION_ITEMS)))
+                .id(id)
+                .name(result.getString(result.getColumnIndex(Stacks.STACK_NAME)))
+                .notes(result.getString(result.getColumnIndex(Stacks.NOTES)))
+                .parent(result.getInt(result.getColumnIndex(Stacks.PARENT)))
+                .deleted(result.getLong(result.getColumnIndex(Stacks.DELETED)))
+                .created(result.getLong(result.getColumnIndex(Stacks.CREATED_DATE)))
+                .modified(result.getLong(result.getColumnIndex(Stacks.MODIFIED_DATE)))
+                .starred(result.getInt(result.getColumnIndex(Stacks.STARRED)) == 1)
+                .position(result.getInt(result.getColumnIndex(Stacks.LOCAL_SORT)))
+                .actionItems(result.getInt(result.getColumnIndex(Stacks.ACTION_ITEMS)))
                 .build();
 
         return stack;
+    }
+
+    /**
+     * Persists updates for an existing Stack.
+     *
+     * @param contentResolver
+     * @param stack
+     */
+    public static final void persist(ContentResolver contentResolver, Stack stack) {
+        Log.i(TAG, "Persisting Stack with id: " + stack.getId());
+
+        final ContentValues values = new ContentValues();
+        values.put(Stacks.STACK_NAME, stack.getStackName());
+        values.put(Stacks.NOTES, stack.getNotes());
+        values.put(Stacks.PARENT, stack.getParent());
+        values.put(Stacks.DELETED, stack.getDeletedDate());
+        values.put(Stacks.MODIFIED_DATE, System.currentTimeMillis());
+        values.put(Stacks.STARRED, stack.isStarred());
+        values.put(Stacks.LOCAL_SORT, stack.getPosition());
+        values.put(Stacks.ACTION_ITEMS, stack.getActionItems());
+
+        contentResolver.update(Stacks.CONTENT_URI, values,
+                Stacks._ID + "=" + stack.getId(), null);
+    }
+
+    /**
+     * Adds new Stack to persistent storage.
+     *
+     * @param contentResolver
+     * @param stackName
+     * @param parent
+     * @return inserted
+     */
+    public static final boolean create(ContentResolver contentResolver, String stackName,
+                                     int parent) {
+        Log.i(TAG, "Adding new Stack: " + stackName);
+        final ContentValues values = new ContentValues();
+        values.put(Stacks.UUID, UUID.randomUUID().toString());
+        values.put(Stacks.STACK_NAME, stackName);
+        values.put(Stacks.PARENT, parent);
+
+        return (contentResolver.insert(Stacks.CONTENT_URI, values) != null);
     }
 
 

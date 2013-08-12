@@ -5,6 +5,7 @@ import android.view.inputmethod.InputMethodManager;
 import uk.co.ataulmunim.android.stacks.stack.Stack;
 import uk.co.ataulmunim.android.stacks.adapter.StacksPagerAdapter;
 import uk.co.ataulmunim.android.stacks.fragment.StackEditFragment;
+import uk.co.ataulmunim.android.stacks.stack.StackPersistor;
 import uk.co.ataulmunim.android.view.FreezableViewPager;
 import uk.co.ataulmunim.android.widget.CroutonEx;
 
@@ -62,7 +63,7 @@ public class StacksActivity extends Activity {
                 Log.w(TAG, "Invalid stack Uri passed (" + stackUri.getLastPathSegment() + ").");
             }
         }
-        stack = Stack.getStack(getContentResolver(), stackId);
+        stack = StackPersistor.retrieve(getContentResolver(), stackId);
 
         adapter = new StacksPagerAdapter(getFragmentManager());
         pager = (FreezableViewPager) findViewById(R.id.pager);
