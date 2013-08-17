@@ -17,10 +17,7 @@ import android.widget.EditText;
 import com.nicedistractions.shortstacks.R;
 
 
-public class StackEditFragment extends Fragment implements TextWatcher {
-	
-	public static final String TAG = StackEditFragment.class.getSimpleName();
-
+public class StackEditFragment extends BaseFragment implements TextWatcher {
 	private StacksActivity activity;
 
     private EditText stackNameInput;
@@ -75,7 +72,7 @@ public class StackEditFragment extends Fragment implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        Log.d(TAG, "after text changed");
+        log("after text changed");
         activity.setUserWarnedAboutBack(UserWarnedAboutBack.NO);               
     }
 

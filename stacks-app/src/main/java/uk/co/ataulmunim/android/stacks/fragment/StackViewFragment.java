@@ -29,11 +29,10 @@ import uk.co.ataulmunim.android.stacks.stack.StackPersistor;
 import uk.co.ataulmunim.android.widget.CroutonEx;
 
 
-public class StackViewFragment extends ListFragment
+public class StackViewFragment extends BaseListFragment
 	implements LoaderManager.LoaderCallbacks<Cursor>, Stack.OnStackChangedListener, OnEditorActionListener,
         OnItemClickListener, View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 	
-	public static final String TAG = StackViewFragment.class.getSimpleName();
 	public static final String HEADER_TAG = "header";
 	
 	public static final String[] STACKS_PROJECTION = {
@@ -206,7 +205,7 @@ public class StackViewFragment extends ListFragment
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		Log.d(TAG, "List item clicked, stackId: " + id);
+		log("List item clicked, stackId: " + id);
 		
 		if (view.getTag().equals(HEADER_TAG)) {
             toggleStackInfoExpanded();
@@ -226,12 +225,12 @@ public class StackViewFragment extends ListFragment
 		final String name = v.getText().toString().trim();
 		if (name.length() == 0) return true;
 		
-		Log.d(TAG, "Adding " + name);
+		log("Adding " + name);
         StackPersistor.create(getActivity().getContentResolver(), name, stackId);
         v.setText("");
 		
 		if (!quickAddMode) {
-			Log.d(TAG, "quickAddMode false, hiding keyboard.");
+			log("quickAddMode false, hiding keyboard.");
 			InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
 					Activity.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
@@ -246,7 +245,7 @@ public class StackViewFragment extends ListFragment
 		CursorLoader cursorLoader = null;
 		
 		if (id == StacksActivity.STACKS_LOADER) {
-			Log.d(TAG, "Loading stacks under stack " + stackId);
+			log("Loading stacks under stack " + stackId);
 			
 			final String where = Stacks.PARENT + "=" + stackId +
 					" AND " + Stacks.DELETED + "<> 1" +
@@ -269,7 +268,7 @@ public class StackViewFragment extends ListFragment
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		if (loader.getId() == StacksActivity.STACKS_LOADER) {
-			Log.d(TAG, "Stacks loaded, swapping cursor, scrolling to end.");
+			log("Stacks loaded, swapping cursor, scrolling to end.");
 			
 			adapter.swapCursor(data);
 			if (scrollToEnd) {
@@ -283,7 +282,7 @@ public class StackViewFragment extends ListFragment
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 		if (loader.getId() == StacksActivity.STACKS_LOADER) {
-			Log.d(TAG, "Closing last Stacks cursor, so setting adapter cursor to null.");
+			log("Closing last Stacks cursor, so setting adapter cursor to null.");
 			adapter.swapCursor(null);
 		}
 	}
@@ -293,13 +292,13 @@ public class StackViewFragment extends ListFragment
 
     @Override
     public void onStackChanged(Stack stack) {
-        Log.d(TAG, "onStackChanged() called");
+        log("onStackChanged() called");
         updateHeaderView();
     }
 
     @Override
     public void onClick(View v) {
-        Log.d(TAG, "mini overflow clicked");
+        log("mini overflow clicked");
         itemClickedForPopupMenu = (Integer) v.getTag(R.id.tag_stack_position);
 
         PopupMenu popup = new PopupMenu(getActivity(), v);

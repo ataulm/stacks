@@ -16,10 +16,9 @@ import com.commonsware.cwac.loaderex.SharedPreferencesLoader;
 import com.nicedistractions.shortstacks.R;
 
 
-public class WelcomeActivity extends Activity implements
+public class WelcomeActivity extends BaseActivity implements
 		LoaderManager.LoaderCallbacks<SharedPreferences> {
-	
-	public static final String LOG_TAG = WelcomeActivity.class.getSimpleName();
+
 	public static final String PREFS_ROOT_CREATED = "rootCreated";
 
 	@Override
@@ -30,25 +29,6 @@ public class WelcomeActivity extends Activity implements
 		getLoaderManager().initLoader(0, null, this);
 	}
 	
-	
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-    	super.onCreateOptionsMenu(menu);
-    	// TODO: create a welcome actionbar
-        getMenuInflater().inflate(R.menu.menu_activity_stacks, menu);
-        return true;
-    }
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-	}
-	
-	@Override
-	public void onPause() {
-		super.onPause();
-	}
-
 	@Override
 	public Loader<SharedPreferences> onCreateLoader(int id, Bundle args) {		
 		return(new SharedPreferencesLoader(this));
@@ -82,8 +62,5 @@ public class WelcomeActivity extends Activity implements
 	}
 
 	@Override
-	public void onLoaderReset(Loader<SharedPreferences> prefs) {
-		// unused
-	}
-
+	public void onLoaderReset(Loader<SharedPreferences> prefs) {} // unused
 }

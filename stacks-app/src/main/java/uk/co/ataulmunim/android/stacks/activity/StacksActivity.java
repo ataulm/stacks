@@ -26,8 +26,7 @@ import android.view.ViewGroup;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 
-public class StacksActivity extends Activity {
-    public static final String TAG = StacksActivity.class.getSimpleName();
+public class StacksActivity extends BaseActivity {
 
     /* "Press back to lose unsaved changes" */
     public enum UserWarnedAboutBack {
@@ -60,7 +59,7 @@ public class StacksActivity extends Activity {
             try {
                 stackId = Integer.parseInt(stackUri.getLastPathSegment());
             } catch (NumberFormatException e) {
-                Log.w(TAG, "Invalid stack Uri passed (" + stackUri.getLastPathSegment() + ").");
+                log("Invalid stack Uri passed (" + stackUri.getLastPathSegment() + ").");
             }
         }
         stack = StackPersistor.retrieve(getContentResolver(), stackId);
