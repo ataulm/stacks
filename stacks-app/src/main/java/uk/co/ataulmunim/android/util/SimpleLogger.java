@@ -11,12 +11,21 @@ import android.util.Log;
  * all {@link Logger} methods to this.
  */
 public class SimpleLogger implements Logger {
+    private final String tag;
     private boolean logging = true;
-    private final String TAG = getClass().getSimpleName();
 
+    public SimpleLogger(String tag) {
+        this.tag = tag;
+    }
+
+    /**
+     * Logs message in the debug channel.
+     *
+     * @param message  the message to output
+     */
     public void log(String message) {
         if (logging) {
-            Log.i(TAG, message);
+            Log.d(tag, message);
         }
     }
 

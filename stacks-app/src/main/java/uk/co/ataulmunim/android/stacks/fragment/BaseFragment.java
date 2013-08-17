@@ -5,7 +5,7 @@ import uk.co.ataulmunim.android.util.Logger;
 import uk.co.ataulmunim.android.util.SimpleLogger;
 
 public class BaseFragment extends Fragment implements Logger {
-    private final SimpleLogger logger = new SimpleLogger();
+    private final SimpleLogger logger = new SimpleLogger(getClass().getSimpleName());
 
     @Override
     public void log(String message) {

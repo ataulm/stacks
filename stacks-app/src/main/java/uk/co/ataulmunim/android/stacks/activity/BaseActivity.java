@@ -5,7 +5,7 @@ import uk.co.ataulmunim.android.util.Logger;
 import uk.co.ataulmunim.android.util.SimpleLogger;
 
 public class BaseActivity extends Activity implements Logger {
-    private final SimpleLogger logger = new SimpleLogger();
+    private final SimpleLogger logger = new SimpleLogger(getClass().getSimpleName());
 
     @Override
     public void log(String message) {
