@@ -3,7 +3,6 @@ package uk.co.ataulmunim.android.stacks.stack;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.net.Uri;
 import android.util.Log;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 

@@ -1,15 +1,7 @@
 package uk.co.ataulmunim.android.stacks.fragment;
 
-import android.view.*;
-import android.widget.*;
-import uk.co.ataulmunim.android.stacks.stack.Stack;
-import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
-import uk.co.ataulmunim.android.stacks.adapter.StacksCursorAdapter;
-import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import android.app.Activity;
-import android.app.ListFragment;
-
-
+import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -17,14 +9,17 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.LoaderManager;
-import android.util.Log;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView.OnEditorActionListener;
-
 import com.nicedistractions.shortstacks.R;
+import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
+import uk.co.ataulmunim.android.stacks.adapter.StacksCursorAdapter;
+import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
+import uk.co.ataulmunim.android.stacks.stack.Stack;
 import uk.co.ataulmunim.android.stacks.stack.StackPersistor;
 import uk.co.ataulmunim.android.widget.CroutonEx;
 

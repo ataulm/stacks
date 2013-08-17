@@ -1,19 +1,16 @@
 package uk.co.ataulmunim.android.stacks.activity;
 
-import uk.co.ataulmunim.android.stacks.stack.Stack;
-import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
-import android.app.LoaderManager;
-import android.content.Loader;
 import com.commonsware.cwac.loaderex.SharedPreferencesLoader;
-import com.nicedistractions.shortstacks.R;
+import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
+import uk.co.ataulmunim.android.stacks.stack.Stack;
 
 
 public class WelcomeActivity extends BaseActivity implements

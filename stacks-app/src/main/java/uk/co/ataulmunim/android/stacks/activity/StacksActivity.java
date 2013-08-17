@@ -1,29 +1,21 @@
 package uk.co.ataulmunim.android.stacks.activity;
 
-import android.content.Context;
-import android.view.inputmethod.InputMethodManager;
-import uk.co.ataulmunim.android.stacks.stack.Stack;
-import uk.co.ataulmunim.android.stacks.adapter.StacksPagerAdapter;
-import uk.co.ataulmunim.android.stacks.fragment.StackEditFragment;
-import uk.co.ataulmunim.android.stacks.stack.StackPersistor;
-import uk.co.ataulmunim.android.view.FreezableViewPager;
-import uk.co.ataulmunim.android.widget.CroutonEx;
-
-import com.nicedistractions.shortstacks.R;
-
 import android.app.ActionBar;
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
+import android.view.inputmethod.InputMethodManager;
+import com.nicedistractions.shortstacks.R;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
+import uk.co.ataulmunim.android.stacks.adapter.StacksPagerAdapter;
+import uk.co.ataulmunim.android.stacks.fragment.StackEditFragment;
+import uk.co.ataulmunim.android.stacks.stack.Stack;
+import uk.co.ataulmunim.android.stacks.stack.StackPersistor;
+import uk.co.ataulmunim.android.view.FreezableViewPager;
+import uk.co.ataulmunim.android.widget.CroutonEx;
 
 
 public class StacksActivity extends BaseActivity {

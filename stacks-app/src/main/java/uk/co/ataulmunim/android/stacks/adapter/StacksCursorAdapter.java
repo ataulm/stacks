@@ -1,15 +1,12 @@
 package uk.co.ataulmunim.android.stacks.adapter;
 
-import android.widget.ImageView;
-import com.nicedistractions.shortstacks.R;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
+import android.widget.ImageView;
+import com.nicedistractions.shortstacks.R;
 import uk.co.ataulmunim.android.stacks.fragment.StackViewFragment;
 
 

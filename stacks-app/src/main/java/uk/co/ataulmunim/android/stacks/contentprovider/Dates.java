@@ -4,12 +4,7 @@ import android.net.Uri;
 import edu.mit.mobile.android.content.ContentItem;
 import edu.mit.mobile.android.content.ProviderUtils;
 import edu.mit.mobile.android.content.UriPath;
-import edu.mit.mobile.android.content.column.BooleanColumn;
-import edu.mit.mobile.android.content.column.DBColumn;
-import edu.mit.mobile.android.content.column.DBForeignKeyColumn;
-import edu.mit.mobile.android.content.column.DatetimeColumn;
-import edu.mit.mobile.android.content.column.IntegerColumn;
-import edu.mit.mobile.android.content.column.TextColumn;
+import edu.mit.mobile.android.content.column.*;
 
 /**
  * Dates is the database table storing dates associated with Stacks. There is

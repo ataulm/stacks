@@ -1,20 +1,16 @@
 package uk.co.ataulmunim.android.stacks.fragment;
-import android.app.Fragment;
-import android.content.Intent;
-import uk.co.ataulmunim.android.stacks.stack.Stack;
-import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
-import uk.co.ataulmunim.android.stacks.activity.StacksActivity.UserWarnedAboutBack;
 
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-
 import com.nicedistractions.shortstacks.R;
+import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
+import uk.co.ataulmunim.android.stacks.activity.StacksActivity.UserWarnedAboutBack;
+import uk.co.ataulmunim.android.stacks.stack.Stack;
 
 
 public class StackEditFragment extends BaseFragment implements TextWatcher {

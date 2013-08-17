@@ -1,12 +1,11 @@
 package uk.co.ataulmunim.android.view;
 
-import com.nicedistractions.shortstacks.R;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
+import com.nicedistractions.shortstacks.R;
 
 /*
  * FIXME TODO: IMPORTANT: It appears that using custom enums in styles

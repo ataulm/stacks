@@ -1,6 +1,5 @@
 package uk.co.ataulmunim.android.view;
 
-import com.nicedistractions.shortstacks.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
@@ -11,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.FrameLayout;
+import com.nicedistractions.shortstacks.R;
 
 public class ExpandView extends FrameLayout implements OnClickListener,
 		OnGlobalLayoutListener {

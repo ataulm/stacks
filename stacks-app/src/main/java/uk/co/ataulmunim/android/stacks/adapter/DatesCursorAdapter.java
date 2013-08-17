@@ -1,16 +1,8 @@
 package uk.co.ataulmunim.android.stacks.adapter;
 
-import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
-
-import com.nicedistractions.shortstacks.R;
-
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
-import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;

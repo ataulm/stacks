@@ -2,13 +2,10 @@ package uk.co.ataulmunim.android.stacks.stack;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.net.Uri;
+import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 
 /**
  * A Stack represents a list or listitem (a node in the tree) in Stacks.
