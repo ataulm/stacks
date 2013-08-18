@@ -22,7 +22,6 @@ public class StackEditFragment extends BaseFragment implements TextWatcher {
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_stack_edit, container, false);
     }
 
@@ -32,7 +31,6 @@ public class StackEditFragment extends BaseFragment implements TextWatcher {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
 		activity = (StacksActivity) getActivity();
 		  
 	    stackNameInput = (EditText) getView().findViewById(R.id.input_stackname);
@@ -41,7 +39,6 @@ public class StackEditFragment extends BaseFragment implements TextWatcher {
         stackNameInput.addTextChangedListener(this);
         notesInput.addTextChangedListener(this);
 
-        // FIXME: this destroys user progress on orientation change
         updateInputFields();
 	}
 

@@ -29,7 +29,7 @@ public class StackViewFragment extends BaseListFragment
         OnItemClickListener, View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 	
 	public static final String HEADER_TAG = "header";
-	
+
 	public static final String[] STACKS_PROJECTION = {
 		Stacks._ID,	Stacks.STACK_NAME, Stacks.ACTION_ITEMS, Stacks.NOTES
 	};
@@ -114,7 +114,7 @@ public class StackViewFragment extends BaseListFragment
         getListView().setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         
         // Prepare the loader.  Either re-connect with an existing one, or start a new one.
-        getActivity().getLoaderManager().initLoader(StacksActivity.STACKS_LOADER, null, this);
+        getActivity().getLoaderManager().initLoader(0, null, this);
 
         ((StacksActivity) getActivity()).getStack().addOnStackChangedListener(this);
 
@@ -237,24 +237,20 @@ public class StackViewFragment extends BaseListFragment
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		CursorLoader cursorLoader = null;
-		
-		if (id == StacksActivity.STACKS_LOADER) {
-			log("Loading stacks under stack " + stackId);
-			
-			final String where = Stacks.PARENT + "=" + stackId +
-					" AND " + Stacks.DELETED + "<> 1" +
-					" AND " + Stacks._ID + "<>" + Stacks.ROOT_STACK_ID;
-			
-			cursorLoader = new CursorLoader(
-					getActivity(),
-					Stacks.CONTENT_URI,
-					STACKS_PROJECTION,
-					where,
-					null,
-					Stacks.LOCAL_SORT
-			);
-		}
+		log("Loading stacks under stack " + stackId);
+
+        final String where = Stacks.PARENT + "=" + stackId +
+                " AND " + Stacks.DELETED + "<> 1" +
+                " AND " + Stacks._ID + "<>" + Stacks.ROOT_STACK_ID;
+
+        final CursorLoader cursorLoader = new CursorLoader(
+                getActivity(),
+                Stacks.CONTENT_URI,
+                STACKS_PROJECTION,
+                where,
+                null,
+                Stacks.LOCAL_SORT
+        );
 		
 		return cursorLoader;
 	}
@@ -262,24 +258,20 @@ public class StackViewFragment extends BaseListFragment
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		if (loader.getId() == StacksActivity.STACKS_LOADER) {
-			log("Stacks loaded, swapping cursor, scrolling to end.");
-			
-			adapter.swapCursor(data);
-			if (scrollToEnd) {
-				getListView().smoothScrollToPosition(adapter.getCount());
-			} else {
-				scrollToEnd = true;
-			}
-		}
+        log("Stacks loaded, swapping cursor, scrolling to end.");
+        adapter.swapCursor(data);
+
+        if (scrollToEnd) {
+            getListView().smoothScrollToPosition(adapter.getCount());
+        } else {
+            scrollToEnd = true;
+        }
 	}	
 	
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		if (loader.getId() == StacksActivity.STACKS_LOADER) {
-			log("Closing last Stacks cursor, so setting adapter cursor to null.");
-			adapter.swapCursor(null);
-		}
+        log("Closing last Stacks cursor, so setting adapter cursor to null.");
+        adapter.swapCursor(null);
 	}
 	
 	// Loaders end ////////////////////////////////////////////////////////////////////////////////
@@ -306,24 +298,18 @@ public class StackViewFragment extends BaseListFragment
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        // getListAdapter().getItem(itemClickedForPopupMenu);
-
         switch (item.getItemId()) {
             case R.id.edit:
-                showCrouton("Edit pressed");
+                showInfo("Edit pressed");
                 return true;
             case R.id.delete:
-                showCrouton("Delete pressed");
+                showInfo("Delete pressed");
                 return true;
             case R.id.move:
-                showCrouton("Move pressed");
+                showInfo("Move pressed");
                 return true;
             default:
                 return false;
         }
-    }
-
-    private void showCrouton(String message) {
-        CroutonEx.makeText(getActivity(), message, CroutonEx.INFO).show();
     }
 }

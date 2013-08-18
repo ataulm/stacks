@@ -70,15 +70,14 @@ public class StacksActivity extends BaseActivity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.menu = menu;
         super.onCreateOptionsMenu(menu);
+        this.menu = menu;
         getActionBar().setDisplayOptions(
                 ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE,
                 ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME
                         | ActionBar.DISPLAY_SHOW_TITLE
         );
         getMenuInflater().inflate(R.menu.menu_activity_stacks, menu);
-
         return true;
     }
 
@@ -134,6 +133,11 @@ public class StacksActivity extends BaseActivity {
         return stack;
     }
 
+    /**
+     * Switch to StackEditFragment.
+     *
+     * Clears the ActionBar, and sets Done | Discard in its place.
+     */
     private void onEditActionSelected() {
         pager.setCurrentItem(StacksPagerAdapter.EDIT_PAGE);
         menu.clear();
@@ -147,7 +151,7 @@ public class StacksActivity extends BaseActivity {
     private void setDoneDiscardBar() {
         ActionBar actionBar = getActionBar();
 
-        LayoutInflater inflater;
+        final LayoutInflater inflater;
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -193,7 +197,7 @@ public class StacksActivity extends BaseActivity {
 
 
     private void acceptEdits() {
-        CroutonEx.makeText(this, "Changes saved", CroutonEx.CONFIRM).show();
+        showConfirm("Changes saved");
 
         ((StackEditFragment) adapter.getItem(StacksPagerAdapter.EDIT_PAGE)).commitChanges(stack);
 

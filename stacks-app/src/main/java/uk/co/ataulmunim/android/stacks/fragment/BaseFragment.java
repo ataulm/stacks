@@ -3,6 +3,7 @@ package uk.co.ataulmunim.android.stacks.fragment;
 import android.app.Fragment;
 import uk.co.ataulmunim.android.util.Logger;
 import uk.co.ataulmunim.android.util.SimpleLogger;
+import uk.co.ataulmunim.android.widget.CroutonEx;
 
 public class BaseFragment extends Fragment implements Logger {
     private final SimpleLogger logger = new SimpleLogger(getClass().getSimpleName());
@@ -15,5 +16,21 @@ public class BaseFragment extends Fragment implements Logger {
     @Override
     public void shouldLog(boolean switchLogging) {
         logger.shouldLog(switchLogging);
+    }
+
+    public void showConfirm(String message) {
+        CroutonEx.makeText(getActivity(), message, CroutonEx.CONFIRM).show();
+    }
+
+    public void showWarning(String message) {
+        CroutonEx.makeText(getActivity(), message, CroutonEx.WARN).show();
+    }
+
+    public void showInfo(String message) {
+        CroutonEx.makeText(getActivity(), message, CroutonEx.INFO).show();
+    }
+
+    public void showAlert(String message) {
+        CroutonEx.makeText(getActivity(), message, CroutonEx.ALERT).show();
     }
 }
