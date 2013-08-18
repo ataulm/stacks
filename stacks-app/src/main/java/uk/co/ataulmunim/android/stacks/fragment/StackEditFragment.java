@@ -11,6 +11,7 @@ import com.nicedistractions.shortstacks.R;
 import uk.co.ataulmunim.android.stacks.activity.StacksActivity;
 import uk.co.ataulmunim.android.stacks.activity.StacksActivity.UserWarnedAboutBack;
 import uk.co.ataulmunim.android.stacks.stack.Stack;
+import uk.co.ataulmunim.android.stacks.stack.StackPersistor;
 
 
 public class StackEditFragment extends BaseFragment implements TextWatcher {
@@ -70,8 +71,8 @@ public class StackEditFragment extends BaseFragment implements TextWatcher {
     }
 
     public void commitChanges(Stack stack) {
-        stack.setNotes(getActivity().getContentResolver(), notesInput.getText().toString());
-        stack.setStackName(getActivity().getContentResolver(), stackNameInput.getText().toString());
-        stack.notifyDatasetChanged();
+        stack.setNotes(notesInput.getText().toString());
+        stack.setStackName(stackNameInput.getText().toString());
+        StackPersistor.persist(getActivity().getContentResolver(), stack);
     }
 }

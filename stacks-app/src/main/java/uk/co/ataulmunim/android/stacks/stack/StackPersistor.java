@@ -34,7 +34,6 @@ public final class StackPersistor {
                         Stacks.STACK_NAME,
                         Stacks.LOCAL_SORT,
                         Stacks.NOTES,
-                        Stacks.PARENT,
                         Stacks.STARRED },
                 Stacks._ID + "=" + id,
                 null,
@@ -79,8 +78,12 @@ public final class StackPersistor {
         values.put(Stacks.LOCAL_SORT, stack.getPosition());
         values.put(Stacks.ACTION_ITEMS, stack.getActionItems());
 
-        contentResolver.update(Stacks.CONTENT_URI, values,
+        int updated = contentResolver.update(Stacks.CONTENT_URI, values,
                 Stacks._ID + "=" + stack.getId(), null);
+
+        if (updated > 0) {
+            stack.notifyDatasetChanged();
+        }
     }
 
     /**
@@ -91,8 +94,8 @@ public final class StackPersistor {
      * @param parent
      * @return inserted
      */
-    public static final boolean create(ContentResolver contentResolver, String stackName,
-                                     int parent) {
+    public static final boolean create(ContentResolver contentResolver,
+                                       String stackName, int parent) {
         Log.i(TAG, "Adding new Stack: " + stackName);
         final ContentValues values = new ContentValues();
         values.put(Stacks.UUID, UUID.randomUUID().toString());

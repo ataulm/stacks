@@ -21,7 +21,6 @@ import uk.co.ataulmunim.android.stacks.adapter.StacksCursorAdapter;
 import uk.co.ataulmunim.android.stacks.contentprovider.Stacks;
 import uk.co.ataulmunim.android.stacks.stack.Stack;
 import uk.co.ataulmunim.android.stacks.stack.StackPersistor;
-import uk.co.ataulmunim.android.widget.CroutonEx;
 
 
 public class StackViewFragment extends BaseListFragment
@@ -94,9 +93,7 @@ public class StackViewFragment extends BaseListFragment
 
         getListView().addHeaderView(stackInfoView, null, true);
         getListView().addFooterView(newStackInput, null, true);
-
-        getListView().setSelector(R.drawable.list_selector); // TODO: we don't want header view to show selected
-
+        getListView().setSelector(R.drawable.clear_list_selector);
 
         stackId = ((StacksActivity) getActivity()).getStackId();
 		

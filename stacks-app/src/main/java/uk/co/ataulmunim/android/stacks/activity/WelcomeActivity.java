@@ -41,10 +41,10 @@ public class WelcomeActivity extends BaseActivity implements
 	public void onLoadFinished(Loader<SharedPreferences> loader, SharedPreferences prefs) {
 		boolean rootCreated = prefs.getBoolean(PREFS_ROOT_CREATED, false);
 		if (!rootCreated) {
-            Stack.createDefaultStack(getContentResolver());
+            boolean created = Stack.createDefaultStack(getContentResolver());
 
             SharedPreferences.Editor editor = prefs.edit();
-			editor.putBoolean(PREFS_ROOT_CREATED, true);
+			editor.putBoolean(PREFS_ROOT_CREATED, created);
 			SharedPreferencesLoader.persist(editor);
 		}
 

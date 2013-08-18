@@ -57,21 +57,45 @@ public final class Stack {
         return stackName;
     }
 
+    public void setStackName(String stackName) {
+        if (stackName != null && stackName.trim().length() > 0) {
+            this.stackName = stackName.trim();
+        }
+    }
+
     public String getNotes() {
         return notes;
+    }
+
+    public void setNotes(String notes) {
+        if (notes != null && notes.trim().length() > 0) {
+            this.notes = notes.trim();
+        }
     }
 
     public int getParent() {
         return parent;
     }
 
+    public void setParent(int parent) {
+        if (parent >= 0) {
+            this.parent = parent;
+        }
+    }
+
     public boolean isStarred() {
         return isStarred;
+    }
+
+    public void setStarred(boolean isStarred) {
+        this.isStarred = isStarred;
     }
 
     public int getActionItems() {
         return actionItems;
     }
+
+    // TODO: formulate how ActionItems will be calculated (and modified)
 
     public long getCreatedDate() {
         return createdDate;
@@ -85,8 +109,18 @@ public final class Stack {
         return deletedDate;
     }
 
+    public void delete() {
+        this.deletedDate = System.currentTimeMillis();
+    }
+
     public int getPosition() {
         return position;
+    }
+
+    public void setPosition(int position) {
+        if (position >= 0) {
+            this.position = position;
+        }
     }
 
     public static class Builder {
@@ -163,6 +197,7 @@ public final class Stack {
             this.position = position;
             return this;
         }
+
         public final Stack build() {
             if (id < 0) {
                 throw new IllegalStateException("id must be set.");
@@ -199,45 +234,21 @@ public final class Stack {
         }
     }
 
-
-    public Stack setNotes(ContentResolver contentResolver, String notes) {
-        this.notes = notes;
-        final ContentValues values = new ContentValues();
-        values.put(Stacks.NOTES, notes);
-
-        contentResolver.update(Stacks.CONTENT_URI, values,
-                Stacks._ID + "=" + id, null);
-
-        return StackPersistor.retrieve(contentResolver, id);
-    }
-
-    public Stack setStackName(ContentResolver contentResolver, String stackName) {
-        if (stackName.length() > 0) {
-            this.stackName = stackName;
-        } else {
-            return null;
-        }
-
-        final ContentValues values = new ContentValues();
-        values.put(Stacks.STACK_NAME, stackName);
-
-        contentResolver.update(Stacks.CONTENT_URI, values,
-                Stacks._ID + "=" + id, null);
-
-        return StackPersistor.retrieve(contentResolver, id);
-    }
-
     /**
      * Adds the root level stack.
      *
      * This is created when the application is first opened, and its presence is checked whenever
-     * StackView is opened without a specific
+     * StackView is opened without a URI specified.
      *
      * @param contentResolver
      * @return
      */
     public static boolean createDefaultStack(ContentResolver contentResolver) {
-        return StackPersistor.create(contentResolver, "Stacks", DEFAULT_STACK_ID);
+        if (StackPersistor.retrieve(contentResolver, DEFAULT_STACK_ID) == null) {
+            return StackPersistor.create(contentResolver, "Stacks", DEFAULT_STACK_ID);
+        }
+
+        return false;
     }
 
     /**
@@ -250,6 +261,8 @@ public final class Stack {
     }
 
     public void addOnStackChangedListener(OnStackChangedListener listener) {
-        if (!onChangedListeners.contains(listener)) onChangedListeners.add(listener);
+        if (!onChangedListeners.contains(listener)) {
+            onChangedListeners.add(listener);
+        }
     }
 }
