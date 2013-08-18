@@ -38,19 +38,16 @@ public class WelcomeActivity extends BaseActivity implements
 	 */
 	@SuppressLint("CommitPrefEdits")
 	@Override
-	public void onLoadFinished(Loader<SharedPreferences> loader,
-			SharedPreferences prefs) {
+	public void onLoadFinished(Loader<SharedPreferences> loader, SharedPreferences prefs) {
 		boolean rootCreated = prefs.getBoolean(PREFS_ROOT_CREATED, false);
 		if (!rootCreated) {
-			// add the root stack
             Stack.createDefaultStack(getContentResolver());
 
             SharedPreferences.Editor editor = prefs.edit();
 			editor.putBoolean(PREFS_ROOT_CREATED, true);
 			SharedPreferencesLoader.persist(editor);
 		}
-		
-		// TODO: get the default open stack from SharedPrefs
+
 		// Open the default stack
         final Uri stack = ContentUris.withAppendedId(Stacks.CONTENT_URI,
         		Stacks.ROOT_STACK_ID);

@@ -25,9 +25,6 @@ public class StacksActivity extends BaseActivity {
         YES, NO, UNSET
     }
 
-
-    public static final int STACKS_LOADER = 0;
-
     private StacksPagerAdapter adapter;
     private FreezableViewPager pager;
     private Stack stack;
@@ -108,27 +105,22 @@ public class StacksActivity extends BaseActivity {
      */
     @Override
     public void onBackPressed() {
-        if (pager.getCurrentItem() == StacksPagerAdapter.EDIT_PAGE
-                && userWarned == UserWarnedAboutBack.YES) {
-
-            Crouton.clearCroutonsForActivity(this);
-            CroutonEx.makeText(this, R.string.unsaved_changes, CroutonEx.INFO).show();
-            softDiscardChanges();
-            userWarned = UserWarnedAboutBack.NO;
-
-        } else if (pager.getCurrentItem() == StacksPagerAdapter.EDIT_PAGE
-                && userWarned == UserWarnedAboutBack.NO) {
-
-            Crouton.clearCroutonsForActivity(this);
-            CroutonEx.makeText(this, R.string.warn_unsaved_changes, CroutonEx.WARN).show();
-            userWarned = UserWarnedAboutBack.YES;
-
-        } else if (pager.getCurrentItem() == StacksPagerAdapter.EDIT_PAGE
-                && userWarned == UserWarnedAboutBack.UNSET) {
-
-            softDiscardChanges();
-
-        } else super.onBackPressed();
+        if (pager.getCurrentItem() == StacksPagerAdapter.EDIT_PAGE) {
+            if (userWarned == UserWarnedAboutBack.YES) {
+                Crouton.clearCroutonsForActivity(this);
+                CroutonEx.makeText(this, R.string.unsaved_changes, CroutonEx.INFO).show();
+                softDiscardChanges();
+                userWarned = UserWarnedAboutBack.NO;
+            } else if (userWarned == UserWarnedAboutBack.NO) {
+                Crouton.clearCroutonsForActivity(this);
+                CroutonEx.makeText(this, R.string.warn_unsaved_changes, CroutonEx.WARN).show();
+                userWarned = UserWarnedAboutBack.YES;
+            } else {
+                softDiscardChanges();
+            }
+            return;
+        }
+        super.onBackPressed();
     }
 
     /**
