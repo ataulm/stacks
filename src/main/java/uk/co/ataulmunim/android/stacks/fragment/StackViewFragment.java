@@ -291,8 +291,6 @@ public class StackViewFragment extends BaseListFragment
         popup.show();
     }
 
-
-
     @Override
     public boolean onMenuItemClick(MenuItem item) {
 

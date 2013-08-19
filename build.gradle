@@ -4,15 +4,26 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.4'
+        classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.+'
     }
 }
 apply plugin: 'android'
+apply plugin: 'android-test'
 
 dependencies {
+    repositories {
+        mavenCentral()
+    }
+
+
     compile files('libs/android-support-v13.jar')
     compile files('libs/crouton-1.8.1-gravityfix.jar')
     compile files('libs/CWAC-LoaderEx.jar')
     compile files('libs/simplecontentprovider.jar')
+
+    testCompile 'junit:junit:4.10'
+    testCompile 'org.robolectric:robolectric:2.1.+'
+    testCompile 'com.squareup:fest-android:1.0.+'
 }
 
 android {
@@ -23,4 +34,10 @@ android {
         minSdkVersion 14
         targetSdkVersion 17
     }
+}
+
+
+task libs(type: Sync) {
+    from configurations.testCompile
+    into "libs_test"
 }

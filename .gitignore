@@ -25,6 +25,9 @@ pom.xml.*
 build
 .gradle
 
+# Robolectric Test jars
+libs_test
+
 #Ant
 build.xml
 ant.properties
@@ -37,3 +40,4 @@ proguard-project.txt
 tmp
 # backup files from gedit
 *~
+out/
