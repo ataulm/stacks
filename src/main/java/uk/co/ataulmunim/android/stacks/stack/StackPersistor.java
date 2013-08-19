@@ -21,7 +21,7 @@ public final class StackPersistor {
      * @param id
      * @return
      */
-    public static final Stack retrieve(ContentResolver contentResolver, int id) {
+    public static final Stack retrieve(ContentResolver contentResolver, long id) {
         Log.i(TAG, "Retrieving Stack with id: " + id);
         Cursor result = contentResolver.query(
                 Stacks.CONTENT_URI,
@@ -95,7 +95,7 @@ public final class StackPersistor {
      * @return inserted
      */
     public static final boolean create(ContentResolver contentResolver,
-                                       String stackName, int parent) {
+                                       String stackName, long parent) {
         Log.i(TAG, "Adding new Stack: " + stackName);
         final ContentValues values = new ContentValues();
         values.put(Stacks.UUID, UUID.randomUUID().toString());

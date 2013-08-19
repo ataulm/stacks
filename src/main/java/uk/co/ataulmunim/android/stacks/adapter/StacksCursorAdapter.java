@@ -45,7 +45,6 @@ public class StacksCursorAdapter extends SimpleCursorAdapter {
 		}
         holder.miniOverflow.setTag(R.id.tag_stack_position, position);
 
-
 		return row;
 	}
 	

@@ -19,7 +19,7 @@ public final class Stack {
     private static final String TAG = Stack.class.getSimpleName();
 
     private final List<OnStackChangedListener> onChangedListeners;
-    private final int id;
+    private final long id;
     private final long createdDate;
     private long modifiedDate;
     private long deletedDate;
@@ -30,7 +30,7 @@ public final class Stack {
     private String notes;
     private boolean isStarred;
 
-    private Stack(int id, String stackName, String notes, int parent, long createdDate, long modifiedDate, long deletedDate, int actionItems, boolean isStarred, int position) {
+    private Stack(long id, String stackName, String notes, int parent, long createdDate, long modifiedDate, long deletedDate, int actionItems, boolean isStarred, int position) {
         this.id = id;
         this.stackName = stackName;
         this.parent = parent;
@@ -49,7 +49,7 @@ public final class Stack {
         public void onStackChanged(Stack stack);
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -124,7 +124,7 @@ public final class Stack {
     }
 
     public static class Builder {
-        private int id;
+        private long id;
         private String stackName;
         private String notes;
         private int parent;
@@ -148,7 +148,7 @@ public final class Stack {
             position = 0;
         }
 
-        public Builder id(int id) {
+        public Builder id(long id) {
             this.id = id;
             return this;
         }

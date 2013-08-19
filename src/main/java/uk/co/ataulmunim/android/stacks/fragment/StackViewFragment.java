@@ -41,9 +41,9 @@ public class StackViewFragment extends BaseListFragment
     private EditText newStackInput;
 
     /**
-     * When user presses the context menu overflow button, the list item position is stored here
+     * ID of the Stack for which the context menu was most recently clicked.
      */
-    private int itemClickedForPopupMenu;
+    private long stackIdContextMenu;
 
 	/**
 	 * Determines whether or not to close the soft input keyboard when adding Stacks to the list.
@@ -59,7 +59,7 @@ public class StackViewFragment extends BaseListFragment
 	private boolean scrollToEnd;
 
 	private StacksCursorAdapter adapter;
-	private int stackId = Stacks.ROOT_STACK_ID; // id of the current stack in the Stacks table
+	private long stackId = Stacks.ROOT_STACK_ID; // id of the current stack in the Stacks table
 
 	// Indicates whether the Stack Info view (header) is expanded
 	private boolean isNotesViewUnlimited;
@@ -218,7 +218,7 @@ public class StackViewFragment extends BaseListFragment
 		if (name.length() == 0) return true;
 		
 		log("Adding " + name);
-        StackPersistor.create(getActivity().getContentResolver(), name, stackId);
+        StackPersistor.create(getContentResolver(), name, stackId);
         v.setText("");
 		
 		if (!quickAddMode) {
@@ -237,7 +237,7 @@ public class StackViewFragment extends BaseListFragment
 		log("Loading stacks under stack " + stackId);
 
         final String where = Stacks.PARENT + "=" + stackId +
-                " AND " + Stacks.DELETED + "<> 1" +
+                " AND " + Stacks.DELETED + "= 0" +
                 " AND " + Stacks._ID + "<>" + Stacks.ROOT_STACK_ID;
 
         final CursorLoader cursorLoader = new CursorLoader(
@@ -283,7 +283,7 @@ public class StackViewFragment extends BaseListFragment
     @Override
     public void onClick(View v) {
         log("mini overflow clicked");
-        itemClickedForPopupMenu = (Integer) v.getTag(R.id.tag_stack_position);
+        stackIdContextMenu = adapter.getItemId((Integer) v.getTag(R.id.tag_stack_position));
 
         PopupMenu popup = new PopupMenu(getActivity(), v);
         popup.setOnMenuItemClickListener(this);
@@ -295,12 +295,15 @@ public class StackViewFragment extends BaseListFragment
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.edit:
                 showInfo("Edit pressed");
                 return true;
             case R.id.delete:
-                showInfo("Delete pressed");
+                Stack clicked = StackPersistor.retrieve(getContentResolver(), stackIdContextMenu);
+                clicked.delete();
+                StackPersistor.persist(getContentResolver(), clicked);
                 return true;
             case R.id.move:
                 showInfo("Move pressed");

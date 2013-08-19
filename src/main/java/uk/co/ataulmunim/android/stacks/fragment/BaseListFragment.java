@@ -1,6 +1,7 @@
 package uk.co.ataulmunim.android.stacks.fragment;
 
 import android.app.ListFragment;
+import android.content.ContentResolver;
 import uk.co.ataulmunim.android.util.Logger;
 import uk.co.ataulmunim.android.util.SimpleLogger;
 import uk.co.ataulmunim.android.widget.CroutonEx;
@@ -32,5 +33,9 @@ public class BaseListFragment extends ListFragment implements Logger {
 
     public void showAlert(String message) {
         CroutonEx.makeText(getActivity(), message, CroutonEx.ALERT).show();
+    }
+
+    protected ContentResolver getContentResolver() {
+        return getActivity().getContentResolver();
     }
 }

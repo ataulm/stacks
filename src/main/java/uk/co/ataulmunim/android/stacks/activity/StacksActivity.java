@@ -218,7 +218,7 @@ public class StacksActivity extends BaseActivity {
      *
      * @return
      */
-    public int getStackId() {
+    public long getStackId() {
         return stack.getId();
     }
 }
