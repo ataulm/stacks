@@ -15,7 +15,6 @@ import uk.co.ataulmunim.android.stacks.fragment.StackEditFragment;
 import uk.co.ataulmunim.android.stacks.stack.Stack;
 import uk.co.ataulmunim.android.stacks.stack.StackPersistor;
 import uk.co.ataulmunim.android.view.FreezableViewPager;
-import uk.co.ataulmunim.android.widget.CroutonEx;
 
 
 public class StacksActivity extends BaseActivity {
@@ -107,12 +106,12 @@ public class StacksActivity extends BaseActivity {
         if (pager.getCurrentItem() == StacksPagerAdapter.EDIT_PAGE) {
             if (userWarned == UserWarnedAboutBack.YES) {
                 Crouton.clearCroutonsForActivity(this);
-                CroutonEx.makeText(this, R.string.unsaved_changes, CroutonEx.INFO).show();
+                showInfo(getString(R.string.unsaved_changes));
                 softDiscardChanges();
                 userWarned = UserWarnedAboutBack.NO;
             } else if (userWarned == UserWarnedAboutBack.NO) {
                 Crouton.clearCroutonsForActivity(this);
-                CroutonEx.makeText(this, R.string.warn_unsaved_changes, CroutonEx.WARN).show();
+                showInfo(getString(R.string.warn_unsaved_changes));
                 userWarned = UserWarnedAboutBack.YES;
             } else {
                 softDiscardChanges();
