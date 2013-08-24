@@ -34,4 +34,5 @@
 	<string name="lorem_title">Lorem Ipsum</string>
 	<string name="lorem_sentence">Lorem ipsum dolor sit amet</string>
 	<string name="lorem_paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam a augue metus, id posuere enim. Morbi pellentesque, sem nec ultrices accumsan, velit arcu elementum magna, sed mollis nisi velit quis turpis. Pellentesque in fermentum risus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam sit amet turpis ligula. Aliquam ultricies commodo blandit.</string>
+    <string name="ab_menu_delete">Delete</string>
 </resources>

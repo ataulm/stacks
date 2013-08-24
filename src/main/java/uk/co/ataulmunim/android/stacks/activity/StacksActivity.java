@@ -77,6 +77,12 @@ public class StacksActivity extends BaseActivity {
                         | ActionBar.DISPLAY_SHOW_TITLE
         );
         getMenuInflater().inflate(R.menu.menu_activity_stacks, menu);
+
+        // Don't allow deletion of the default Stack
+        if (stack.getId() == Stack.DEFAULT_STACK_ID) {
+            menu.findItem(R.id.ab_menu_delete).setVisible(false);
+        }
+
         return true;
     }
 
@@ -86,8 +92,30 @@ public class StacksActivity extends BaseActivity {
             case R.id.ab_menu_edit:
                 onEditActionSelected();
                 return true;
+
+            case R.id.ab_menu_delete:
+                onDeleteActionSelected();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void onDeleteActionSelected() {
+        stack.delete();
+        StackPersistor.persist(getContentResolver(), stack);
+        finish();
+    }
+
+    /**
+     * Switch to StackEditFragment.
+     *
+     * Clears the ActionBar, and sets Done | Discard in its place.
+     */
+    private void onEditActionSelected() {
+        pager.setCurrentItem(StacksPagerAdapter.EDIT_PAGE);
+        menu.clear();
+        setDoneDiscardBar();
+        ((StackEditFragment) adapter.getItem(StacksPagerAdapter.EDIT_PAGE)).updateInputFields();
     }
 
     /**
@@ -130,18 +158,6 @@ public class StacksActivity extends BaseActivity {
      */
     public Stack getStack() {
         return stack;
-    }
-
-    /**
-     * Switch to StackEditFragment.
-     *
-     * Clears the ActionBar, and sets Done | Discard in its place.
-     */
-    private void onEditActionSelected() {
-        pager.setCurrentItem(StacksPagerAdapter.EDIT_PAGE);
-        menu.clear();
-        setDoneDiscardBar();
-        ((StackEditFragment) adapter.getItem(StacksPagerAdapter.EDIT_PAGE)).updateInputFields();
     }
 
     /**

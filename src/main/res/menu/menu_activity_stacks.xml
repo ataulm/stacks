@@ -19,4 +19,9 @@
         android:icon="@drawable/ic_action_edit_black"
         android:showAsAction="ifRoom"
         android:title="@string/ab_menu_edit" />
+
+    <item android:id="@+id/ab_menu_delete"
+          android:icon="@drawable/ic_action_trash_black"
+          android:showAsAction="never"
+          android:title="@string/ab_menu_delete" />
 </menu>
