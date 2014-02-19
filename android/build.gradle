@@ -1,0 +1,23 @@
+apply plugin: 'android'
+
+dependencies {
+    compile 'com.novoda:notils:2.2.1'
+
+    compile files('libs/android-support-v13.jar')
+    compile files('libs/crouton-1.8.1-gravityfix.jar')
+    compile files('libs/CWAC-LoaderEx.jar')
+    compile files('libs/simplecontentprovider.jar')
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.0.1"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 19
+        versionCode 1
+        versionName "0.0.1"
+    }
+}
+

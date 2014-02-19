@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EditText
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/input_add_item"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:hint="New nist"
+    android:singleLine="true"
+    android:inputType="textAutoCorrect"
+    android:background="@null"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    android:imeOptions="flagNoExtractUi"
+    />
+
+<!--    When the DragSort functionality is added, this should have
+        paddingLeft equal to that of the drag handle icon (probably 32dp) -->
