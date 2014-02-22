@@ -9,4 +9,8 @@ public class BaseFragment extends Fragment {
         Toast.makeText(getActivity(), messageResId, Toast.LENGTH_SHORT).show();
     }
 
+    protected void toast(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
 }

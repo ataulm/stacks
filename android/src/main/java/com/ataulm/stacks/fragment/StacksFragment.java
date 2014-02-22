@@ -10,12 +10,14 @@ import android.widget.ListView;
 
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.base.BaseFragment;
+import com.ataulm.stacks.view.KeepLikeInputView;
+import com.ataulm.stacks.view.StacksInputCallbacks;
 import com.novoda.notils.caster.Views;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StacksFragment extends BaseFragment {
+public class StacksFragment extends BaseFragment implements StacksInputCallbacks {
 
     private ListView listView;
     private ListAdapter adapter;
@@ -50,7 +52,10 @@ public class StacksFragment extends BaseFragment {
 
     private View createFooterView(ListView parent) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        return inflater.inflate(R.layout.view_stacks_footer, null);
+        KeepLikeInputView footer = ((KeepLikeInputView) inflater.inflate(R.layout.view_stacks_footer, null));
+        footer.setCallbacks(this);
+
+        return footer;
     }
 
     public ListAdapter getAdapter() {
@@ -61,5 +66,10 @@ public class StacksFragment extends BaseFragment {
             adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, temp);
         }
         return adapter;
+    }
+
+    @Override
+    public void addStack(String summary) {
+        toast("add: " + summary);
     }
 }
