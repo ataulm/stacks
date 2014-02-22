@@ -2,11 +2,10 @@ package com.ataulm.stacks.activity;
 
 import android.os.Bundle;
 
-import com.ataulm.stacks.base.BaseActivity;
+import com.ataulm.stacks.base.StacksBaseActivity;
 import com.ataulm.stacks.R;
 
-
-public class StacksActivity extends BaseActivity {
+public class StacksActivity extends StacksBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

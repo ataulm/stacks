@@ -4,12 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.ataulm.stacks.R;
-import com.ataulm.stacks.base.BaseFragment;
+import com.ataulm.stacks.base.StacksBaseFragment;
+import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.persistence.StacksListAdapter;
 import com.ataulm.stacks.view.KeepLikeInputView;
 import com.ataulm.stacks.view.StacksInputCallbacks;
 import com.novoda.notils.caster.Views;
@@ -17,10 +18,10 @@ import com.novoda.notils.caster.Views;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StacksFragment extends BaseFragment implements StacksInputCallbacks {
+public class StacksFragment extends StacksBaseFragment implements StacksInputCallbacks {
 
     private ListView listView;
-    private ListAdapter adapter;
+    private StacksListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,16 +61,23 @@ public class StacksFragment extends BaseFragment implements StacksInputCallbacks
 
     public ListAdapter getAdapter() {
         if (adapter == null) {
-            List<String> temp = new ArrayList<String>();
-            temp.add("one");
-            temp.add("two");
-            adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, temp);
+            adapter = new StacksListAdapter();
+
+            List<Stack> temp = new ArrayList<Stack>();
+            temp.add(Stack.newInstance("root", "one"));
+            temp.add(Stack.newInstance("root", "two"));
+            adapter.swapList(temp);
         }
         return adapter;
     }
 
     @Override
     public void addStack(String summary) {
-        toast("add: " + summary);
+        List<Stack> temp = new ArrayList<Stack>(adapter.getCount());
+        for (int i = 0; i < adapter.getCount(); i++) {
+            temp.add(adapter.getItem(i));
+        }
+        temp.add(Stack.newInstance("root", summary));
+        adapter.swapList(temp);
     }
 }
