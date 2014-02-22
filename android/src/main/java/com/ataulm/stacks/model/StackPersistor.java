@@ -1,28 +1,28 @@
-package com.ataulm.nists.nist;
+package com.ataulm.stacks.model;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
-import com.ataulm.nists.contentprovider.Stacks;
+import com.ataulm.stacks.contentprovider.Stacks;
 
 import java.util.UUID;
 
 /**
  * Handles the insertion, updates and retrieval of Stacks to persistent storage.
  */
-public final class NistPersistor {
-    private static final String TAG = NistPersistor.class.getSimpleName();
+public final class StackPersistor {
+    private static final String TAG = StackPersistor.class.getSimpleName();
 
     /**
-     * Retrieve Nist with given ID from persistent storage.
+     * Retrieve Stack with given ID from persistent storage.
      *
      * @param contentResolver
      * @param id
      * @return
      */
-    public static final Nist retrieve(ContentResolver contentResolver, long id) {
-        Log.i(TAG, "Retrieving Nist with id: " + id);
+    public static final Stack retrieve(ContentResolver contentResolver, long id) {
+        Log.i(TAG, "Retrieving Stack with id: " + id);
         Cursor result = contentResolver.query(
                 Stacks.CONTENT_URI,
                 new String[] {
@@ -43,7 +43,7 @@ public final class NistPersistor {
         if (result.getCount() == 0) return null;
         result.moveToFirst();
 
-        Nist nist = new Nist.Builder()
+        Stack stack = new Stack.Builder()
                 .id(id)
                 .name(result.getString(result.getColumnIndex(Stacks.STACK_NAME)))
                 .notes(result.getString(result.getColumnIndex(Stacks.NOTES)))
@@ -56,38 +56,38 @@ public final class NistPersistor {
                 .actionItems(result.getInt(result.getColumnIndex(Stacks.ACTION_ITEMS)))
                 .build();
 
-        return nist;
+        return stack;
     }
 
     /**
-     * Persists updates for an existing Nist.
+     * Persists updates for an existing Stack.
      *
      * @param contentResolver
-     * @param nist
+     * @param stack
      */
-    public static final void persist(ContentResolver contentResolver, Nist nist) {
-        Log.i(TAG, "Persisting Nist with id: " + nist.getId());
+    public static final void persist(ContentResolver contentResolver, Stack stack) {
+        Log.i(TAG, "Persisting Stack with id: " + stack.getId());
 
         final ContentValues values = new ContentValues();
-        values.put(Stacks.STACK_NAME, nist.getStackName());
-        values.put(Stacks.NOTES, nist.getNotes());
-        values.put(Stacks.PARENT, nist.getParent());
-        values.put(Stacks.DELETED, nist.getDeletedDate());
+        values.put(Stacks.STACK_NAME, stack.getStackName());
+        values.put(Stacks.NOTES, stack.getNotes());
+        values.put(Stacks.PARENT, stack.getParent());
+        values.put(Stacks.DELETED, stack.getDeletedDate());
         values.put(Stacks.MODIFIED_DATE, System.currentTimeMillis());
-        values.put(Stacks.STARRED, nist.isStarred());
-        values.put(Stacks.LOCAL_SORT, nist.getPosition());
-        values.put(Stacks.ACTION_ITEMS, nist.getActionItems());
+        values.put(Stacks.STARRED, stack.isStarred());
+        values.put(Stacks.LOCAL_SORT, stack.getPosition());
+        values.put(Stacks.ACTION_ITEMS, stack.getActionItems());
 
         int updated = contentResolver.update(Stacks.CONTENT_URI, values,
-                Stacks._ID + "=" + nist.getId(), null);
+                Stacks._ID + "=" + stack.getId(), null);
 
         if (updated > 0) {
-            nist.notifyDatasetChanged();
+            stack.notifyDatasetChanged();
         }
     }
 
     /**
-     * Adds new Nist to persistent storage.
+     * Adds new Stack to persistent storage.
      *
      * @param contentResolver
      * @param stackName
@@ -96,7 +96,7 @@ public final class NistPersistor {
      */
     public static final boolean create(ContentResolver contentResolver,
                                        String stackName, long parent) {
-        Log.i(TAG, "Adding new Nist: " + stackName);
+        Log.i(TAG, "Adding new Stack: " + stackName);
         final ContentValues values = new ContentValues();
         values.put(Stacks.UUID, UUID.randomUUID().toString());
         values.put(Stacks.STACK_NAME, stackName);

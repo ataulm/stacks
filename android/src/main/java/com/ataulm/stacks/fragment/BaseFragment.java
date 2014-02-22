@@ -1,12 +1,12 @@
-package com.ataulm.nists.fragment;
+package com.ataulm.stacks.fragment;
 
-import android.app.ListFragment;
+import android.app.Fragment;
 import android.content.ContentResolver;
-import com.ataulm.nists.util.Logger;
-import com.ataulm.nists.util.SimpleLogger;
-import com.ataulm.nists.widget.CroutonEx;
+import com.ataulm.stacks.util.Logger;
+import com.ataulm.stacks.util.SimpleLogger;
+import com.ataulm.stacks.widget.CroutonEx;
 
-public class BaseListFragment extends ListFragment implements Logger {
+public class BaseFragment extends Fragment implements Logger {
     private final SimpleLogger logger = new SimpleLogger(getClass().getSimpleName());
 
     @Override

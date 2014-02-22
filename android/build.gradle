@@ -2,11 +2,8 @@ apply plugin: 'android'
 
 dependencies {
     compile 'com.novoda:notils:2.2.1'
-
-    compile files('libs/android-support-v13.jar')
-    compile files('libs/crouton-1.8.1-gravityfix.jar')
-    compile files('libs/CWAC-LoaderEx.jar')
-    compile files('libs/simplecontentprovider.jar')
+    compile 'com.novoda:sqliteprovider-core:1.0.1'
+    compile 'joda-time:joda-time:2.3'
 }
 
 android {
@@ -20,4 +17,3 @@ android {
         versionName "0.0.1"
     }
 }
-

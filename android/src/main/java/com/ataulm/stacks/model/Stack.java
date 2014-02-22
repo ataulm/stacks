@@ -1,4 +1,4 @@
-package com.ataulm.nists.nist;
+package com.ataulm.stacks.model;
 
 import android.content.ContentResolver;
 
@@ -6,15 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A Nist represents a list or listitem (a node in the tree) in Stacks.
+ * A Stack represents a list or listitem (a node in the tree) in Stacks.
  *
- * Every Nist has a name (title/label), and a parent (represented by its integer id in the database).
+ * Every Stack has a name (title/label), and a parent (represented by its integer id in the database).
  *
  * Stacks may also contain multiline notes.
  */
-public final class Nist {
+public final class Stack {
     public static final int DEFAULT_STACK_ID = 1;
-    private static final String TAG = Nist.class.getSimpleName();
+    private static final String TAG = Stack.class.getSimpleName();
 
     private final List<OnStackChangedListener> onChangedListeners;
     private final long id;
@@ -28,7 +28,7 @@ public final class Nist {
     private String notes;
     private boolean isStarred;
 
-    private Nist(long id, String stackName, String notes, int parent, long createdDate, long modifiedDate, long deletedDate, int actionItems, boolean isStarred, int position) {
+    private Stack(long id, String stackName, String notes, int parent, long createdDate, long modifiedDate, long deletedDate, int actionItems, boolean isStarred, int position) {
         this.id = id;
         this.stackName = stackName;
         this.parent = parent;
@@ -44,7 +44,7 @@ public final class Nist {
     }
 
     public interface OnStackChangedListener {
-        public void onStackChanged(Nist nist);
+        public void onStackChanged(Stack stack);
     }
 
     public long getId() {
@@ -196,7 +196,7 @@ public final class Nist {
             return this;
         }
 
-        public final Nist build() {
+        public final Stack build() {
             if (id < 0) {
                 throw new IllegalStateException("id must be set.");
             }
@@ -206,7 +206,7 @@ public final class Nist {
             }
 
             if (stackName == null || stackName.length() == 0) {
-                throw new IllegalStateException("Nist name must be set.");
+                throw new IllegalStateException("Stack name must be set.");
             }
 
             if (notes == null) {
@@ -225,10 +225,10 @@ public final class Nist {
                 throw new IllegalStateException("Deleted date must be set.");
             }
 
-            Nist nist = new Nist(id, stackName, notes, parent, createdDate,
+            Stack stack = new Stack(id, stackName, notes, parent, createdDate,
                     modifiedDate, deletedDate, actionItems, isStarred, position);
 
-            return nist;
+            return stack;
         }
     }
 
@@ -242,8 +242,8 @@ public final class Nist {
      * @return
      */
     public static boolean createDefaultStack(ContentResolver contentResolver) {
-        if (NistPersistor.retrieve(contentResolver, DEFAULT_STACK_ID) == null) {
-            return NistPersistor.create(contentResolver, "Stacks", DEFAULT_STACK_ID);
+        if (StackPersistor.retrieve(contentResolver, DEFAULT_STACK_ID) == null) {
+            return StackPersistor.create(contentResolver, "Stacks", DEFAULT_STACK_ID);
         }
 
         return false;

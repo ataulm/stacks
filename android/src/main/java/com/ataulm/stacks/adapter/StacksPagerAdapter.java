@@ -1,10 +1,10 @@
-package com.ataulm.nists.adapter;
+package com.ataulm.stacks.adapter;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
-import com.ataulm.nists.fragment.StackEditFragment;
-import com.ataulm.nists.fragment.StackViewFragment;
+import com.ataulm.stacks.fragment.StackEditFragment;
+import com.ataulm.stacks.fragment.StackViewFragment;
 
 public class StacksPagerAdapter extends FragmentPagerAdapter{
 	public static final int STACKS_PAGE = 0;

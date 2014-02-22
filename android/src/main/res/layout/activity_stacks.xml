@@ -7,7 +7,7 @@
     >
     
     <!-- StacksViewFragment and StackEditFragment are in this pager -->
-    <com.ataulm.nists.view.FreezableViewPager
+    <com.ataulm.stacks.view.FreezableViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

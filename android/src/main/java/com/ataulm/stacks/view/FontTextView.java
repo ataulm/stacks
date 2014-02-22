@@ -1,11 +1,11 @@
-package com.ataulm.nists.view;
+package com.ataulm.stacks.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
-import com.ataulm.nists.R;
+import com.ataulm.stacks.R;
 
 /*
  * FIXME TODO: IMPORTANT: It appears that using custom enums in styles

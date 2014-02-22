@@ -1,4 +1,4 @@
-package com.ataulm.nists.contentprovider;
+package com.ataulm.stacks.contentprovider;
 
 import android.net.Uri;
 import edu.mit.mobile.android.content.ContentItem;
@@ -8,7 +8,7 @@ import edu.mit.mobile.android.content.column.*;
 
 /**
  * Dates is the database table storing dates associated with Stacks. There is
- * no assumption made about the association with a Nist; the user can append a
+ * no assumption made about the association with a Stack; the user can append a
  * name for each date associated.
  *  
  * @author ataulm
@@ -76,6 +76,6 @@ public class Dates implements ContentItem {
     // path and authority.
     // This constant is not necessary, but is very handy for doing queries.
     public static final Uri CONTENT_URI = ProviderUtils.toContentUri(
-            NistContentProvider.AUTHORITY, PATH);
+            StacksContentProvider.AUTHORITY, PATH);
 
 }

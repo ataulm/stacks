@@ -1,4 +1,4 @@
-package com.ataulm.nists.activity;
+package com.ataulm.stacks.activity;
 
 import android.app.ActionBar;
 import android.content.Context;
@@ -8,16 +8,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
-import com.ataulm.nists.R;
+
+import com.ataulm.stacks.R;
+import com.ataulm.stacks.adapter.StacksPagerAdapter;
+import com.ataulm.stacks.fragment.StackEditFragment;
+import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.model.StackPersistor;
+import com.ataulm.stacks.view.FreezableViewPager;
+
 import de.keyboardsurfer.android.widget.crouton.Crouton;
-import com.ataulm.nists.adapter.StacksPagerAdapter;
-import com.ataulm.nists.fragment.StackEditFragment;
-import com.ataulm.nists.nist.Nist;
-import com.ataulm.nists.nist.NistPersistor;
-import com.ataulm.nists.view.FreezableViewPager;
 
 
-public class StacksActivity extends BaseActivity {
+public class StacksActivity extends NistActivity {
 
     /* "Press back to lose unsaved changes" */
     public enum UserWarnedAboutBack {
@@ -26,11 +28,11 @@ public class StacksActivity extends BaseActivity {
 
     private StacksPagerAdapter adapter;
     private FreezableViewPager pager;
-    private Nist nist;
+    private Stack stack;
     private Menu menu;
 
     private UserWarnedAboutBack userWarned = UserWarnedAboutBack.UNSET;
-    private int stackId = Nist.DEFAULT_STACK_ID;
+    private int stackId = Stack.DEFAULT_STACK_ID;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,10 +49,10 @@ public class StacksActivity extends BaseActivity {
             try {
                 stackId = Integer.parseInt(stackUri.getLastPathSegment());
             } catch (NumberFormatException e) {
-                log("Invalid nist Uri passed (" + stackUri.getLastPathSegment() + ").");
+                toast("Invalid stack Uri passed (" + stackUri.getLastPathSegment() + ").");
             }
         }
-        nist = NistPersistor.retrieve(getContentResolver(), stackId);
+        stack = StackPersistor.retrieve(getContentResolver(), stackId);
 
         adapter = new StacksPagerAdapter(getFragmentManager());
         pager = (FreezableViewPager) findViewById(R.id.pager);
@@ -78,8 +80,8 @@ public class StacksActivity extends BaseActivity {
         );
         getMenuInflater().inflate(R.menu.menu_activity_stacks, menu);
 
-        // Don't allow deletion of the default Nist
-        if (nist.getId() == Nist.DEFAULT_STACK_ID) {
+        // Don't allow deletion of the default Stack
+        if (stack.getId() == Stack.DEFAULT_STACK_ID) {
             menu.findItem(R.id.ab_menu_delete).setVisible(false);
         }
 
@@ -101,8 +103,8 @@ public class StacksActivity extends BaseActivity {
     }
 
     private void onDeleteActionSelected() {
-        nist.delete();
-        NistPersistor.persist(getContentResolver(), nist);
+        stack.delete();
+        StackPersistor.persist(getContentResolver(), stack);
         finish();
     }
 
@@ -121,7 +123,7 @@ public class StacksActivity extends BaseActivity {
     /**
      * Fires a warning if there are unsaved changes, but returns on second press.
      * <p/>
-     * If the user is editing the nist name or notes properties of the nist and presses back, a
+     * If the user is editing the stack name or notes properties of the stack and presses back, a
      * Crouton is displayed warning the user. The user can press back again to return to the
      * StackViewFragment. If the user makes subsequent changes, the warning flag is reset, and the
      * user will be warned again.
@@ -150,14 +152,14 @@ public class StacksActivity extends BaseActivity {
     }
 
     /**
-     * Get a representation of the current nist in a {@link com.ataulm.nists.nist.Nist} object.
+     * Get a representation of the current stack in a {@link com.ataulm.stacks.model.Stack} object.
      * <p/>
-     * The returned Nist isn't guaranteed to stay up-to-date, so don't keep a long-lived reference.
+     * The returned Stack isn't guaranteed to stay up-to-date, so don't keep a long-lived reference.
      *
-     * @return nist the representation of the current nist as a Nist object
+     * @return stack the representation of the current stack as a Stack object
      */
-    public Nist getNist() {
-        return nist;
+    public Stack getStack() {
+        return stack;
     }
 
     /**
@@ -214,7 +216,7 @@ public class StacksActivity extends BaseActivity {
     private void acceptEdits() {
         showConfirm("Changes saved");
 
-        ((StackEditFragment) adapter.getItem(StacksPagerAdapter.EDIT_PAGE)).commitChanges(nist);
+        ((StackEditFragment) adapter.getItem(StacksPagerAdapter.EDIT_PAGE)).commitChanges(stack);
 
         pager.setCurrentItem(StacksPagerAdapter.STACKS_PAGE);
         invalidateOptionsMenu();
@@ -230,11 +232,11 @@ public class StacksActivity extends BaseActivity {
     }
 
     /**
-     * Gets the local (SQL) ID of the current nist.
+     * Gets the local (SQL) ID of the current stack.
      *
      * @return
      */
     public long getStackId() {
-        return nist.getId();
+        return stack.getId();
     }
 }

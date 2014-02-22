@@ -4,7 +4,7 @@
     android:id="@+id/input_add_item"
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:hint="New nist"
+    android:hint="New stack"
     android:singleLine="true"
     android:inputType="textAutoCorrect"
     android:background="@null"

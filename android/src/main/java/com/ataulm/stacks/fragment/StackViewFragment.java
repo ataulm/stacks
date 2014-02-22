@@ -1,4 +1,4 @@
-package com.ataulm.nists.fragment;
+package com.ataulm.stacks.fragment;
 
 import android.app.Activity;
 import android.app.LoaderManager;
@@ -15,15 +15,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView.OnEditorActionListener;
-import com.ataulm.nists.R;
-import com.ataulm.nists.activity.StacksActivity;
-import com.ataulm.nists.adapter.StacksCursorAdapter;
-import com.ataulm.nists.contentprovider.Stacks;
-import com.ataulm.nists.nist.Nist;
-import com.ataulm.nists.nist.NistPersistor;
+import com.ataulm.stacks.R;
+import com.ataulm.stacks.activity.StacksActivity;
+import com.ataulm.stacks.adapter.StacksCursorAdapter;
+import com.ataulm.stacks.contentprovider.Stacks;
+import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.model.StackPersistor;
 
 public class StackViewFragment extends BaseListFragment
-	implements LoaderManager.LoaderCallbacks<Cursor>, Nist.OnStackChangedListener, OnEditorActionListener,
+	implements LoaderManager.LoaderCallbacks<Cursor>, Stack.OnStackChangedListener, OnEditorActionListener,
         OnItemClickListener, View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 	
 	public static final String HEADER_TAG = "header";
@@ -40,7 +40,7 @@ public class StackViewFragment extends BaseListFragment
     private EditText newStackInput;
 
     /**
-     * ID of the Nist for which the context menu was most recently clicked.
+     * ID of the Stack for which the context menu was most recently clicked.
      */
     private long stackIdContextMenu;
 
@@ -60,7 +60,7 @@ public class StackViewFragment extends BaseListFragment
 	private StacksCursorAdapter adapter;
 	private long stackId = Stacks.ROOT_STACK_ID; // id of the current stack in the Stacks table
 
-	// Indicates whether the Nist Info view (header) is expanded
+	// Indicates whether the Stack Info view (header) is expanded
 	private boolean isNotesViewUnlimited;
 
 	@Override
@@ -112,7 +112,7 @@ public class StackViewFragment extends BaseListFragment
         // Prepare the loader.  Either re-connect with an existing one, or start a new one.
         getActivity().getLoaderManager().initLoader(0, null, this);
 
-        ((StacksActivity) getActivity()).getNist().addOnStackChangedListener(this);
+        ((StacksActivity) getActivity()).getStack().addOnStackChangedListener(this);
 
         quickAddMode = true;
         newStackInput.setOnEditorActionListener(this);
@@ -138,9 +138,9 @@ public class StackViewFragment extends BaseListFragment
 
 
     public void updateHeaderView() {
-        Nist nist = ((StacksActivity) getActivity()).getNist();
-        String notes = nist.getNotes();
-        String stackName = nist.getStackName();
+        Stack stack = ((StacksActivity) getActivity()).getStack();
+        String notes = stack.getNotes();
+        String stackName = stack.getStackName();
         int limitedLines = getResources().getInteger(R.integer.notes_line_height);
 
         stackNameView.setText(stackName);
@@ -154,7 +154,7 @@ public class StackViewFragment extends BaseListFragment
 
         if (notesView.getVisibility() != View.VISIBLE) notesView.setVisibility(View.VISIBLE);
 
-        notesView.setText(nist.getNotes());
+        notesView.setText(stack.getNotes());
         notesView.setMaxLines(limitedLines);
         isNotesViewUnlimited = false;
 
@@ -191,8 +191,8 @@ public class StackViewFragment extends BaseListFragment
 
 
     /**
-	 * Opens the clicked Nist in a new StacksActivity, or toggles the expanded
-	 * property of the Nist's header view.
+	 * Opens the clicked Stack in a new StacksActivity, or toggles the expanded
+	 * property of the Stack's header view.
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -217,7 +217,7 @@ public class StackViewFragment extends BaseListFragment
 		if (name.length() == 0) return true;
 		
 		log("Adding " + name);
-        NistPersistor.create(getContentResolver(), name, stackId);
+        StackPersistor.create(getContentResolver(), name, stackId);
         v.setText("");
 		
 		if (!quickAddMode) {
@@ -274,7 +274,7 @@ public class StackViewFragment extends BaseListFragment
 
 
     @Override
-    public void onStackChanged(Nist nist) {
+    public void onStackChanged(Stack stack) {
         log("onStackChanged() called");
         updateHeaderView();
     }
@@ -298,9 +298,9 @@ public class StackViewFragment extends BaseListFragment
                 showInfo("Edit pressed");
                 return true;
             case R.id.delete:
-                Nist clicked = NistPersistor.retrieve(getContentResolver(), stackIdContextMenu);
+                Stack clicked = StackPersistor.retrieve(getContentResolver(), stackIdContextMenu);
                 clicked.delete();
-                NistPersistor.persist(getContentResolver(), clicked);
+                StackPersistor.persist(getContentResolver(), clicked);
                 return true;
             case R.id.move:
                 showInfo("Move pressed");

@@ -1,4 +1,4 @@
-package com.ataulm.nists.adapter;
+package com.ataulm.stacks.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,8 +6,8 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.ataulm.nists.R;
-import com.ataulm.nists.fragment.StackViewFragment;
+import com.ataulm.stacks.R;
+import com.ataulm.stacks.fragment.StackViewFragment;
 
 
 public class StacksCursorAdapter extends SimpleCursorAdapter {

@@ -1,22 +1,11 @@
-package com.ataulm.nists.activity;
+package com.ataulm.stacks.activity;
 
 import android.app.Activity;
-import com.ataulm.nists.util.Logger;
-import com.ataulm.nists.util.SimpleLogger;
-import com.ataulm.nists.widget.CroutonEx;
+import android.widget.Toast;
 
-public class BaseActivity extends Activity implements Logger {
-    private final SimpleLogger logger = new SimpleLogger(getClass().getSimpleName());
+import com.ataulm.stacks.widget.CroutonEx;
 
-    @Override
-    public void log(String message) {
-        logger.log(message);
-    }
-
-    @Override
-    public void shouldLog(boolean switchLogging) {
-        logger.shouldLog(switchLogging);
-    }
+public class NistActivity extends Activity {
 
     public void showConfirm(String message) {
         CroutonEx.makeText(this, message, CroutonEx.CONFIRM).show();
@@ -33,4 +22,9 @@ public class BaseActivity extends Activity implements Logger {
     public void showAlert(String message) {
         CroutonEx.makeText(this, message, CroutonEx.ALERT).show();
     }
+
+    public void toast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
 }

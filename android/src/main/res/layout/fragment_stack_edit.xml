@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         >
 
-        <!-- Nist Name -->
+        <!-- Stack Name -->
         <TextView
                 android:id="@+id/label_stackname"
                 android:layout_width="match_parent"

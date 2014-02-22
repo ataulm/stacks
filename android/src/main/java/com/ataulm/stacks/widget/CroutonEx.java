@@ -1,8 +1,8 @@
-package com.ataulm.nists.widget;
+package com.ataulm.stacks.widget;
 
 import android.app.Activity;
 import android.view.View;
-import com.ataulm.nists.R;
+import com.ataulm.stacks.R;
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;

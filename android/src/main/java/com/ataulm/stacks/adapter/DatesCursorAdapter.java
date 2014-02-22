@@ -1,4 +1,4 @@
-package com.ataulm.nists.adapter;
+package com.ataulm.stacks.adapter;
 
 import android.content.Context;
 import android.database.Cursor;

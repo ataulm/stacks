@@ -1,4 +1,4 @@
-package com.ataulm.nists.activity;
+package com.ataulm.stacks.activity;
 
 import android.annotation.SuppressLint;
 import android.app.LoaderManager;
@@ -9,11 +9,11 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import com.commonsware.cwac.loaderex.SharedPreferencesLoader;
-import com.ataulm.nists.contentprovider.Stacks;
-import com.ataulm.nists.nist.Nist;
+import com.ataulm.stacks.contentprovider.Stacks;
+import com.ataulm.stacks.model.Stack;
 
 
-public class WelcomeActivity extends BaseActivity implements
+public class WelcomeActivity extends NistActivity implements
 		LoaderManager.LoaderCallbacks<SharedPreferences> {
 
 	public static final String PREFS_ROOT_CREATED = "rootCreated";
@@ -41,7 +41,7 @@ public class WelcomeActivity extends BaseActivity implements
 	public void onLoadFinished(Loader<SharedPreferences> loader, SharedPreferences prefs) {
 		boolean rootCreated = prefs.getBoolean(PREFS_ROOT_CREATED, false);
 		if (!rootCreated) {
-            boolean created = Nist.createDefaultStack(getContentResolver());
+            boolean created = Stack.createDefaultStack(getContentResolver());
 
             SharedPreferences.Editor editor = prefs.edit();
 			editor.putBoolean(PREFS_ROOT_CREATED, created);

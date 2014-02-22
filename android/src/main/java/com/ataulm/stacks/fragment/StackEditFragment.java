@@ -1,4 +1,4 @@
-package com.ataulm.nists.fragment;
+package com.ataulm.stacks.fragment;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -7,11 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import com.ataulm.nists.R;
-import com.ataulm.nists.activity.StacksActivity;
-import com.ataulm.nists.activity.StacksActivity.UserWarnedAboutBack;
-import com.ataulm.nists.nist.Nist;
-import com.ataulm.nists.nist.NistPersistor;
+import com.ataulm.stacks.R;
+import com.ataulm.stacks.activity.StacksActivity;
+import com.ataulm.stacks.activity.StacksActivity.UserWarnedAboutBack;
+import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.model.StackPersistor;
 
 public class StackEditFragment extends BaseFragment implements TextWatcher {
 	private StacksActivity activity;
@@ -47,9 +47,9 @@ public class StackEditFragment extends BaseFragment implements TextWatcher {
 	 * Called when the edit action is pressed, or onActivityCreated
 	 */
 	public void updateInputFields() {
-	    Nist nist = activity.getNist();
-        stackNameInput.setText(nist.getStackName());
-        notesInput.setText(nist.getNotes());
+	    Stack stack = activity.getStack();
+        stackNameInput.setText(stack.getStackName());
+        notesInput.setText(stack.getNotes());
         
         // Reset this after updates to counteract TextWatcher
         activity.setUserWarnedAboutBack(UserWarnedAboutBack.UNSET);
@@ -69,9 +69,9 @@ public class StackEditFragment extends BaseFragment implements TextWatcher {
         activity.setUserWarnedAboutBack(UserWarnedAboutBack.NO);               
     }
 
-    public void commitChanges(Nist nist) {
-        nist.setNotes(notesInput.getText().toString());
-        nist.setStackName(stackNameInput.getText().toString());
-        NistPersistor.persist(getActivity().getContentResolver(), nist);
+    public void commitChanges(Stack stack) {
+        stack.setNotes(notesInput.getText().toString());
+        stack.setStackName(stackNameInput.getText().toString());
+        StackPersistor.persist(getActivity().getContentResolver(), stack);
     }
 }

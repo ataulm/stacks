@@ -1,4 +1,4 @@
-package com.ataulm.nists.view;
+package com.ataulm.stacks.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.FrameLayout;
-import com.ataulm.nists.R;
+import com.ataulm.stacks.R;
 
 public class ExpandView extends FrameLayout implements OnClickListener,
 		OnGlobalLayoutListener {

@@ -1,4 +1,4 @@
-package com.ataulm.nists.contentprovider;
+package com.ataulm.stacks.contentprovider;
 
 import android.net.Uri;
 import edu.mit.mobile.android.content.ContentItem;
@@ -42,7 +42,7 @@ public class Stacks implements ContentItem {
     // --------------------------------------------------------------------------------------------
     // starred			boolean		flag to indicate starred or not.    
     // --------------------------------------------------------------------------------------------
-    // deleted  		datetime	timestamp when Nist was marked for	deletion
+    // deleted  		datetime	timestamp when Stack was marked for	deletion
     // --------------------------------------------------------------------------------------------    
     // localsort		integer		list position of this stack in parent stack
     // ============================================================================================
@@ -54,61 +54,61 @@ public class Stacks implements ContentItem {
     public static final String UUID = "uuid";
 	
     /**
-	 * A single line summary of the Nist (title, task or list item)
+	 * A single line summary of the Stack (title, task or list item)
 	 */
 	@DBColumn(type = TextColumn.class, notnull = true)
     public static final String STACK_NAME = "stackname";
 	
 	/**
-	 * Automatically set current date value on creation of the Nist.
+	 * Automatically set current date value on creation of the Stack.
 	 */
 	@DBColumn(type = DatetimeColumn.class, defaultValue = DatetimeColumn.NOW_IN_MILLISECONDS)
     public static final String CREATED_DATE = "created";
 	
 	/**
-	 * Last time this Nist, or associated items in other tables, have been
+	 * Last time this Stack, or associated items in other tables, have been
 	 * modified. Used to check whether to sync.
 	 */
 	@DBColumn(type = DatetimeColumn.class, defaultValue = DatetimeColumn.NOW_IN_MILLISECONDS)
     public static final String MODIFIED_DATE = "modified";
 	
 	/**
-	 * A description about the Nist
+	 * A description about the Stack
 	 */
 	@DBColumn(type = TextColumn.class, defaultValue = "")
     public static final String NOTES = "notes";
 	
 	/**
-	 * The _ID of this Nist's parent, where parent is the direct ancestor in
+	 * The _ID of this Stack's parent, where parent is the direct ancestor in
 	 * the tree.
 	 */
 	@DBColumn(type = IntegerColumn.class, notnull = true)
     public static final String PARENT = "parent";
 	
 	/**
-	 * The number of action items in this Nist and its children. An action
+	 * The number of action items in this Stack and its children. An action
 	 * item is a leaf node.
 	 */
 	@DBColumn(type = IntegerColumn.class, defaultValue = "0")
     public static final String ACTION_ITEMS = "actionitems";
 	
 	/**
-	 * Flag to indicate whether this Nist has been starred by the user. If
+	 * Flag to indicate whether this Stack has been starred by the user. If
 	 * true, it will be unavailable to the user.
 	 */
 	@DBColumn(type = BooleanColumn.class, defaultValue = "0")
     public static final String STARRED = "starred";
 	
 	/**
-	 * Indicates whether this Nist has been marked for deletion.
+	 * Indicates whether this Stack has been marked for deletion.
 	 * The date specifies the time it was marked for deletion, and no date
-	 * indicates that the Nist has not been marked for deletion.
+	 * indicates that the Stack has not been marked for deletion.
 	 */
 	@DBColumn(type = DatetimeColumn.class, defaultValue = "0")
     public static final String DELETED = "deleted";
 	
 	/**
-	 * The list position of this Nist in its parent Nist.
+	 * The list position of this Stack in its parent Stack.
 	 */
 	@DBColumn(type = IntegerColumn.class)
     public static final String LOCAL_SORT = "localsort";
@@ -120,10 +120,10 @@ public class Stacks implements ContentItem {
      * path and authority.
      */
     public static final Uri CONTENT_URI =
-    		ProviderUtils.toContentUri(NistContentProvider.AUTHORITY, PATH);
+    		ProviderUtils.toContentUri(StacksContentProvider.AUTHORITY, PATH);
     
     public static final String CONTENT_TYPE =
-    		"vnd.android.cursor.item/vnd." + NistContentProvider.AUTHORITY + "." + PATH;
+    		"vnd.android.cursor.item/vnd." + StacksContentProvider.AUTHORITY + "." + PATH;
     
     // _ID of the root stack, which is created on first-open.
     public static final int ROOT_STACK_ID = 1;
