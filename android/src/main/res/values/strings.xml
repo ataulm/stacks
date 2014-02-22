@@ -1,38 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-  <string name="app_name">Nists</string>
+  <string name="app_name">Stacks</string>
   <string name="menu_settings">Settings</string>
-  <string name="error_insert">Error inserting item. insert() returned null.</string>
-  <string name="warning_unexpected_view">ExpandView should only have two views, primary and secondary. Use \"setPrimaryView(View)\" and \"setSecondaryView(View)\" if programmatically using this view widget. If declaring via XML, the element should have exactly two children (of type View, or a subclass) and the primary View should be declared after the the secondary one</string>
-  <string name="warning_unused_method">Cannot use this method on ExpandView. Use \"setPrimaryView(View)\" and \"setSecondaryView(View)\". Method:</string>
-
-  <!-- StackViewFragment -->
-  <string name="button_add">Add</string>
-  <string name="hint_add">Add an item</string>
-  <string name="unsaved_changes">Changes were not saved</string>
-  <string name="menu_edit">Edit</string>
-  <string name="menu_move">Move</string>
-  <string name="menu_delete">Delete</string>
-
-  <!-- StackEditFragment -->
-  <string name="button_discard">Discard</string>
-  <string name="button_done">Done</string>
-  <string name="label_stackname">Stack Name</string>
-  <string name="label_notes">Notes</string>
-  <string name="label_dates">Associated Dates</string>
-  <string name="button_add_date">Add date</string>
-  <string name="warn_unsaved_changes">Press back again to discard changes</string>
-
-  <!-- Actionbar -->
-  <string name="ab_menu_edit">Edit</string>
-
-  <!-- Content Descriptions -->
-  <string name="btn_quick_action">Quick action</string>
-
-  <!-- Lorem Ipsum -->
-  <string name="lorem_title">Lorem Ipsum</string>
-  <string name="lorem_sentence">Lorem ipsum dolor sit amet</string>
-  <string name="lorem_paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam a augue metus, id posuere enim. Morbi pellentesque, sem nec ultrices accumsan, velit arcu elementum magna, sed mollis nisi velit quis turpis. Pellentesque in fermentum risus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam sit amet turpis ligula. Aliquam ultricies commodo blandit.</string>
-  <string name="ab_menu_delete">Delete</string>
 </resources>
