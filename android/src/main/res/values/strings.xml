@@ -3,4 +3,6 @@
   <string name="app_name">Stacks</string>
   <string name="app_name_debug">Stacks (D)</string>
   <string name="menu_settings">Settings</string>
+  <string name="lorem_ipsum_short">Lorem ipsum dolor sit amet</string>
+  <string name="new_stack_hint">New stack</string>
 </resources>
