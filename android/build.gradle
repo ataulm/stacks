@@ -16,4 +16,24 @@ android {
         versionCode 1
         versionName "0.0.1"
     }
+
+    buildTypes {
+        final String PROVIDER_AUTHORITY_TYPE = "String";
+        final String PROVIDER_AUTHORITY_KEY = "PROVIDER_AUTHORITY";
+
+        debug {
+            packageNameSuffix ".debug"
+            versionNameSuffix "-debug"
+
+            buildConfigField PROVIDER_AUTHORITY_TYPE, PROVIDER_AUTHORITY_KEY, "\"com.ataulm.debug.StacksProvider\""
+        }
+
+        release {
+            debuggable false
+            jniDebugBuild false
+
+            buildConfigField PROVIDER_AUTHORITY_TYPE, PROVIDER_AUTHORITY_KEY, "\"com.ataulm.StacksProvider\""
+        }
+    }
 }
+
