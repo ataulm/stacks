@@ -11,8 +11,4 @@ public class StacksProvider extends SQLiteContentProviderImpl {
     public static final Uri AUTHORITY = Uri.parse("content://" + BuildConfig.PROVIDER_AUTHORITY);
     public static final String MIME_STACK = "vnd.android.cursor.item/vnd.com.ataulm.stack";
 
-    public static Uri uri(String table) {
-        return AUTHORITY.buildUpon().appendPath(table).build();
-    }
-
 }

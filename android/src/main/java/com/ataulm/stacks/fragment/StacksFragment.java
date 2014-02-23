@@ -1,27 +1,30 @@
 package com.ataulm.stacks.fragment;
 
+import android.app.LoaderManager;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.base.StacksBaseFragment;
 import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.persistence.StackCursorMarshaller;
 import com.ataulm.stacks.persistence.StacksListAdapter;
+import com.ataulm.stacks.persistence.StacksLoader;
 import com.ataulm.stacks.view.KeepLikeInputView;
-import com.ataulm.stacks.view.StacksInputCallbacks;
+import com.ataulm.stacks.view.StackInputCallbacks;
 import com.novoda.notils.caster.Views;
+import com.novoda.notils.cursor.SimpleCursorList;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class StacksFragment extends StacksBaseFragment implements StacksInputCallbacks {
+public class StacksFragment extends StacksBaseFragment implements StackInputCallbacks, LoaderManager.LoaderCallbacks<Cursor> {
 
     private ListView listView;
-    private StacksListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,7 +38,7 @@ public class StacksFragment extends StacksBaseFragment implements StacksInputCal
 
         setupListViewSandwich();
 
-        listView.setAdapter(getAdapter());
+        listView.setAdapter(new StacksListAdapter());
     }
 
     private void setupListViewSandwich() {
@@ -47,8 +50,7 @@ public class StacksFragment extends StacksBaseFragment implements StacksInputCal
     }
 
     private View createHeaderView(ListView parent) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        return inflater.inflate(R.layout.view_stacks_header, null);
+        return LayoutInflater.from(parent.getContext()).inflate(R.layout.view_stacks_header, null);
     }
 
     private View createFooterView(ListView parent) {
@@ -59,25 +61,26 @@ public class StacksFragment extends StacksBaseFragment implements StacksInputCal
         return footer;
     }
 
-    public ListAdapter getAdapter() {
-        if (adapter == null) {
-            adapter = new StacksListAdapter();
-
-            List<Stack> temp = new ArrayList<Stack>();
-            temp.add(Stack.newInstance("root", "one"));
-            temp.add(Stack.newInstance("root", "two"));
-            adapter.swapList(temp);
-        }
-        return adapter;
+    @Override
+    public void addStack(String summary) {
+        // TODO: persist the stack to the database
+        toast("add:" + summary);
     }
 
     @Override
-    public void addStack(String summary) {
-        List<Stack> temp = new ArrayList<Stack>(adapter.getCount());
-        for (int i = 0; i < adapter.getCount(); i++) {
-            temp.add(adapter.getItem(i));
-        }
-        temp.add(Stack.newInstance("root", summary));
-        adapter.swapList(temp);
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new StacksLoader(getActivity());
     }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        List<Stack> stacks = new SimpleCursorList<Stack>(data, new StackCursorMarshaller());
+        StacksListAdapter adapter = (StacksListAdapter) listView.getAdapter();
+        adapter.swapList(stacks);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+    }
+
 }

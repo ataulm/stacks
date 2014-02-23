@@ -1,6 +1,6 @@
 package com.ataulm.stacks.view;
 
-public interface StacksInputCallbacks {
+public interface StackInputCallbacks {
 
     void addStack(String summary);
 

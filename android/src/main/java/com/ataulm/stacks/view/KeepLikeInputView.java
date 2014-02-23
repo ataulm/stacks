@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -15,7 +16,7 @@ public class KeepLikeInputView extends RelativeLayout {
 
     private EditText current;
     private EditText next;
-    private StacksInputCallbacks callbacks;
+    private StackInputCallbacks callbacks;
     private InputReactor reactor;
 
     public KeepLikeInputView(Context context, AttributeSet attrs) {
@@ -23,7 +24,7 @@ public class KeepLikeInputView extends RelativeLayout {
         this.callbacks = new NoActionCallbacks();
     }
 
-    public void setCallbacks(StacksInputCallbacks callbacks) {
+    public void setCallbacks(StackInputCallbacks callbacks) {
         this.callbacks = callbacks;
         reactor.setCallbacks(callbacks);
     }
@@ -36,23 +37,24 @@ public class KeepLikeInputView extends RelativeLayout {
 
         reactor = new InputReactor(current, next, callbacks);
         current.addTextChangedListener(reactor);
+        current.setOnKeyListener(reactor);
         next.setOnFocusChangeListener(reactor);
     }
 
-    private static class InputReactor implements TextWatcher, OnFocusChangeListener {
+    private static class InputReactor implements TextWatcher, OnFocusChangeListener, OnKeyListener {
 
         private final EditText current;
         private final EditText next;
 
-        private StacksInputCallbacks callbacks;
+        private StackInputCallbacks callbacks;
 
-        InputReactor(EditText current, EditText next, StacksInputCallbacks callbacks) {
+        InputReactor(EditText current, EditText next, StackInputCallbacks callbacks) {
             this.callbacks = callbacks;
             this.current = current;
             this.next = next;
         }
 
-        void setCallbacks(StacksInputCallbacks callbacks) {
+        void setCallbacks(StackInputCallbacks callbacks) {
             this.callbacks = callbacks;
         }
 
@@ -82,9 +84,17 @@ public class KeepLikeInputView extends RelativeLayout {
         public void onTextChanged(CharSequence sq, int s, int b, int c) {
         }
 
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if (current.getText().toString().trim().length() == 0) {
+                return true;
+            }
+            return false;
+        }
+
     }
 
-    private static class NoActionCallbacks implements StacksInputCallbacks {
+    private static class NoActionCallbacks implements StackInputCallbacks {
 
         @Override
         public void addStack(String summary) {

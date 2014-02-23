@@ -7,7 +7,6 @@
     android:id="@+id/edittext_current"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:imeActionId="@+id/add_stack"
     android:imeActionLabel="@string/add"
     android:inputType="text"
     android:hint="@string/new_stack_hint" />

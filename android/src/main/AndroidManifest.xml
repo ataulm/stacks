@@ -12,7 +12,7 @@
     <activity
       android:name=".activity.StacksActivity"
       android:label="@string/app_name"
-      android:windowSoftInputMode="stateHidden">
+      android:windowSoftInputMode="adjustPan|stateHidden">
 
       <!-- Filter for implicit intent -->
       <intent-filter>
