@@ -24,7 +24,7 @@ import com.novoda.notils.cursor.SimpleCursorList;
 
 import java.util.List;
 
-public class StacksFragment extends StacksBaseFragment implements StackInputCallbacks, LoaderManager.LoaderCallbacks<Cursor> {
+public class ViewStackFragment extends StacksBaseFragment implements StackInputCallbacks, LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String ARGKEY_ID = "ID";
 
@@ -32,10 +32,10 @@ public class StacksFragment extends StacksBaseFragment implements StackInputCall
     private ListView listView;
     private StacksListAdapter adapter;
 
-    public static StacksFragment newInstance(String id) {
+    public static ViewStackFragment newInstance(String id) {
         Bundle arguments = new Bundle();
         arguments.putString(ARGKEY_ID, id);
-        StacksFragment fragment = new StacksFragment();
+        ViewStackFragment fragment = new ViewStackFragment();
         fragment.setArguments(arguments);
 
         return fragment;
@@ -53,7 +53,7 @@ public class StacksFragment extends StacksBaseFragment implements StackInputCall
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_stacks, container, false);
+        return inflater.inflate(R.layout.fragment_view_stack, container, false);
     }
 
     @Override
