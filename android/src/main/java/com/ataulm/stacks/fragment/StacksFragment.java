@@ -25,8 +25,9 @@ import java.util.List;
 
 public class StacksFragment extends StacksBaseFragment implements StackInputCallbacks, LoaderManager.LoaderCallbacks<Cursor> {
 
-    private ListView listView;
     private String parentId;
+    private ListView listView;
+    private StacksListAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,11 +44,16 @@ public class StacksFragment extends StacksBaseFragment implements StackInputCall
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        adapter = new StacksListAdapter();
         listView = Views.findById(view, R.id.listview_children);
-
         setupListViewSandwich();
+        listView.setAdapter(adapter);
 
-        listView.setAdapter(new StacksListAdapter());
+        if (savedInstanceState == null) {
+            getLoaderManager().initLoader(0, null, this);
+        } else {
+            getLoaderManager().restartLoader(0, null, this);
+        }
     }
 
     private void setupListViewSandwich() {
@@ -85,7 +91,6 @@ public class StacksFragment extends StacksBaseFragment implements StackInputCall
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         List<Stack> stacks = new SimpleCursorList<Stack>(data, new StackCursorMarshaller());
-        StacksListAdapter adapter = (StacksListAdapter) listView.getAdapter();
         adapter.swapList(stacks);
     }
 

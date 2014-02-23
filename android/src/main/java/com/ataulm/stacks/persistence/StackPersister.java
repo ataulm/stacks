@@ -23,8 +23,17 @@ public class StackPersister {
         // TODO: handle insert OR update existing, consider import from backup
         // TODO: do asynchronously and callback on success/failure
         ContentValues values = new ContentValues();
-        // TODO: add all stack values to content values
-        // TODO: contentResolver.insert(StacksProvider.URI_STACKS, values);
+
+        values.put("_id", stack.id);
+        values.put("parent", stack.parent);
+        values.put("summary", stack.summary);
+        values.put("description", stack.description);
+        values.put("leaf_count", stack.leafCount);
+        values.put("created", stack.created.asMillis());
+        values.put("modified", stack.modified.asMillis());
+        values.put("deleted", stack.deleted.asMillis());
+
+        contentResolver.insert(StacksProvider.URI_STACKS, values);
     }
 
     private static class NoActionCallbacks implements StackPersisterCallbacks {

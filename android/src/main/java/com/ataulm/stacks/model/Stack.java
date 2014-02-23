@@ -1,5 +1,7 @@
 package com.ataulm.stacks.model;
 
+import java.util.UUID;
+
 public class Stack {
 
     public final String id;
@@ -30,7 +32,7 @@ public class Stack {
             throw new IllegalArgumentException("summary must be specified.");
         }
 
-        return new Stack("", parent, summary, "", 0, Time.now(), Time.now(), Time.UNSET);
+        return new Stack(UUID.randomUUID().toString(), parent, summary, "", 0, Time.now(), Time.now(), Time.UNSET);
     }
 
     public Stack delete() {

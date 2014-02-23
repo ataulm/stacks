@@ -25,6 +25,10 @@ public class Time {
         return new Time(new DateTime(Instant.now()));
     }
 
+    public long asMillis() {
+        return dateTime.getMillis();
+    }
+
     public boolean isSet() {
         return !UNSET.equals(this);
     }

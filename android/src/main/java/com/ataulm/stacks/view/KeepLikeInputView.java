@@ -86,7 +86,7 @@ public class KeepLikeInputView extends RelativeLayout {
 
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
-            if (current.getText().toString().trim().length() == 0) {
+            if (keyCode == KeyEvent.KEYCODE_ENTER && current.getText().toString().trim().length() == 0) {
                 return true;
             }
             return false;
