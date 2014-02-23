@@ -7,14 +7,14 @@ public interface StackPersisterCallbacks {
     /**
      * Called when the stack is successfully persisted.
      *
-     * @param stack the stack as returned from the database
+     * @param stack the stack to be persisted
      */
     void onSuccessPersisting(Stack stack);
 
     /**
      * Called when the stack could not be persisted.
      *
-     * @param stack the stack which was intended for persistence
+     * @param stack the stack to be persisted
      */
     void onFailurePersisting(Stack stack);
 

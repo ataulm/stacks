@@ -2,8 +2,10 @@ package com.ataulm.stacks.persistence;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.os.AsyncTask;
 
 import com.ataulm.stacks.model.Stack;
+import com.novoda.notils.logger.Novogger;
 
 public class StackPersister {
 
@@ -19,9 +21,34 @@ public class StackPersister {
         this.callbacks = callbacks;
     }
 
-    public void persist(Stack stack) {
-        // TODO: handle insert OR update existing, consider import from backup
-        // TODO: do asynchronously and callback on success/failure
+    public void persist(final Stack stack) {
+        new AsyncTask<Stack, Void, Boolean>() {
+
+            @Override
+            protected Boolean doInBackground(Stack... params) {
+                try {
+                    contentResolver.insert(StacksProvider.URI_STACKS, contentValuesFrom(stack));
+                } catch (Exception e) {
+                    // TODO: Add BugSense/Crashlytics here
+                    Novogger.e("Failed to persist stack", e);
+                    return false;
+                }
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean success) {
+                if (success) {
+                    callbacks.onSuccessPersisting(stack);
+                } else {
+                    callbacks.onFailurePersisting(stack);
+                }
+            }
+
+        }.execute(stack);
+    }
+
+    private ContentValues contentValuesFrom(Stack stack) {
         ContentValues values = new ContentValues();
 
         values.put("_id", stack.id);
@@ -33,7 +60,7 @@ public class StackPersister {
         values.put("modified", stack.modified.asMillis());
         values.put("deleted", stack.deleted.asMillis());
 
-        contentResolver.insert(StacksProvider.URI_STACKS, values);
+        return values;
     }
 
     private static class NoActionCallbacks implements StackPersisterCallbacks {
