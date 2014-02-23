@@ -9,3 +9,14 @@ CREATE TABLE IF NOT EXISTS 'stacks' (
         modified INTEGER NOT NULL,
         deleted INTEGER NOT NULL
 );
+
+INSERT INTO stacks(_id, parent, summary, description, leaf_count, position, created, modified, deleted) VALUES (
+        'id_zero',
+        'as_batman',
+        'zero',
+        '',
+        0,
+        0,
+        -2208988800000,
+        -2208988800000,
+        -2208988800000);

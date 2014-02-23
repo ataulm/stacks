@@ -12,12 +12,10 @@ import android.widget.ListView;
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.base.StacksBaseFragment;
 import com.ataulm.stacks.model.Stack;
-import com.ataulm.stacks.persistence.StackCursorMarshaller;
-import com.ataulm.stacks.persistence.StackPersister;
-import com.ataulm.stacks.persistence.StacksListAdapter;
-import com.ataulm.stacks.persistence.StacksLoader;
+import com.ataulm.stacks.persistence.*;
 import com.ataulm.stacks.view.KeepLikeInputView;
 import com.ataulm.stacks.view.StackInputCallbacks;
+import com.ataulm.stacks.view.StackListHeaderView;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.cursor.SimpleCursorList;
 
@@ -25,15 +23,29 @@ import java.util.List;
 
 public class StacksFragment extends StacksBaseFragment implements StackInputCallbacks, LoaderManager.LoaderCallbacks<Cursor> {
 
-    private String parentId;
+    private static final String ARGKEY_ID = "ID";
+
+    private String stackId;
     private ListView listView;
     private StacksListAdapter adapter;
+
+    public static StacksFragment newInstance(String id) {
+        Bundle arguments = new Bundle();
+        arguments.putString(ARGKEY_ID, id);
+        StacksFragment fragment = new StacksFragment();
+        fragment.setArguments(arguments);
+
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: get parentId from extras
-        parentId = "root";
+        if (getArguments() != null) {
+            stackId = getArguments().getString(ARGKEY_ID);
+        } else {
+            stackId = Stack.ZERO.id;
+        }
     }
 
     @Override
@@ -50,9 +62,11 @@ public class StacksFragment extends StacksBaseFragment implements StackInputCall
         listView.setAdapter(adapter);
 
         if (savedInstanceState == null) {
-            getLoaderManager().initLoader(0, null, this);
+            getLoaderManager().initLoader(R.id.loader_stack, null, this);
+            getLoaderManager().initLoader(R.id.loader_sub_stacks, null, this);
         } else {
-            getLoaderManager().restartLoader(0, null, this);
+            getLoaderManager().restartLoader(R.id.loader_stack, null, this);
+            getLoaderManager().restartLoader(R.id.loader_sub_stacks, null, this);
         }
     }
 
@@ -77,25 +91,40 @@ public class StacksFragment extends StacksBaseFragment implements StackInputCall
     }
 
     @Override
-    public void addStack(String summary) {
-        StackPersister persister = new StackPersister(getActivity().getContentResolver());
-        persister.persist(Stack.newInstance(parentId, summary, adapter.getCount()));
-        toast(R.string.added_new_stack);
-    }
-
-    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new StacksLoader(getActivity());
+        if (id == R.id.loader_stack) {
+            return new StackLoader(getActivity(), stackId);
+        } else if (id == R.id.loader_sub_stacks) {
+            return new SubStacksLoader(getActivity(), stackId);
+        }
+        throw new IllegalArgumentException("Unknown loader id: " + id);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        List<Stack> stacks = new SimpleCursorList<Stack>(data, new StackCursorMarshaller());
-        adapter.swapList(stacks);
+        if (loader.getId() == R.id.loader_stack) {
+            List<Stack> stacks = new SimpleCursorList<Stack>(data, new StackCursorMarshaller());
+            updateHeader(stacks.get(0));
+        } else if (loader.getId() == R.id.loader_sub_stacks) {
+            List<Stack> stacks = new SimpleCursorList<Stack>(data, new StackCursorMarshaller());
+            adapter.swapList(stacks);
+        }
+    }
+
+    private void updateHeader(Stack stack) {
+        StackListHeaderView header = (StackListHeaderView) listView.findViewById(R.id.header);
+        header.updateWith(stack);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+    }
+
+    @Override
+    public void addStack(String summary) {
+        StackPersister persister = new StackPersister(getActivity().getContentResolver());
+        persister.persist(Stack.newInstance(stackId, summary, adapter.getCount()));
+        toast(R.string.added_new_stack);
     }
 
 }

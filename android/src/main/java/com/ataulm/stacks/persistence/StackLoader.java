@@ -3,12 +3,13 @@ package com.ataulm.stacks.persistence;
 import android.content.Context;
 import android.content.CursorLoader;
 
-public class StacksLoader extends CursorLoader {
+public class StackLoader extends CursorLoader {
 
-    public StacksLoader(Context context) {
+    public StackLoader(Context context, String id) {
         super(context);
         setUri(StacksProvider.URI_STACKS);
-        setSortOrder("position ASC");
+        setSelection("_id=?");
+        setSelectionArgs(new String[]{id});
     }
 
 }

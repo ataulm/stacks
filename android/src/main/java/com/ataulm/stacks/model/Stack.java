@@ -4,6 +4,8 @@ import java.util.UUID;
 
 public class Stack {
 
+    public static final Stack ZERO = new Stack("id_zero", "as_batman", "zero", "", 0, 0, Time.UNSET, Time.UNSET, Time.UNSET);
+
     public final String id;
     public final String parent;
     public final String summary;
@@ -13,6 +15,17 @@ public class Stack {
     public final Time created;
     public final Time modified;
     public final Time deleted;
+
+    public static Stack newInstance(String parent, String summary, int position) {
+        if (parent == null || parent.trim().length() == 0) {
+            throw new IllegalArgumentException("parent id must be specified.");
+        }
+        if (summary == null || summary.trim().length() == 0) {
+            throw new IllegalArgumentException("summary must be specified.");
+        }
+
+        return new Stack(UUID.randomUUID().toString(), parent, summary, "", 0, position, Time.now(), Time.now(), Time.UNSET);
+    }
 
     private Stack(String id, String parent, String summary, String description, int leafCount, int position, Time created, Time modified, Time deleted) {
         this.id = id;
@@ -24,17 +37,6 @@ public class Stack {
         this.created = created;
         this.modified = modified;
         this.deleted = deleted;
-    }
-
-    public static Stack newInstance(String parent, String summary, int position) {
-        if (parent == null || parent.trim().length() == 0) {
-            throw new IllegalArgumentException("parent id must be specified.");
-        }
-        if (summary == null || summary.trim().length() == 0) {
-            throw new IllegalArgumentException("summary must be specified.");
-        }
-
-        return new Stack(UUID.randomUUID().toString(), parent, summary, "", 0, position, Time.now(), Time.now(), Time.UNSET);
     }
 
     public Stack delete() {
@@ -49,6 +51,24 @@ public class Stack {
             return new Stack(id, parent, summary, description, leafCount, position, created, Time.now(), Time.UNSET);
         }
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof Stack)) {
+            return false;
+        }
+
+        if (((Stack) o).id.equals(id)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 
     public static class Builder {
