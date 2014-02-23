@@ -16,6 +16,7 @@ public class StackCursorMarshaller implements CursorMarshaller<Stack> {
         builder.summary(cursor.getString(cursor.getColumnIndex("summary")));
         builder.description(cursor.getString(cursor.getColumnIndex("description")));
         builder.leafCount(cursor.getInt(cursor.getColumnIndex("leaf_count")));
+        builder.position(cursor.getInt(cursor.getColumnIndex("position")));
 
         Time created = new Time(cursor.getLong(cursor.getColumnIndex("created")));
         builder.created(created);

@@ -79,7 +79,7 @@ public class StacksFragment extends StacksBaseFragment implements StackInputCall
     @Override
     public void addStack(String summary) {
         StackPersister persister = new StackPersister(getActivity().getContentResolver());
-        persister.persist(Stack.newInstance(parentId, summary));
+        persister.persist(Stack.newInstance(parentId, summary, adapter.getCount()));
         toast(R.string.added_new_stack);
     }
 

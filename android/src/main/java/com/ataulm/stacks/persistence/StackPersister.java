@@ -56,6 +56,7 @@ public class StackPersister {
         values.put("summary", stack.summary);
         values.put("description", stack.description);
         values.put("leaf_count", stack.leafCount);
+        values.put("position", stack.position);
         values.put("created", stack.created.asMillis());
         values.put("modified", stack.modified.asMillis());
         values.put("deleted", stack.deleted.asMillis());
