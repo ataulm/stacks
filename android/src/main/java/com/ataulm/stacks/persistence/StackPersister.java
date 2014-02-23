@@ -24,7 +24,7 @@ public class StackPersister {
         // TODO: do asynchronously and callback on success/failure
         ContentValues values = new ContentValues();
         // TODO: add all stack values to content values
-        contentResolver.insert(StacksProvider.URI_STACKS, values);
+        // TODO: contentResolver.insert(StacksProvider.URI_STACKS, values);
     }
 
     private static class NoActionCallbacks implements StackPersisterCallbacks {
