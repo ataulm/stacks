@@ -11,6 +11,7 @@ import com.ataulm.stacks.base.StacksDoneDiscardActivity;
 import com.ataulm.stacks.model.Stack;
 import com.ataulm.stacks.persistence.StackCursorMarshaller;
 import com.ataulm.stacks.persistence.StackLoader;
+import com.ataulm.stacks.persistence.StackPersister;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.cursor.SimpleCursorList;
 
@@ -22,6 +23,7 @@ public class EditStackActivity extends StacksDoneDiscardActivity implements Stac
     private String stackId;
     private EditText summary;
     private EditText description;
+    private Stack stack;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,12 +37,21 @@ public class EditStackActivity extends StacksDoneDiscardActivity implements Stac
 
     @Override
     public void onDoneClick() {
-        toast(R.string.beep);
+        String summaryText = this.summary.getText().toString().trim();
+        if (summaryText.length() == 0) {
+            toast(R.string.summary_cannot_be_blank);
+            return;
+        }
+        String descriptionText = description.getText().toString().trim();
+        stack = Stack.Builder.from(stack).summary(summaryText).description(descriptionText).build();
+        new StackPersister(getContentResolver()).persist(stack);
+        finish();
     }
 
     @Override
     public void onDiscardClick() {
-        toast(R.string.boop);
+        // TODO: persist in shared prefs with stack id in case of accidental discard
+        finish();
     }
 
     private void startLoaders(Bundle savedInstanceState) {
@@ -63,13 +74,10 @@ public class EditStackActivity extends StacksDoneDiscardActivity implements Stac
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == R.id.loader_stack) {
             List<Stack> stacks = new SimpleCursorList<Stack>(data, new StackCursorMarshaller());
-            updateViews(stacks.get(0));
+            stack = stacks.get(0);
+            summary.setText(stack.summary);
+            description.setText(stack.description);
         }
-    }
-
-    private void updateViews(Stack stack) {
-        summary.setText(stack.summary);
-        description.setText(stack.description);
     }
 
     private String getStackId() {

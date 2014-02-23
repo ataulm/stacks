@@ -27,6 +27,9 @@ public class StackPersister {
             @Override
             protected Boolean doInBackground(Stack... params) {
                 try {
+                    if (update(stack)) {
+                        return true;
+                    }
                     contentResolver.insert(StacksProvider.URI_STACKS, contentValuesFrom(stack));
                 } catch (Exception e) {
                     // TODO: Add BugSense/Crashlytics here
@@ -43,6 +46,10 @@ public class StackPersister {
                 } else {
                     callbacks.onFailurePersisting(stack);
                 }
+            }
+
+            private boolean update(Stack stack) {
+                return contentResolver.update(StacksProvider.URI_STACKS, contentValuesFrom(stack), "_id=?", new String[]{stack.id}) == 1;
             }
 
         }.execute(stack);

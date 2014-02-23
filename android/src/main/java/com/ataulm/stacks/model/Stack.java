@@ -94,6 +94,7 @@ public class Stack {
                     .summary(stack.summary)
                     .description(stack.description)
                     .leafCount(stack.leafCount)
+                    .position(stack.position)
                     .created(stack.created)
                     .modified(stack.modified)
                     .deleted(stack.deleted);
