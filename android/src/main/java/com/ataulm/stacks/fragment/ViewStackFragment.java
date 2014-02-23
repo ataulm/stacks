@@ -154,7 +154,6 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
     public void addStack(String summary) {
         StackPersister persister = new StackPersister(getActivity().getContentResolver());
         persister.persist(Stack.newInstance(stackId, summary, adapter.getCount()));
-        toast(R.string.added_new_stack);
     }
 
 }

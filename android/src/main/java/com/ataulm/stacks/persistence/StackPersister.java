@@ -2,6 +2,7 @@ package com.ataulm.stacks.persistence;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.AsyncTask;
 
 import com.ataulm.stacks.model.Stack;
@@ -48,11 +49,36 @@ public class StackPersister {
                 }
             }
 
-            private boolean update(Stack stack) {
-                return contentResolver.update(StacksProvider.URI_STACKS, contentValuesFrom(stack), "_id=?", new String[]{stack.id}) == 1;
-            }
-
         }.execute(stack);
+    }
+
+    private boolean update(Stack stack) {
+        ContentValues values = contentValuesForUpdateFrom(stack);
+        String where = "_id=?";
+        String[] selectionArgs = {stack.id};
+
+        Cursor cursor = contentResolver.query(StacksProvider.URI_STACKS, null, where, selectionArgs, null);
+        if (cursor == null || cursor.getCount() == 0) {
+            return false;
+        }
+
+        contentResolver.update(StacksProvider.URI_STACKS, values, where, selectionArgs);
+        return true;
+    }
+
+    private ContentValues contentValuesForUpdateFrom(Stack stack) {
+        ContentValues values = new ContentValues();
+
+        values.put("parent", stack.parent);
+        values.put("summary", stack.summary);
+        values.put("description", stack.description);
+        values.put("leaf_count", stack.leafCount);
+        values.put("position", stack.position);
+        values.put("created", stack.created.asMillis());
+        values.put("modified", stack.modified.asMillis());
+        values.put("deleted", stack.deleted.asMillis());
+
+        return values;
     }
 
     private ContentValues contentValuesFrom(Stack stack) {
