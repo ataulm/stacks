@@ -1,12 +1,15 @@
 package com.ataulm.stacks.fragment;
 
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.ataulm.stacks.R;
@@ -60,7 +63,21 @@ public class StacksFragment extends StacksBaseFragment implements StackInputCall
         listView = Views.findById(view, R.id.listview_children);
         setupListViewSandwich();
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Stack stack = adapter.getItem(position - listView.getHeaderViewsCount());
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.withAppendedPath(StacksProvider.URI_STACKS, stack.id));
+                startActivity(intent);
+            }
+
+        });
+
+        startLoaders(savedInstanceState);
+    }
+
+    private void startLoaders(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             getLoaderManager().initLoader(R.id.loader_stack, null, this);
             getLoaderManager().initLoader(R.id.loader_sub_stacks, null, this);
