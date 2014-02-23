@@ -13,6 +13,7 @@ import com.ataulm.stacks.R;
 import com.ataulm.stacks.base.StacksBaseFragment;
 import com.ataulm.stacks.model.Stack;
 import com.ataulm.stacks.persistence.StackCursorMarshaller;
+import com.ataulm.stacks.persistence.StackPersister;
 import com.ataulm.stacks.persistence.StacksListAdapter;
 import com.ataulm.stacks.persistence.StacksLoader;
 import com.ataulm.stacks.view.KeepLikeInputView;
@@ -25,6 +26,14 @@ import java.util.List;
 public class StacksFragment extends StacksBaseFragment implements StackInputCallbacks, LoaderManager.LoaderCallbacks<Cursor> {
 
     private ListView listView;
+    private String parentId;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: get parentId from extras
+        parentId = "root";
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,8 +72,9 @@ public class StacksFragment extends StacksBaseFragment implements StackInputCall
 
     @Override
     public void addStack(String summary) {
-        // TODO: persist the stack to the database
-        toast("add:" + summary);
+        StackPersister persister = new StackPersister(getActivity().getContentResolver());
+        persister.persist(Stack.newInstance(parentId, summary));
+        toast(R.string.added_new_stack);
     }
 
     @Override

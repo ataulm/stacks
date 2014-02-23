@@ -6,4 +6,5 @@
   <string name="lorem_ipsum_short">Lorem ipsum dolor sit amet</string>
   <string name="new_stack_hint">New stack</string>
   <string name="add">Add</string>
+  <string name="added_new_stack">Added new Stack</string>
 </resources>
