@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="summary">Summary</string>
+  <string name="summary_of_stack">Summary of Stack</string>
+  <string name="description">Description</string>
+  <string name="more_details">More details</string>
+</resources>

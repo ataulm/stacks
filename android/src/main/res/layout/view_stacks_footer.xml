@@ -9,7 +9,7 @@
     android:layout_height="wrap_content"
     android:imeActionLabel="@string/add"
     android:inputType="text"
-    android:hint="@string/new_stack_hint" />
+    android:hint="@string/new_stack" />
 
   <EditText
     android:id="@+id/edittext_next"
@@ -17,6 +17,6 @@
     android:focusable="true"
     android:layout_height="wrap_content"
     android:layout_below="@id/edittext_current"
-    android:hint="@string/new_stack_hint"
+    android:hint="@string/new_stack"
     android:visibility="gone" />
 </com.ataulm.stacks.view.KeepLikeInputView>

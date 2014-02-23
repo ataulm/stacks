@@ -1,16 +1,13 @@
-package com.ataulm.stacks.fragment;
+package com.ataulm.stacks.activity;
 
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.ataulm.stacks.R;
-import com.ataulm.stacks.base.StacksBaseFragment;
+import com.ataulm.stacks.base.StacksDoneDiscardActivity;
 import com.ataulm.stacks.model.Stack;
 import com.ataulm.stacks.persistence.StackCursorMarshaller;
 import com.ataulm.stacks.persistence.StackLoader;
@@ -19,43 +16,34 @@ import com.novoda.notils.cursor.SimpleCursorList;
 
 import java.util.List;
 
-public class EditStackFragment extends StacksBaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
-
-    private static final String ARGKEY_ID = "ID";
+public class EditStackActivity extends StacksDoneDiscardActivity implements StacksDoneDiscardActivity.DoneDiscardListener,
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private String stackId;
     private EditText summary;
     private EditText description;
 
-    public static EditStackFragment newInstance(String id) {
-        Bundle arguments = new Bundle();
-        arguments.putString(ARGKEY_ID, id);
-        EditStackFragment fragment = new EditStackFragment();
-        fragment.setArguments(arguments);
-
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() == null) {
-            throw new IllegalStateException("EditStackFragment should only be started via Intent.ACTION_EDIT.");
-        }
-        stackId = getArguments().getString(ARGKEY_ID);
+        setContentView(R.layout.activity_edit_stack);
+        summary = Views.findById(this, R.id.edittext_summary);
+        description = Views.findById(this, R.id.edittext_description);
+
+        startLoaders(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_edit_stack, container, false);
-        summary = Views.findById(root, R.id.edittext_summary);
-        description = Views.findById(root, R.id.edittext_description);
-        return root;
+    public void onDoneClick() {
+        toast(R.string.beep);
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onDiscardClick() {
+        toast(R.string.boop);
+    }
+
+    private void startLoaders(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             getLoaderManager().initLoader(R.id.loader_stack, null, this);
         } else {
@@ -66,7 +54,7 @@ public class EditStackFragment extends StacksBaseFragment implements LoaderManag
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == R.id.loader_stack) {
-            return new StackLoader(getActivity(), stackId);
+            return new StackLoader(this, getStackId());
         }
         throw new IllegalArgumentException("Unknown loader id: " + id);
     }
@@ -82,6 +70,17 @@ public class EditStackFragment extends StacksBaseFragment implements LoaderManag
     private void updateViews(Stack stack) {
         summary.setText(stack.summary);
         description.setText(stack.description);
+    }
+
+    private String getStackId() {
+        if (stackId == null) {
+            stackId = hasData() ? getIntent().getData().getLastPathSegment() : Stack.ZERO.id;
+        }
+        return stackId;
+    }
+
+    private boolean hasData() {
+        return getIntent().getData() != null;
     }
 
     @Override

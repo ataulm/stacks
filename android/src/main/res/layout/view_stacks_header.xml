@@ -7,6 +7,5 @@
   <TextView
     android:id="@+id/textview_summary"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="@string/lorem_ipsum_short" />
+    android:layout_height="wrap_content" />
 </com.ataulm.stacks.view.StackListHeaderView>
