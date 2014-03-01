@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.base.StacksBaseActivity;
+import com.ataulm.stacks.fragment.ViewStackFragment;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ public class MoveStackActivity extends StacksBaseActivity {
         super.onCreate(savedInstanceState);
         findExtrasOrThrowException();
         setContentView(R.layout.activity_move_stack);
+
+        getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ViewStackFragment()).commit();
     }
 
     private void findExtrasOrThrowException() {

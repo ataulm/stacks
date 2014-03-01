@@ -45,11 +45,11 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit:
-                navigateTo().editStack(getStack().id);
+                navigateTo().editStack(getStack());
                 return true;
 
             case R.id.move:
-                navigateTo().moveStack(getStack().parent, getStack().id);
+                navigateTo().pickNewParentForStack(getStack().parent, getStack().id);
                 return true;
 
             default:

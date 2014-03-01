@@ -1,29 +1,20 @@
 package com.ataulm.stacks.activity;
 
-import android.app.LoaderManager;
-import android.content.Loader;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.EditText;
 
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.base.StacksDoneDiscardActivity;
-import com.ataulm.stacks.marshallers.StackFromCursorMarshaller;
 import com.ataulm.stacks.model.Stack;
-import com.ataulm.stacks.persistence.StackLoader;
 import com.ataulm.stacks.persistence.StackPersistTask;
 import com.novoda.notils.caster.Views;
-import com.novoda.notils.cursor.SimpleCursorList;
 
-import java.util.List;
+public class EditStackActivity extends StacksDoneDiscardActivity implements StacksDoneDiscardActivity.DoneDiscardListener {
 
-public class EditStackActivity extends StacksDoneDiscardActivity implements StacksDoneDiscardActivity.DoneDiscardListener,
-        LoaderManager.LoaderCallbacks<Cursor> {
+    public static final String EXTRA_STACK = "com.ataulm.stacks.extra.EXTRA_STACK";
 
-    private String stackId;
     private EditText summary;
     private EditText description;
-    private Stack stack;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,7 +23,13 @@ public class EditStackActivity extends StacksDoneDiscardActivity implements Stac
         summary = Views.findById(this, R.id.edittext_summary);
         description = Views.findById(this, R.id.edittext_description);
 
-        startLoaders(savedInstanceState);
+        updateStack();
+    }
+
+    private void updateStack() {
+        Stack stack = getStack();
+        summary.setText(stack.summary);
+        description.setText(stack.description);
     }
 
     @Override
@@ -43,7 +40,7 @@ public class EditStackActivity extends StacksDoneDiscardActivity implements Stac
             return;
         }
         String descriptionText = description.getText().toString().trim();
-        stack = Stack.Builder.from(stack).summary(summaryText).description(descriptionText).build();
+        Stack stack = Stack.Builder.from(getStack()).summary(summaryText).description(descriptionText).build();
         StackPersistTask.newInstance(getContentResolver(), stack).execute();
         finish();
     }
@@ -54,45 +51,11 @@ public class EditStackActivity extends StacksDoneDiscardActivity implements Stac
         finish();
     }
 
-    private void startLoaders(Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            getLoaderManager().initLoader(R.id.loader_stack, null, this);
-        } else {
-            getLoaderManager().restartLoader(R.id.loader_stack, null, this);
+    private Stack getStack() {
+        if (getIntent().hasExtra(EXTRA_STACK)) {
+            return getIntent().getParcelableExtra(EXTRA_STACK);
         }
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if (id == R.id.loader_stack) {
-            return new StackLoader(this, getStackId());
-        }
-        throw new IllegalArgumentException("Unknown loader id: " + id);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (loader.getId() == R.id.loader_stack) {
-            List<Stack> stacks = new SimpleCursorList<Stack>(data, new StackFromCursorMarshaller());
-            stack = stacks.get(0);
-            summary.setText(stack.summary);
-            description.setText(stack.description);
-        }
-    }
-
-    private String getStackId() {
-        if (stackId == null) {
-            stackId = hasData() ? getIntent().getData().getLastPathSegment() : Stack.ZERO.id;
-        }
-        return stackId;
-    }
-
-    private boolean hasData() {
-        return getIntent().getData() != null;
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+        return Stack.ZERO;
     }
 
 }
