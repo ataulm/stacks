@@ -80,9 +80,17 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (itemIsListViewHeader(position)) {
+                    return;
+                }
+
                 Stack stack = adapter.getItem(position - listView.getHeaderViewsCount());
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.withAppendedPath(StacksProvider.URI_STACKS, stack.id));
                 startActivity(intent);
+            }
+
+            private boolean itemIsListViewHeader(int position) {
+                return position < listView.getHeaderViewsCount();
             }
 
         });
