@@ -42,3 +42,4 @@ tmp
 *~
 out/
 crashlytics.properties
+com_crashlytics_export_strings.xml

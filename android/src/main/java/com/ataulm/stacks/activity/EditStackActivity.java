@@ -8,10 +8,10 @@ import android.widget.EditText;
 
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.base.StacksDoneDiscardActivity;
+import com.ataulm.stacks.marshallers.StackFromCursorMarshaller;
 import com.ataulm.stacks.model.Stack;
-import com.ataulm.stacks.persistence.StackCursorMarshaller;
 import com.ataulm.stacks.persistence.StackLoader;
-import com.ataulm.stacks.persistence.StackPersister;
+import com.ataulm.stacks.persistence.StackPersistTask;
 import com.novoda.notils.caster.Views;
 import com.novoda.notils.cursor.SimpleCursorList;
 
@@ -44,7 +44,7 @@ public class EditStackActivity extends StacksDoneDiscardActivity implements Stac
         }
         String descriptionText = description.getText().toString().trim();
         stack = Stack.Builder.from(stack).summary(summaryText).description(descriptionText).build();
-        new StackPersister(getContentResolver()).persist(stack);
+        StackPersistTask.newInstance(getContentResolver(), stack).execute();
         finish();
     }
 
@@ -73,7 +73,7 @@ public class EditStackActivity extends StacksDoneDiscardActivity implements Stac
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == R.id.loader_stack) {
-            List<Stack> stacks = new SimpleCursorList<Stack>(data, new StackCursorMarshaller());
+            List<Stack> stacks = new SimpleCursorList<Stack>(data, new StackFromCursorMarshaller());
             stack = stacks.get(0);
             summary.setText(stack.summary);
             description.setText(stack.description);

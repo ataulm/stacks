@@ -2,7 +2,7 @@ package com.ataulm.stacks.persistence;
 
 import com.ataulm.stacks.model.Stack;
 
-public interface StackPersisterCallbacks {
+public interface StackPersistCallback {
 
     /**
      * Called when the stack is successfully persisted.

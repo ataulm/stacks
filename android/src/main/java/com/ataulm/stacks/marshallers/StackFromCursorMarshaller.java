@@ -1,4 +1,4 @@
-package com.ataulm.stacks.persistence;
+package com.ataulm.stacks.marshallers;
 
 import android.database.Cursor;
 
@@ -6,7 +6,7 @@ import com.ataulm.stacks.model.Stack;
 import com.ataulm.stacks.model.Time;
 import com.novoda.notils.cursor.CursorMarshaller;
 
-public class StackCursorMarshaller implements CursorMarshaller<Stack> {
+public class StackFromCursorMarshaller implements CursorMarshaller<Stack> {
 
     @Override
     public Stack marshall(Cursor cursor) {

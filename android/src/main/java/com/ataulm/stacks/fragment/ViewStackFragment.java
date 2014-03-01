@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.base.StacksBaseFragment;
+import com.ataulm.stacks.marshallers.StackFromCursorMarshaller;
 import com.ataulm.stacks.model.Stack;
 import com.ataulm.stacks.persistence.*;
 import com.ataulm.stacks.view.KeepLikeInputView;
@@ -141,10 +142,10 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == R.id.loader_stack) {
-            List<Stack> stacks = new SimpleCursorList<Stack>(data, new StackCursorMarshaller());
+            List<Stack> stacks = new SimpleCursorList<Stack>(data, new StackFromCursorMarshaller());
             updateHeader(stacks.get(0));
         } else if (loader.getId() == R.id.loader_sub_stacks) {
-            List<Stack> stacks = new SimpleCursorList<Stack>(data, new StackCursorMarshaller());
+            List<Stack> stacks = new SimpleCursorList<Stack>(data, new StackFromCursorMarshaller());
             adapter.swapList(stacks);
         }
     }
@@ -160,8 +161,8 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
 
     @Override
     public void addStack(String summary) {
-        StackPersister persister = new StackPersister(getActivity().getContentResolver());
-        persister.persist(Stack.newInstance(stackId, summary, adapter.getCount()));
+        Stack stack = Stack.newInstance(stackId, summary, adapter.getCount());
+        StackPersistTask.newInstance(getActivity().getContentResolver(), stack).execute();
     }
 
 }
