@@ -41,3 +41,4 @@ tmp
 # backup files from gedit
 *~
 out/
+crashlytics.properties

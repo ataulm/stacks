@@ -8,10 +8,14 @@ subprojects {
             maven {
                 url 'https://github.com/novoda/public-mvn-repo/raw/master/releases'
             }
+            maven {
+                url 'http://download.crashlytics.com/maven'
+            }
         }
 
         dependencies {
             classpath 'com.android.tools.build:gradle:0.8.+'
+            classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
         }
     }
 
@@ -21,6 +25,9 @@ subprojects {
         }
         maven {
             url 'https://github.com/novoda/public-mvn-repo/raw/master/releases'
+        }
+        maven {
+            url 'http://download.crashlytics.com/maven'
         }
         mavenCentral()
     }
