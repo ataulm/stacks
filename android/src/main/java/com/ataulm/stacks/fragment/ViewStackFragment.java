@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.ataulm.stacks.R;
+import com.ataulm.stacks.activity.ViewStackActivity;
 import com.ataulm.stacks.base.StacksBaseFragment;
 import com.ataulm.stacks.marshallers.StackFromCursorMarshaller;
 import com.ataulm.stacks.model.Stack;
@@ -26,30 +27,13 @@ import java.util.List;
 
 public class ViewStackFragment extends StacksBaseFragment implements StackInputCallbacks, LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String ARGKEY_ID = "ID";
-
-    private String stackId;
     private ListView listView;
     private StacksListAdapter adapter;
-
-    public static ViewStackFragment newInstance(String id) {
-        Bundle arguments = new Bundle();
-        arguments.putString(ARGKEY_ID, id);
-        ViewStackFragment fragment = new ViewStackFragment();
-        fragment.setArguments(arguments);
-
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        if (getArguments() != null) {
-            stackId = getArguments().getString(ARGKEY_ID);
-        } else {
-            stackId = Stack.ZERO.id;
-        }
     }
 
     @Override
@@ -61,11 +45,11 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.edit:
-                navigateTo().editStack(stackId);
+                navigateTo().editStack(getStack().id);
                 return true;
 
             case R.id.move:
-                navigateTo().moveStack(stackId);
+                navigateTo().moveStack(getStack().parent, getStack().id);
                 return true;
 
             default:
@@ -139,9 +123,9 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == R.id.loader_stack) {
-            return new StackLoader(getActivity(), stackId);
+            return new StackLoader(getActivity(), getStack().id);
         } else if (id == R.id.loader_sub_stacks) {
-            return new SubStacksLoader(getActivity(), stackId);
+            return new SubStacksLoader(getActivity(), getStack().id);
         }
         throw new IllegalArgumentException("Unknown loader id: " + id);
     }
@@ -162,14 +146,21 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
         header.updateWith(stack);
     }
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    private Stack getStack() {
+        if (getActivity().getIntent().hasExtra(ViewStackActivity.EXTRA_STACK)) {
+            return getActivity().getIntent().getParcelableExtra(ViewStackActivity.EXTRA_STACK);
+        }
+        return Stack.ZERO;
     }
 
     @Override
     public void addStack(String summary) {
-        Stack stack = Stack.newInstance(stackId, summary, adapter.getCount());
+        Stack stack = Stack.newInstance(getStack().id, summary, adapter.getCount());
         StackPersistTask.newInstance(getActivity().getContentResolver(), stack).execute();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
     }
 
 }

@@ -1,10 +1,14 @@
 package com.ataulm.stacks.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.UUID;
 
-public class Stack {
+public class Stack implements Parcelable {
 
     public static final Stack ZERO = new Stack("id_zero", "as_batman", "zero", "", 0, 0, Time.UNSET, Time.UNSET, Time.UNSET);
+    public static final Builder CREATOR = new Builder();
 
     public final String id;
     public final String parent;
@@ -71,7 +75,25 @@ public class Stack {
         return id.hashCode();
     }
 
-    public static class Builder {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(parent);
+        dest.writeString(summary);
+        dest.writeString(description);
+        dest.writeInt(leafCount);
+        dest.writeInt(position);
+        dest.writeLong(created.asMillis());
+        dest.writeLong(modified.asMillis());
+        dest.writeLong(deleted.asMillis());
+    }
+
+    public static class Builder implements Creator<Stack> {
 
         private String id;
         private String parent;
@@ -83,11 +105,6 @@ public class Stack {
         private Time modified;
         private Time deleted;
 
-        public Builder() {
-            leafCount = Integer.MIN_VALUE;
-            position = Integer.MIN_VALUE;
-        }
-
         public static Builder from(Stack stack) {
             return new Builder().id(stack.id)
                     .parent(stack.parent)
@@ -98,6 +115,30 @@ public class Stack {
                     .created(stack.created)
                     .modified(stack.modified)
                     .deleted(stack.deleted);
+        }
+
+        public Builder() {
+            leafCount = Integer.MIN_VALUE;
+            position = Integer.MIN_VALUE;
+        }
+
+        @Override
+        public Stack createFromParcel(Parcel stack) {
+            return new Builder().id(stack.readString())
+                    .parent(stack.readString())
+                    .summary(stack.readString())
+                    .description(stack.readString())
+                    .leafCount(stack.readInt())
+                    .position(stack.readInt())
+                    .created(new Time(stack.readLong()))
+                    .modified(new Time(stack.readLong()))
+                    .deleted(new Time(stack.readLong()))
+                    .build();
+        }
+
+        @Override
+        public Stack[] newArray(int size) {
+            return new Stack[size];
         }
 
         public Builder id(String id) {
@@ -184,7 +225,6 @@ public class Stack {
 
             return new Stack(id, parent, summary, description, leafCount, position, created, modified, deleted);
         }
-
     }
 
 }

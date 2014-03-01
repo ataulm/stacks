@@ -20,8 +20,6 @@ public class MoveStackActivity extends StacksBaseActivity {
         super.onCreate(savedInstanceState);
         findExtrasOrThrowException();
         setContentView(R.layout.activity_move_stack);
-
-
     }
 
     private void findExtrasOrThrowException() {
