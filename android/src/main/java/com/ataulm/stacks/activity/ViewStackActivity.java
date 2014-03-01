@@ -15,7 +15,7 @@ public class ViewStackActivity extends StacksBaseActivity {
         setContentView(R.layout.activity_stacks);
 
         String stackId = hasData() ? getStackId() : Stack.ZERO.id;
-        getFragmentManager().beginTransaction().add(R.id.fragment_container, ViewStackFragment.newInstance(stackId)).commit();
+        getFragmentManager().beginTransaction().replace(R.id.fragment_container, ViewStackFragment.newInstance(stackId)).commit();
     }
 
     private boolean hasData() {

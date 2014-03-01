@@ -9,6 +9,7 @@ import com.crashlytics.android.Crashlytics;
 public class StacksBaseActivity extends Activity {
 
     private ViewServerManager viewServerManager;
+    private Navigator navigator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +18,7 @@ public class StacksBaseActivity extends Activity {
 
         viewServerManager = new ViewServerManager(this);
         viewServerManager.onCreate();
+        navigator = new Navigator(this);
     }
 
     @Override
@@ -29,6 +31,10 @@ public class StacksBaseActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         viewServerManager.onDestroy();
+    }
+
+    protected Navigator navigateTo() {
+        return navigator;
     }
 
     protected void toast(int messageResId) {

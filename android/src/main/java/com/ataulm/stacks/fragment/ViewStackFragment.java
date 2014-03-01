@@ -1,10 +1,8 @@
 package com.ataulm.stacks.fragment;
 
 import android.app.LoaderManager;
-import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.AdapterView;
@@ -14,7 +12,10 @@ import com.ataulm.stacks.R;
 import com.ataulm.stacks.base.StacksBaseFragment;
 import com.ataulm.stacks.marshallers.StackFromCursorMarshaller;
 import com.ataulm.stacks.model.Stack;
-import com.ataulm.stacks.persistence.*;
+import com.ataulm.stacks.persistence.StackLoader;
+import com.ataulm.stacks.persistence.StackPersistTask;
+import com.ataulm.stacks.persistence.StacksListAdapter;
+import com.ataulm.stacks.persistence.SubStacksLoader;
 import com.ataulm.stacks.view.KeepLikeInputView;
 import com.ataulm.stacks.view.StackInputCallbacks;
 import com.ataulm.stacks.view.StackListHeaderView;
@@ -58,11 +59,18 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.edit) {
-            Intent intent = new Intent(Intent.ACTION_EDIT, Uri.withAppendedPath(StacksProvider.URI_STACKS, stackId));
-            startActivity(intent);
+        switch (item.getItemId()) {
+            case R.id.edit:
+                navigateTo().editStack(stackId);
+                return true;
+
+            case R.id.move:
+                navigateTo().moveStack(stackId);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -86,8 +94,7 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
                 }
 
                 Stack stack = adapter.getItem(position - listView.getHeaderViewsCount());
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.withAppendedPath(StacksProvider.URI_STACKS, stack.id));
-                startActivity(intent);
+                navigateTo().stack(stack);
             }
 
             private boolean itemIsListViewHeader(int position) {

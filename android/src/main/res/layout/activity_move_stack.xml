@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/fragment_container"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <FrameLayout
+    android:id="@+id/fragment_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@+id/move_cancel_bar" />
+
+  <LinearLayout
+    android:id="@id/move_cancel_bar"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:layout_alignParentBottom="true"
+    android:orientation="horizontal"
+    android:showDividers="middle">
+
+    <TextView
+      android:id="@+id/move_cancel_bar"
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:text="Move" />
+
+    <TextView
+      android:id="@+id/move_cancel_bar"
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:text="Cancel" />
+
+  </LinearLayout>
+</RelativeLayout>

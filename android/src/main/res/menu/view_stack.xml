@@ -4,4 +4,9 @@
     android:id="@+id/edit"
     android:title="Edit"
     android:showAsAction="never" />
+
+  <item
+    android:id="@+id/move"
+    android:title="Move"
+    android:showAsAction="never" />
 </menu>
