@@ -8,7 +8,7 @@ import com.ataulm.stacks.fragment.ViewStackFragment;
 
 public class ViewStackActivity extends StacksBaseActivity {
 
-    public static final String EXTRA_STACK = "com.ataulm.stacks.extra.EXTRA_STACK";
+    public static final String EXTRA_STACK = "com.ataulm.stacks.extra.EXTRA_PARENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

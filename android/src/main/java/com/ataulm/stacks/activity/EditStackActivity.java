@@ -11,7 +11,7 @@ import com.novoda.notils.caster.Views;
 
 public class EditStackActivity extends StacksDoneDiscardActivity implements StacksDoneDiscardActivity.DoneDiscardListener {
 
-    public static final String EXTRA_STACK = "com.ataulm.stacks.extra.EXTRA_STACK";
+    public static final String EXTRA_STACK = "com.ataulm.stacks.extra.EXTRA_PARENT";
 
     private EditText summary;
     private EditText description;
@@ -34,7 +34,7 @@ public class EditStackActivity extends StacksDoneDiscardActivity implements Stac
 
     @Override
     public void onDoneClick() {
-        String summaryText = this.summary.getText().toString().trim();
+        String summaryText = summary.getText().toString().trim();
         if (summaryText.length() == 0) {
             toast(R.string.summary_cannot_be_blank);
             return;

@@ -48,10 +48,6 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
                 navigateTo().editStack(getStack());
                 return true;
 
-            case R.id.move:
-                navigateTo().pickNewParentForStack(getStack().parent, getStack().id);
-                return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -85,6 +81,24 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
                 return position < listView.getHeaderViewsCount();
             }
 
+        });
+
+        // TODO: this should be in a per item overflow, not long click derp face
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (itemIsListViewHeader(position)) {
+                    return true;
+                }
+
+                Stack stack = adapter.getItem(position - listView.getHeaderViewsCount());
+                navigateTo().pickNewParentForStack(getStack(), stack);
+                return true;
+            }
+
+            private boolean itemIsListViewHeader(int position) {
+                return position < listView.getHeaderViewsCount();
+            }
         });
 
         startLoaders(savedInstanceState);
