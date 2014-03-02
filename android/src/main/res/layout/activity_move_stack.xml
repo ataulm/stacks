@@ -25,7 +25,7 @@
       android:layout_weight="1"
       android:background="@android:color/holo_blue_dark"
       android:clickable="true"
-      android:onClick="onDecisionClick"
+      android:onClick="onClick"
       android:text="Move" />
 
     <TextView
@@ -35,7 +35,7 @@
       android:layout_weight="1"
       android:background="@android:color/holo_green_dark"
       android:clickable="true"
-      android:onClick="onDecisionClick"
+      android:onClick="onClick"
       android:text="Cancel" />
 
   </LinearLayout>

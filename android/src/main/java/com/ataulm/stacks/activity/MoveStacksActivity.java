@@ -2,16 +2,17 @@ package com.ataulm.stacks.activity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.base.StacksBaseActivity;
 import com.ataulm.stacks.fragment.MoveStacksFragment;
 import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.persistence.StackFindAncestorsTask;
+import com.ataulm.stacks.persistence.StackPersistTask;
 
 import java.util.List;
 
-public class MoveStacksActivity extends StacksBaseActivity implements MoveStacksFragment.Callback {
+public class MoveStacksActivity extends StacksBaseActivity implements MoveStacksFragment.Callback, StackFindAncestorsTask.Callback {
 
     public static final String EXTRA_PARENT = "com.ataulm.stacks.extra.EXTRA_PARENT";
     public static final String EXTRA_STACKS_TO_MOVE = "com.ataulm.stacks.extra.EXTRA_STACKS_TO_MOVE";
@@ -45,20 +46,39 @@ public class MoveStacksActivity extends StacksBaseActivity implements MoveStacks
                 .replace(R.id.fragment_container, new MoveStacksFragment())
                 .addToBackStack(null)
                 .commit();
-        Toast.makeText(this, "nav to stack:" + stack.summary, Toast.LENGTH_SHORT).show();
     }
 
-    public void onDecisionClick(View view) {
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.textview_move:
                 Stack stack = getIntent().getParcelableExtra(EXTRA_PARENT);
-                Toast.makeText(this, "moving to: " + stack.summary, Toast.LENGTH_SHORT).show();
+                StackFindAncestorsTask.newInstance(getContentResolver(), this, stack).execute();
                 break;
             case R.id.textview_cancel:
                 finish();
                 break;
             default:
-                throw new IllegalArgumentException("Method called without expected activity_move_stack view as parameter");
+                throw new IllegalArgumentException("Expected View from R.layout.activity_move_stack as parameter");
+        }
+    }
+
+    @Override
+    public void onAncestorsRetrieved(List<String> ancestorIds) {
+        for (Stack stack : stacks) {
+            if (ancestorIds.contains(stack.id)) {
+                toast(R.string.cannot_move_stacks_here);
+                return;
+            }
+        }
+        moveStacks();
+        finish();
+    }
+
+    private void moveStacks() {
+        Stack parent = getIntent().getParcelableExtra(EXTRA_PARENT);
+        for (Stack stack : stacks) {
+            Stack movedStack = Stack.Builder.from(stack).parent(parent.id).build();
+            StackPersistTask.newInstance(getContentResolver(), movedStack).execute();
         }
     }
 
