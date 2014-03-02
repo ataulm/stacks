@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="add">Add</string>
-  <string name="added_new_stack">Added new Stack</string>
   <string name="new_stack">New stack</string>
 </resources>

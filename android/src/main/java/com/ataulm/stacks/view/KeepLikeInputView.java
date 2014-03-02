@@ -14,8 +14,6 @@ import com.novoda.notils.caster.Views;
 
 public class KeepLikeInputView extends RelativeLayout {
 
-    private EditText current;
-    private EditText next;
     private StackInputCallbacks callbacks;
     private InputReactor reactor;
 
@@ -32,8 +30,8 @@ public class KeepLikeInputView extends RelativeLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        current = Views.findById(this, R.id.edittext_current);
-        next = Views.findById(this, R.id.edittext_next);
+        EditText current = Views.findById(this, R.id.edittext_current);
+        EditText next = Views.findById(this, R.id.edittext_next);
 
         reactor = new InputReactor(current, next, callbacks);
         current.addTextChangedListener(reactor);
@@ -86,10 +84,7 @@ public class KeepLikeInputView extends RelativeLayout {
 
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
-            if (keyCode == KeyEvent.KEYCODE_ENTER && current.getText().toString().trim().length() == 0) {
-                return true;
-            }
-            return false;
+            return keyCode == KeyEvent.KEYCODE_ENTER && current.getText().toString().trim().length() == 0;
         }
 
     }

@@ -63,11 +63,7 @@ public class Stack implements Parcelable {
             return false;
         }
 
-        if (((Stack) o).id.equals(id)) {
-            return true;
-        }
-
-        return false;
+        return (((Stack) o).id.equals(id));
     }
 
     @Override
