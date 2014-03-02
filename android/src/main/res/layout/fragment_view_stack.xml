@@ -7,5 +7,7 @@
     android:id="@+id/listview_children"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:transcriptMode="alwaysScroll" />
+    android:padding="@dimen/gutter"
+    android:transcriptMode="alwaysScroll"
+    android:clipToPadding="false" />
 </RelativeLayout>

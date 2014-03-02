@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="Stacks" parent="android:Theme.Holo.Light">
+    <item name="android:actionBarStyle">@style/Stacks.ActionBar</item>
+  </style>
+
+  <style name="Stacks.ActionBar" parent="android:Widget.Holo.Light.ActionBar">
+    <item name="android:icon">@drawable/ic_launcher</item>
+  </style>
+</resources>
