@@ -14,7 +14,7 @@ INSERT INTO stacks(_id, parent, summary, description, leaf_count, position, crea
         'id_zero',
         'as_batman',
         'zero',
-        '',
+        'this is root stack.',
         0,
         0,
         -2208988800000,
