@@ -1,11 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.ataulm.stacks.view.StackListHeaderView xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/header"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
-
-  <TextView
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+  <com.ataulm.stacks.view.StacksTextView
     android:id="@+id/textview_summary"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />
-</com.ataulm.stacks.view.StackListHeaderView>
+
+  <com.ataulm.stacks.view.StacksTextView
+    android:id="@+id/textview_description"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/textview_summary"
+    android:visibility="gone" />
+
+  <ViewSwitcher
+    android:id="@+id/content_length_indicator"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/textview_description"
+    android:layout_alignParentRight="true"
+    android:visibility="gone" >
+    <ImageView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@drawable/ic_arrow_less" />
+
+    <ImageView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@drawable/ic_arrow_more" />
+  </ViewSwitcher>
+</merge>
