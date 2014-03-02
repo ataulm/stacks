@@ -29,12 +29,12 @@ public class Navigator {
         activity.startActivity(intent);
     }
 
-    public void editStack(Stack stack) {
+    public void editStack(Stack stack, int requestCode) {
         Intent intent = new Intent(Intent.ACTION_EDIT)
                 .setData(Uri.withAppendedPath(StacksProvider.URI_STACKS, stack.id))
                 .putExtra(EditStackActivity.EXTRA_STACK, stack);
 
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent, requestCode);
     }
 
     public void pickNewParentForStack(Stack parent, Stack... stacks) {

@@ -9,4 +9,6 @@
   <string name="cannot_move_stacks_here">Can\'t move selected stack(s) here.</string>
   <string name="delete">Delete</string>
   <string name="edit">Edit</string>
+  <string name="failed_saving_stack">Failed to save Stack.</string>
+  <string name="success_updating_stack">Successfully updated Stack</string>
 </resources>

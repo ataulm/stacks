@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import com.ataulm.stacks.marshallers.ContentValuesFromStackMarshaller;
 import com.ataulm.stacks.model.Stack;
 import com.ataulm.stacks.persistence.StackPersistCallback;
+import com.ataulm.stacks.persistence.Stacks;
 import com.ataulm.stacks.persistence.StacksProvider;
 
 public class UpdateTask extends AsyncTask<Void, Void, Boolean> {
@@ -35,7 +36,7 @@ public class UpdateTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params) {
         ContentValues values = marshaller.newContentValuesForUpdate(stack);
-        String where = "_id=?";
+        String where = Stacks.ID + "=?";
         String[] selectionArgs = {stack.id};
 
         Cursor cursor = contentResolver.query(StacksProvider.URI_STACKS, null, where, selectionArgs, null);

@@ -10,7 +10,7 @@ public class StackLoader extends CursorLoader {
     public StackLoader(Context context, String id) {
         super(context);
         setUri(StacksProvider.URI_STACKS);
-        setSelection("_id=? AND deleted=?");
+        setSelection(Stacks.ID + "=? AND " + Stacks.DELETED + "=?");
         setSelectionArgs(new String[]{id, String.valueOf(Time.UNSET.asMillis())});
     }
 

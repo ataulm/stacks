@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 
 import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.persistence.Stacks;
 import com.ataulm.stacks.persistence.StacksProvider;
 
 import java.util.ArrayList;
@@ -39,10 +40,10 @@ public class GetAncestorsTask extends AsyncTask<Void, Void, List<String>> {
     }
 
     private String getParent(String stackId) {
-        String[] projection = {"_id", "parent"};
-        Cursor query = contentResolver.query(StacksProvider.URI_STACKS, projection, "_id=?", new String[]{stackId}, null);
+        String[] projection = {Stacks.ID, Stacks.PARENT};
+        Cursor query = contentResolver.query(StacksProvider.URI_STACKS, projection, Stacks.ID + "=?", new String[]{stackId}, null);
         query.moveToFirst();
-        return query.getString(query.getColumnIndex("parent"));
+        return query.getString(query.getColumnIndex(Stacks.PARENT));
     }
 
     @Override
