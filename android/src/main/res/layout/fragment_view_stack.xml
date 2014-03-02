@@ -9,8 +9,7 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/gutter"
     android:clipToPadding="false"
-    android:headerDividersEnabled="false"
-    android:footerDividersEnabled="false"
+    android:divider="@null"
     android:transcriptMode="alwaysScroll"
     android:scrollbars="none" />
 </RelativeLayout>
