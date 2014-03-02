@@ -25,7 +25,7 @@
       android:background="@android:color/holo_blue_dark"
       android:clickable="true"
       android:onClick="onClick"
-      android:text="@string/move" />
+      android:text="@string/menu_move" />
 
     <TextView
       android:id="@+id/textview_cancel"
@@ -35,7 +35,7 @@
       android:background="@android:color/holo_green_dark"
       android:clickable="true"
       android:onClick="onClick"
-      android:text="@string/cancel" />
+      android:text="@string/menu_cancel" />
 
   </LinearLayout>
 </RelativeLayout>
