@@ -7,12 +7,12 @@ import com.ataulm.stacks.R;
 import com.ataulm.stacks.base.StacksBaseActivity;
 import com.ataulm.stacks.fragment.MoveStacksFragment;
 import com.ataulm.stacks.model.Stack;
-import com.ataulm.stacks.persistence.StackFindAncestorsTask;
-import com.ataulm.stacks.persistence.StackPersistTask;
+import com.ataulm.stacks.persistence.task.GetAncestorsTask;
+import com.ataulm.stacks.persistence.task.UpdateTask;
 
 import java.util.List;
 
-public class MoveStacksActivity extends StacksBaseActivity implements MoveStacksFragment.Callback, StackFindAncestorsTask.Callback {
+public class MoveStacksActivity extends StacksBaseActivity implements MoveStacksFragment.Callback, GetAncestorsTask.Callback {
 
     public static final String EXTRA_PARENT = "com.ataulm.stacks.extra.EXTRA_PARENT";
     public static final String EXTRA_STACKS_TO_MOVE = "com.ataulm.stacks.extra.EXTRA_STACKS_TO_MOVE";
@@ -52,7 +52,7 @@ public class MoveStacksActivity extends StacksBaseActivity implements MoveStacks
         switch (view.getId()) {
             case R.id.textview_move:
                 Stack stack = getIntent().getParcelableExtra(EXTRA_PARENT);
-                StackFindAncestorsTask.newInstance(getContentResolver(), this, stack).execute();
+                GetAncestorsTask.newInstance(getContentResolver(), this, stack).execute();
                 break;
             case R.id.textview_cancel:
                 finish();
@@ -78,7 +78,7 @@ public class MoveStacksActivity extends StacksBaseActivity implements MoveStacks
         Stack parent = getIntent().getParcelableExtra(EXTRA_PARENT);
         for (Stack stack : stacks) {
             Stack movedStack = Stack.Builder.from(stack).parent(parent.id).build();
-            StackPersistTask.newInstance(getContentResolver(), movedStack).execute();
+            UpdateTask.newInstance(getContentResolver(), movedStack).execute();
         }
     }
 

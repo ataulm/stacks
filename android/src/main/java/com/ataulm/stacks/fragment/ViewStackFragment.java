@@ -13,8 +13,8 @@ import com.ataulm.stacks.activity.ViewStackActivity;
 import com.ataulm.stacks.base.StacksBaseFragment;
 import com.ataulm.stacks.marshallers.StackFromCursorMarshaller;
 import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.persistence.task.InsertTask;
 import com.ataulm.stacks.persistence.StackLoader;
-import com.ataulm.stacks.persistence.StackPersistTask;
 import com.ataulm.stacks.persistence.StacksListAdapter;
 import com.ataulm.stacks.persistence.SubStacksLoader;
 import com.ataulm.stacks.view.KeepLikeInputView;
@@ -170,7 +170,7 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
     @Override
     public void addStack(String summary) {
         Stack stack = Stack.newInstance(getStack().id, summary, adapter.getCount());
-        StackPersistTask.newInstance(getActivity().getContentResolver(), stack).execute();
+        InsertTask.newInstance(getActivity().getContentResolver(), stack).execute();
     }
 
     @Override

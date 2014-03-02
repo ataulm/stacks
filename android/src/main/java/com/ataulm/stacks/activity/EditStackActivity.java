@@ -6,7 +6,7 @@ import android.widget.EditText;
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.base.StacksDoneDiscardActivity;
 import com.ataulm.stacks.model.Stack;
-import com.ataulm.stacks.persistence.StackPersistTask;
+import com.ataulm.stacks.persistence.task.UpdateTask;
 import com.novoda.notils.caster.Views;
 
 public class EditStackActivity extends StacksDoneDiscardActivity implements StacksDoneDiscardActivity.DoneDiscardListener {
@@ -41,7 +41,7 @@ public class EditStackActivity extends StacksDoneDiscardActivity implements Stac
         }
         String descriptionText = description.getText().toString().trim();
         Stack stack = Stack.Builder.from(getStack()).summary(summaryText).description(descriptionText).build();
-        StackPersistTask.newInstance(getContentResolver(), stack).execute();
+        UpdateTask.newInstance(getContentResolver(), stack).execute();
         finish();
     }
 
