@@ -7,4 +7,6 @@
   <string name="cancel">Cancel</string>
   <string name="summary_cannot_be_blank">Summary cannot be blank</string>
   <string name="cannot_move_stacks_here">Can\'t move selected stack(s) here.</string>
+  <string name="delete">Delete</string>
+  <string name="edit">Edit</string>
 </resources>

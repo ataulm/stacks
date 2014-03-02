@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.os.AsyncTask;
 
-import com.ataulm.stacks.marshallers.ContentValuesFromStackMarshaller;
 import com.ataulm.stacks.model.Stack;
 import com.ataulm.stacks.persistence.StacksProvider;
 
@@ -14,17 +13,15 @@ import java.util.List;
 public class GetAncestorsTask extends AsyncTask<Void, Void, List<String>> {
 
     private final ContentResolver contentResolver;
-    private final ContentValuesFromStackMarshaller marshaller;
     private final Callback callback;
     private final Stack stack;
 
     public static GetAncestorsTask newInstance(ContentResolver contentResolver, Callback callback, Stack stack) {
-        return new GetAncestorsTask(contentResolver, new ContentValuesFromStackMarshaller(), callback, stack);
+        return new GetAncestorsTask(contentResolver, callback, stack);
     }
 
-    private GetAncestorsTask(ContentResolver contentResolver, ContentValuesFromStackMarshaller marshaller, Callback callback, Stack stack) {
+    private GetAncestorsTask(ContentResolver contentResolver, Callback callback, Stack stack) {
         this.contentResolver = contentResolver;
-        this.marshaller = marshaller;
         this.callback = callback;
         this.stack = stack;
     }

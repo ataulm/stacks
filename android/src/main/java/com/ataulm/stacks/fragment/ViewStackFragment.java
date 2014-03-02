@@ -13,10 +13,12 @@ import com.ataulm.stacks.activity.ViewStackActivity;
 import com.ataulm.stacks.base.StacksBaseFragment;
 import com.ataulm.stacks.marshallers.StackFromCursorMarshaller;
 import com.ataulm.stacks.model.Stack;
-import com.ataulm.stacks.persistence.task.InsertTask;
+import com.ataulm.stacks.model.Time;
 import com.ataulm.stacks.persistence.StackLoader;
 import com.ataulm.stacks.persistence.StacksListAdapter;
 import com.ataulm.stacks.persistence.SubStacksLoader;
+import com.ataulm.stacks.persistence.task.InsertTask;
+import com.ataulm.stacks.persistence.task.UpdateTask;
 import com.ataulm.stacks.view.KeepLikeInputView;
 import com.ataulm.stacks.view.StackInputCallbacks;
 import com.ataulm.stacks.view.StackListHeaderView;
@@ -33,7 +35,9 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        if (!Stack.ZERO.equals(getStack())) {
+            setHasOptionsMenu(true);
+        }
     }
 
     @Override
@@ -46,6 +50,12 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
         switch (item.getItemId()) {
             case R.id.edit:
                 navigateTo().editStack(getStack());
+                return true;
+
+            case R.id.delete:
+                Stack deletedStack = Stack.Builder.from(getStack()).deleted(Time.now()).build();
+                UpdateTask.newInstance(getActivity().getContentResolver(), deletedStack).execute();
+                getActivity().finish();
                 return true;
 
             default:
@@ -148,7 +158,9 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == R.id.loader_stack) {
             List<Stack> stacks = new SimpleCursorList<Stack>(data, new StackFromCursorMarshaller());
-            updateHeader(stacks.get(0));
+            if (stacks.size() > 0) {
+                updateHeader(stacks.get(0));
+            }
         } else if (loader.getId() == R.id.loader_sub_stacks) {
             List<Stack> stacks = new SimpleCursorList<Stack>(data, new StackFromCursorMarshaller());
             adapter.swapList(stacks);
