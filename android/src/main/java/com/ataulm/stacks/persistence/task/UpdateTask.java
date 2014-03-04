@@ -5,7 +5,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.AsyncTask;
 
-import com.ataulm.stacks.marshallers.ContentValuesFromStackMarshaller;
+import com.ataulm.stacks.marshallers.ContentValuesMarshaller;
 import com.ataulm.stacks.model.Stack;
 import com.ataulm.stacks.persistence.StackPersistCallback;
 import com.ataulm.stacks.persistence.Stacks;
@@ -14,7 +14,7 @@ import com.ataulm.stacks.persistence.StacksProvider;
 public class UpdateTask extends AsyncTask<Void, Void, Boolean> {
 
     private final ContentResolver contentResolver;
-    private final ContentValuesFromStackMarshaller marshaller;
+    private final ContentValuesMarshaller marshaller;
     private final StackPersistCallback callback;
     private final Stack stack;
 
@@ -23,10 +23,10 @@ public class UpdateTask extends AsyncTask<Void, Void, Boolean> {
     }
 
     public static UpdateTask newInstance(ContentResolver contentResolver, StackPersistCallback callback, Stack stack) {
-        return new UpdateTask(contentResolver, new ContentValuesFromStackMarshaller(), callback, stack);
+        return new UpdateTask(contentResolver, new ContentValuesMarshaller(new ContentValues()), callback, stack);
     }
 
-    private UpdateTask(ContentResolver contentResolver, ContentValuesFromStackMarshaller marshaller, StackPersistCallback callback, Stack stack) {
+    private UpdateTask(ContentResolver contentResolver, ContentValuesMarshaller marshaller, StackPersistCallback callback, Stack stack) {
         this.contentResolver = contentResolver;
         this.marshaller = marshaller;
         this.callback = callback;
@@ -35,7 +35,7 @@ public class UpdateTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        ContentValues values = marshaller.newContentValuesForUpdate(stack);
+        ContentValues values = marshaller.valuesForUpdateFrom(stack);
         String where = Stacks.ID + "=?";
         String[] selectionArgs = {stack.id};
 
