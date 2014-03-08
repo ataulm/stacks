@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class Stack implements Parcelable {
 
-    public static final Stack ZERO = new Stack("id_zero", "as_batman", "zero", "", 0, 0, Time.UNSET, Time.UNSET, Time.UNSET);
+    public static final Stack ZERO = new Stack("id_zero", "as_batman", "zero", "this is root stack.", 0, 0, Time.UNSET, Time.UNSET, Time.UNSET);
     public static final Builder CREATOR = new Builder();
 
     public final String id;
@@ -63,11 +63,7 @@ public class Stack implements Parcelable {
             return false;
         }
 
-        if (((Stack) o).id.equals(id)) {
-            return true;
-        }
-
-        return false;
+        return (((Stack) o).id.equals(id));
     }
 
     @Override

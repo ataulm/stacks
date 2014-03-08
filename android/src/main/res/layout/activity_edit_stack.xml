@@ -15,7 +15,7 @@
     android:layout_height="wrap_content"
     android:layout_below="@id/textview_label_summary"
     android:inputType="text"
-    android:hint="@string/summary_of_stack" />
+    android:hint="@string/stack_summary" />
 
   <TextView
     android:id="@+id/textview_label_description"

@@ -16,7 +16,7 @@ import com.ataulm.stacks.activity.MoveStacksActivity;
 import com.ataulm.stacks.base.StacksBaseFragment;
 import com.ataulm.stacks.marshallers.StackFromCursorMarshaller;
 import com.ataulm.stacks.model.Stack;
-import com.ataulm.stacks.persistence.StacksListAdapter;
+import com.ataulm.stacks.persistence.BasicStacksListAdapter;
 import com.ataulm.stacks.persistence.SubStacksLoader;
 import com.ataulm.stacks.view.StackListHeaderView;
 import com.novoda.notils.caster.Classes;
@@ -28,7 +28,7 @@ import java.util.List;
 public class MoveStacksFragment extends StacksBaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private ListView listView;
-    private StacksListAdapter adapter;
+    private BasicStacksListAdapter adapter;
     private Callback callback;
 
     @Override
@@ -45,9 +45,11 @@ public class MoveStacksFragment extends StacksBaseFragment implements LoaderMana
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adapter = new StacksListAdapter();
+        adapter = new BasicStacksListAdapter();
         listView = Views.findById(view, R.id.listview_children);
-        View headerView = createHeaderView(listView);
+        StackListHeaderView headerView = new StackListHeaderView(getActivity());
+        headerView.setId(R.id.header_view);
+        headerView.updateWith(getParentStack());
         listView.addHeaderView(headerView);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -75,16 +77,9 @@ public class MoveStacksFragment extends StacksBaseFragment implements LoaderMana
         }
     }
 
-    private View createHeaderView(ListView parent) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_stacks_header, null);
-        ((StackListHeaderView) view).updateWith(getParentStack());
-        return view;
-    }
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == R.id.loader_sub_stacks) {
-            // TODO: this loader should start NOT load the stacks are that being moved
             return new SubStacksLoader(getActivity(), getParentStack().id);
         }
         throw new IllegalArgumentException("Unknown loader id: " + id);
