@@ -7,7 +7,7 @@ dependencies {
     instrumentTestCompile 'org.mockito:mockito-all:1.8.+'
     instrumentTestCompile 'org.robolectric:robolectric:2.+'
 
-    compile 'com.novoda:notils:2.2.1'
+    compile 'com.novoda:notils:2.2.4'
     compile 'com.novoda:sqliteprovider-core:1.0.1'
     compile 'joda-time:joda-time:2.3'
     compile 'com.crashlytics.android:crashlytics:1.+'
@@ -15,7 +15,7 @@ dependencies {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.0.1'
+    buildToolsVersion '19.0.3'
 
     defaultConfig {
         minSdkVersion 15
@@ -62,14 +62,11 @@ task addTest {
                     file.text = writer.toString()
                 }
             }
-        } catch (FileNotFoundException e) {
-            // nop, iml not found
+        } catch (FileNotFoundException noActionNeeded) {
         }
     }
 }
 
-// always do the addtest on prebuild
 gradle.projectsEvaluated {
     preBuild.dependsOn(addTest)
 }
-
