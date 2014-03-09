@@ -34,7 +34,6 @@ public class StackListHeaderView extends RelativeLayout {
 
         if (stack.description.length() > 0) {
             description.setText(stack.description);
-            description.setVisibility(VISIBLE);
             contentLengthIndicator.setVisibility(VISIBLE);
 
             setOnClickListener(new OnClickListener() {

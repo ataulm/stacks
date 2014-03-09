@@ -15,6 +15,7 @@
     android:layout_height="wrap_content"
     android:layout_below="@id/textview_summary"
     android:textColor="@color/list_header_text_description"
+    android:visibility="gone"
     app:customFont="robotoLight" />
 
   <ViewSwitcher
@@ -28,12 +29,12 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:paddingTop="2dp"
-      android:src="@drawable/ic_arrow_less" />
+      android:src="@drawable/ic_arrow_more" />
 
     <ImageView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:paddingTop="2dp"
-      android:src="@drawable/ic_arrow_more" />
+      android:src="@drawable/ic_arrow_less" />
   </ViewSwitcher>
 </merge>
