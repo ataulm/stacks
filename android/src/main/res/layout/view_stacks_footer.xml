@@ -1,22 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.ataulm.stacks.view.KeepLikeInputView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:paddingLeft="@dimen/stack_list_item_view_padding">
 
-  <EditText
+  <com.ataulm.stacks.view.StacksEditText
     android:id="@+id/edittext_current"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/touch_target"
     android:imeActionLabel="@string/add"
     android:inputType="text"
-    android:hint="@string/new_stack" />
+    android:textSize="@dimen/stack_list_item_view_text"
+    android:textColor="@color/list_item_text_summary"
+    android:hint="@string/new_stack"
+    android:textColorHint="@color/list_item_hint"
+    android:background="@android:color/transparent"
+    app:customFont="robotoSlab" />
 
-  <EditText
+  <com.ataulm.stacks.view.StacksEditText
     android:id="@+id/edittext_next"
     android:layout_width="match_parent"
-    android:focusable="true"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/touch_target"
     android:layout_below="@id/edittext_current"
+    android:textSize="@dimen/stack_list_item_view_text"
+    android:textColor="@color/list_item_text_summary"
     android:hint="@string/new_stack"
-    android:visibility="gone" />
+    android:textColorHint="@color/list_item_hint"
+    android:visibility="gone"
+    android:background="@android:color/transparent"
+    app:customFont="robotoSlab" />
 </com.ataulm.stacks.view.KeepLikeInputView>

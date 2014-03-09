@@ -20,5 +20,6 @@
   <color name="list_header_text_summary">@color/grey</color>
   <color name="list_header_text_description">@color/grey</color>
   <color name="list_item_text_summary">@color/grey</color>
+  <color name="list_item_hint">@color/light_grey</color>
 
 </resources>
