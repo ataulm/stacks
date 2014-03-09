@@ -12,6 +12,7 @@
     android:layout_weight="1"
     android:paddingLeft="@dimen/stack_list_item_view_padding"
     android:gravity="center_vertical"
+    android:textSize="@dimen/stack_list_item_view_text"
     android:textColor="@color/list_item_text_summary"
     app:customFont="robotoSlab" />
 
