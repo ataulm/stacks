@@ -79,11 +79,12 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
     }
 
     private void setupListViewSandwich() {
-        View headerView = new StackListHeaderView(getActivity());
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+
+        StackListHeaderView headerView = new StackListHeaderView(getActivity());
         headerView.setId(R.id.header_view);
         listView.addHeaderView(headerView);
 
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
         KeepLikeInputView footerView = ((KeepLikeInputView) inflater.inflate(R.layout.view_stacks_footer, null));
         footerView.setCallbacks(this);
         listView.addFooterView(footerView);

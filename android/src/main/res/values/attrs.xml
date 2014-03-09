@@ -4,6 +4,8 @@
     <attr name="customFont" format="enum">
       <enum name="none" value="-1" />
       <enum name="ubuntuMono" value="0" />
+      <enum name="robotoSlab" value="1" />
+      <enum name="robotoLight" value="2" />
     </attr>
   </declare-styleable>
 </resources>

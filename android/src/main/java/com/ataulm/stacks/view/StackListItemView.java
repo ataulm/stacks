@@ -5,15 +5,15 @@ import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.model.Stack;
 import com.novoda.notils.caster.Views;
 
-public class StackListItemView extends RelativeLayout implements PopupMenu.OnMenuItemClickListener {
+public class StackListItemView extends LinearLayout implements PopupMenu.OnMenuItemClickListener {
 
     private TextView textViewSummary;
     private ImageView overflow;

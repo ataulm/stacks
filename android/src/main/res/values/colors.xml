@@ -16,7 +16,9 @@
   <color name="actionbar_trim_highlight">@color/grey</color>
   <color name="actionbar_trim_shadow">@color/dark_grey</color>
 
-  <color name="list_text_summary">@color/grey</color>
-  <color name="header_text_summary">@color/grey</color>
+  <color name="list_header_container">@color/white</color>
+  <color name="list_header_text_summary">@color/grey</color>
+  <color name="list_header_text_description">@color/grey</color>
+  <color name="list_item_text_summary">@color/grey</color>
 
 </resources>

@@ -19,15 +19,14 @@ public class StackListHeaderView extends RelativeLayout {
 
     public StackListHeaderView(Context context) {
         super(context);
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.view_stacks_header, this, true);
-        findViews();
-    }
-
-    private void findViews() {
+        LayoutInflater.from(context).inflate(R.layout.view_stacks_header, this, true);
         summary = Views.findById(this, R.id.textview_summary);
         description = Views.findById(this, R.id.textview_description);
         contentLengthIndicator = Views.findById(this, R.id.content_length_indicator);
+
+        setBackgroundColor(getResources().getColor(R.color.list_header_container));
+        int padding = getResources().getDimensionPixelSize(R.dimen.stack_list_header_view_padding);
+        setPadding(padding, padding, padding, padding);
     }
 
     public void updateWith(Stack stack) {
@@ -52,8 +51,6 @@ public class StackListHeaderView extends RelativeLayout {
             contentLengthIndicator.setVisibility(GONE);
             setOnClickListener(null);
         }
-
-
     }
 
 }

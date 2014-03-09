@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <dimen name="gutter">16dp</dimen>
+  <dimen name="stack_list_header_view_padding">16dp</dimen>
+  <dimen name="stack_list_item_view_padding">16dp</dimen>
   <dimen name="touch_target">48dp</dimen>
 </resources>
