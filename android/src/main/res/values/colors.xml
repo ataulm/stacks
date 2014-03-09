@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- swatch -->
+  <!-- All color codes should be here. -->
+  <!-- If this list starts getting too long, something is wrong design-wise -->
+  <!-- When changing a color, remember to refactor the name to describe it -->
+  <color name="white">#ffffff</color>
+  <color name="off_white">#f8f8f8</color>
+  <color name="light_grey">#cbcbcb</color>
+  <color name="grey">#969696</color>
+  <color name="dark_grey">#5e5e5e</color>
+  <!-- end swatch-->
+
+  <color name="app_background">@color/off_white</color>
+  <color name="actionbar_background">@color/off_white</color>
+  <color name="actionbar_trim_highlight">@color/grey</color>
+  <color name="actionbar_trim_shadow">@color/dark_grey</color>
+
+  <color name="list_text_summary">@color/grey</color>
+  <color name="header_text_summary">@color/grey</color>
+
+</resources>
