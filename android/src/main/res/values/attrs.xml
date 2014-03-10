@@ -3,9 +3,8 @@
   <declare-styleable name="CustomTextAppearance">
     <attr name="customFont" format="enum">
       <enum name="none" value="-1" />
-      <enum name="ubuntuMono" value="0" />
-      <enum name="robotoSlab" value="1" />
-      <enum name="robotoLight" value="2" />
+      <enum name="robotoSlab" value="0" />
+      <enum name="robotoLight" value="1" />
     </attr>
   </declare-styleable>
 </resources>

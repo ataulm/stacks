@@ -14,7 +14,6 @@ public class TypefaceFactory {
 
     public enum FontType {
 
-        UBUNTU_MONO("fonts/UbuntuMono-R.ttf"),
         ROBOTO_SLAB("fonts/RobotoSlab-Regular.ttf"),
         ROBOTO_LIGHT("fonts/Roboto-Light.ttf");
 
