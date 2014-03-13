@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
@@ -17,25 +18,27 @@
     android:orientation="horizontal"
     android:showDividers="middle">
 
-    <TextView
+    <com.ataulm.stacks.view.StacksTextView
       android:id="@+id/textview_move"
       android:layout_width="0dp"
       android:layout_height="match_parent"
       android:layout_weight="1"
-      android:background="@android:color/holo_blue_dark"
+      android:gravity="center"
       android:clickable="true"
       android:onClick="onClick"
-      android:text="@string/menu_move" />
+      android:text="@string/menu_move"
+      app:customFont="robotoSlab" />
 
-    <TextView
+    <com.ataulm.stacks.view.StacksTextView
       android:id="@+id/textview_cancel"
       android:layout_width="0dp"
       android:layout_height="match_parent"
       android:layout_weight="1"
-      android:background="@android:color/holo_green_dark"
+      android:gravity="center"
       android:clickable="true"
       android:onClick="onClick"
-      android:text="@string/menu_cancel" />
+      android:text="@string/menu_cancel"
+      app:customFont="robotoSlab" />
 
   </LinearLayout>
 </RelativeLayout>
