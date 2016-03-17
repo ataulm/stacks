@@ -7,7 +7,7 @@ import android.net.Uri;
 import com.ataulm.stacks.activity.EditStackActivity;
 import com.ataulm.stacks.activity.MoveStacksActivity;
 import com.ataulm.stacks.activity.ViewStackActivity;
-import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.model.AndroidStack;
 import com.ataulm.stacks.persistence.StacksProvider;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class Navigator {
         this.activity = activity;
     }
 
-    public void stack(Stack stack) {
+    public void stack(AndroidStack stack) {
         Intent intent = new Intent(Intent.ACTION_VIEW)
                 .setData(Uri.withAppendedPath(StacksProvider.URI_STACKS, stack.id))
                 .putExtra(ViewStackActivity.EXTRA_STACK, stack);
@@ -29,7 +29,7 @@ public class Navigator {
         activity.startActivity(intent);
     }
 
-    public void editStack(Stack stack, int requestCode) {
+    public void editStack(AndroidStack stack, int requestCode) {
         Intent intent = new Intent(Intent.ACTION_EDIT)
                 .setData(Uri.withAppendedPath(StacksProvider.URI_STACKS, stack.id))
                 .putExtra(EditStackActivity.EXTRA_STACK, stack);
@@ -37,12 +37,12 @@ public class Navigator {
         activity.startActivityForResult(intent, requestCode);
     }
 
-    public void pickNewParentForStack(Stack parent, Stack... stacks) {
+    public void pickNewParentForStack(AndroidStack parent, AndroidStack... stacks) {
         Intent intent = new Intent(Intent.ACTION_PICK)
                 .setData(Uri.withAppendedPath(StacksProvider.URI_STACKS, parent.id))
                 .putExtra(MoveStacksActivity.EXTRA_PARENT, parent)
                 .putParcelableArrayListExtra(MoveStacksActivity.EXTRA_STACKS_TO_MOVE,
-                        new ArrayList<Stack>(Arrays.asList(stacks)));
+                        new ArrayList<AndroidStack>(Arrays.asList(stacks)));
 
         activity.startActivity(intent);
     }

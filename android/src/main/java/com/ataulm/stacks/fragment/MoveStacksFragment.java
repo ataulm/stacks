@@ -15,7 +15,7 @@ import com.ataulm.stacks.R;
 import com.ataulm.stacks.activity.MoveStacksActivity;
 import com.ataulm.stacks.base.StacksBaseFragment;
 import com.ataulm.stacks.marshallers.StackFromCursorMarshaller;
-import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.model.AndroidStack;
 import com.ataulm.stacks.persistence.BasicStacksListAdapter;
 import com.ataulm.stacks.persistence.SubStacksLoader;
 import com.ataulm.stacks.view.StackListHeaderView;
@@ -60,7 +60,7 @@ public class MoveStacksFragment extends StacksBaseFragment implements LoaderMana
                     return;
                 }
 
-                Stack stack = adapter.getItem(position - listView.getHeaderViewsCount());
+                AndroidStack stack = adapter.getItem(position - listView.getHeaderViewsCount());
                 callback.onStackClicked(stack);
             }
 
@@ -88,12 +88,12 @@ public class MoveStacksFragment extends StacksBaseFragment implements LoaderMana
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == R.id.loader_sub_stacks) {
-            List<Stack> stacks = new SimpleCursorList<Stack>(data, new StackFromCursorMarshaller());
+            List<AndroidStack> stacks = new SimpleCursorList<AndroidStack>(data, new StackFromCursorMarshaller());
             adapter.swapList(stacks);
         }
     }
 
-    private Stack getParentStack() {
+    private AndroidStack getParentStack() {
         if (getActivity().getIntent().hasExtra(MoveStacksActivity.EXTRA_PARENT)) {
             return getActivity().getIntent().getParcelableExtra(MoveStacksActivity.EXTRA_PARENT);
         }
@@ -106,7 +106,7 @@ public class MoveStacksFragment extends StacksBaseFragment implements LoaderMana
 
     public interface Callback {
 
-        void onStackClicked(Stack stack);
+        void onStackClicked(AndroidStack stack);
 
     }
 

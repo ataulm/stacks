@@ -2,7 +2,7 @@ package com.ataulm.stacks.marshallers;
 
 import android.content.ContentValues;
 
-import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.model.AndroidStack;
 import com.ataulm.stacks.persistence.Stacks;
 
 public class ContentValuesMarshaller {
@@ -13,7 +13,7 @@ public class ContentValuesMarshaller {
         this.values = values;
     }
 
-    public ContentValues valuesForInsertFrom(Stack stack) {
+    public ContentValues valuesForInsertFrom(AndroidStack stack) {
         ContentValues values = valuesForUpdateFrom(stack);
 
         values.put(Stacks.ID, stack.id);
@@ -21,7 +21,7 @@ public class ContentValuesMarshaller {
         return values;
     }
 
-    public ContentValues valuesForUpdateFrom(Stack stack) {
+    public ContentValues valuesForUpdateFrom(AndroidStack stack) {
         values.put(Stacks.PARENT, stack.parent);
         values.put(Stacks.SUMMARY, stack.summary);
         values.put(Stacks.DESCRIPTION, stack.description);

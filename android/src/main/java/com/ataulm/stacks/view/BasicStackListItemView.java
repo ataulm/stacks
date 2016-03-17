@@ -6,7 +6,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ataulm.stacks.R;
-import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.model.AndroidStack;
 import com.novoda.notils.caster.Views;
 
 public class BasicStackListItemView extends RelativeLayout {
@@ -23,7 +23,7 @@ public class BasicStackListItemView extends RelativeLayout {
         textViewSummary = Views.findById(this, R.id.textview_summary);
     }
 
-    public void updateWith(Stack stack) {
+    public void updateWith(AndroidStack stack) {
         textViewSummary.setText(stack.summary);
     }
 

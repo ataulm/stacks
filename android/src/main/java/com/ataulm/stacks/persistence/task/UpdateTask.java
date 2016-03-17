@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 
 import com.ataulm.stacks.marshallers.ContentValuesMarshaller;
-import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.model.AndroidStack;
 import com.ataulm.stacks.persistence.StackPersistCallback;
 import com.ataulm.stacks.persistence.Stacks;
 import com.ataulm.stacks.persistence.StacksProvider;
@@ -16,17 +16,17 @@ public class UpdateTask extends AsyncTask<Void, Void, Boolean> {
     private final ContentResolver contentResolver;
     private final ContentValuesMarshaller marshaller;
     private final StackPersistCallback callback;
-    private final Stack stack;
+    private final AndroidStack stack;
 
-    public static UpdateTask newInstance(ContentResolver contentResolver, Stack stack) {
+    public static UpdateTask newInstance(ContentResolver contentResolver, AndroidStack stack) {
         return UpdateTask.newInstance(contentResolver, new NoActionCallback(), stack);
     }
 
-    public static UpdateTask newInstance(ContentResolver contentResolver, StackPersistCallback callback, Stack stack) {
+    public static UpdateTask newInstance(ContentResolver contentResolver, StackPersistCallback callback, AndroidStack stack) {
         return new UpdateTask(contentResolver, new ContentValuesMarshaller(new ContentValues()), callback, stack);
     }
 
-    private UpdateTask(ContentResolver contentResolver, ContentValuesMarshaller marshaller, StackPersistCallback callback, Stack stack) {
+    private UpdateTask(ContentResolver contentResolver, ContentValuesMarshaller marshaller, StackPersistCallback callback, AndroidStack stack) {
         this.contentResolver = contentResolver;
         this.marshaller = marshaller;
         this.callback = callback;
@@ -60,11 +60,11 @@ public class UpdateTask extends AsyncTask<Void, Void, Boolean> {
     private static class NoActionCallback implements StackPersistCallback {
 
         @Override
-        public void onSuccessPersisting(Stack stack) {
+        public void onSuccessPersisting(AndroidStack stack) {
         }
 
         @Override
-        public void onFailurePersisting(Stack stack) {
+        public void onFailurePersisting(AndroidStack stack) {
         }
 
     }

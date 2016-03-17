@@ -2,16 +2,16 @@ package com.ataulm.stacks.marshallers;
 
 import android.database.Cursor;
 
-import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.model.AndroidStack;
 import com.ataulm.stacks.model.Time;
 import com.ataulm.stacks.persistence.Stacks;
 import com.novoda.notils.cursor.CursorMarshaller;
 
-public class StackFromCursorMarshaller implements CursorMarshaller<Stack> {
+public class StackFromCursorMarshaller implements CursorMarshaller<AndroidStack> {
 
     @Override
-    public Stack marshall(Cursor cursor) {
-        Stack.Builder builder = new Stack.Builder();
+    public AndroidStack marshall(Cursor cursor) {
+        AndroidStack.Builder builder = new AndroidStack.Builder();
         builder.id(cursor.getString(cursor.getColumnIndex(Stacks.ID)));
         builder.parent(cursor.getString(cursor.getColumnIndex(Stacks.PARENT)));
         builder.summary(cursor.getString(cursor.getColumnIndex(Stacks.SUMMARY)));

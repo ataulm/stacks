@@ -10,7 +10,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.ataulm.stacks.R;
-import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.model.AndroidStack;
 import com.novoda.notils.caster.Views;
 
 public class StackListItemView extends LinearLayout implements PopupMenu.OnMenuItemClickListener {
@@ -18,7 +18,7 @@ public class StackListItemView extends LinearLayout implements PopupMenu.OnMenuI
     private TextView textViewSummary;
     private ImageView overflow;
     private Callback callback;
-    private Stack stack;
+    private AndroidStack stack;
 
     public StackListItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -59,7 +59,7 @@ public class StackListItemView extends LinearLayout implements PopupMenu.OnMenuI
         this.callback = callback;
     }
 
-    public void updateWith(Stack stack) {
+    public void updateWith(AndroidStack stack) {
         this.stack = stack;
         textViewSummary.setText(stack.summary);
     }
@@ -80,11 +80,11 @@ public class StackListItemView extends LinearLayout implements PopupMenu.OnMenuI
 
     public interface Callback {
 
-        void onStackClick(Stack stack);
+        void onStackClick(AndroidStack stack);
 
-        void onMoveClick(Stack stack);
+        void onMoveClick(AndroidStack stack);
 
-        void onDeleteClick(Stack stack);
+        void onDeleteClick(AndroidStack stack);
 
     }
 

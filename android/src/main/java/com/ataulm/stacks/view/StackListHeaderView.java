@@ -8,7 +8,7 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.ataulm.stacks.R;
-import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.model.AndroidStack;
 import com.novoda.notils.caster.Views;
 
 public class StackListHeaderView extends RelativeLayout {
@@ -29,7 +29,7 @@ public class StackListHeaderView extends RelativeLayout {
         setPadding(padding, padding, padding, padding);
     }
 
-    public void updateWith(Stack stack) {
+    public void updateWith(AndroidStack stack) {
         summary.setText(stack.summary);
 
         if (stack.description.length() > 0) {

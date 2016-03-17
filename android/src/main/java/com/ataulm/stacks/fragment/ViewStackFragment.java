@@ -11,7 +11,7 @@ import com.ataulm.stacks.R;
 import com.ataulm.stacks.activity.ViewStackActivity;
 import com.ataulm.stacks.base.StacksBaseFragment;
 import com.ataulm.stacks.marshallers.StackFromCursorMarshaller;
-import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.model.AndroidStack;
 import com.ataulm.stacks.model.Time;
 import com.ataulm.stacks.persistence.StackLoader;
 import com.ataulm.stacks.persistence.StacksListAdapter;
@@ -36,7 +36,7 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!Stack.ZERO.equals(getStack())) {
+        if (!AndroidStack.ZERO.equals(getStack())) {
             setHasOptionsMenu(true);
         }
     }
@@ -69,7 +69,7 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
                 navigateTo().editStack(getStack(), R.id.req_code_edit_stack);
                 return true;
             case R.id.delete:
-                Stack deletedStack = Stack.Builder.from(getStack()).deleted(Time.now()).build();
+                AndroidStack deletedStack = AndroidStack.Builder.from(getStack()).deleted(Time.now()).build();
                 UpdateTask.newInstance(getActivity().getContentResolver(), deletedStack).execute();
                 getActivity().finish();
                 return true;
@@ -113,47 +113,47 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == R.id.loader_stack) {
-            List<Stack> stacks = new SimpleCursorList<Stack>(data, new StackFromCursorMarshaller());
+            List<AndroidStack> stacks = new SimpleCursorList<AndroidStack>(data, new StackFromCursorMarshaller());
             if (stacks.size() > 0) {
                 updateHeader(stacks.get(0));
             }
         } else if (loader.getId() == R.id.loader_sub_stacks) {
-            List<Stack> stacks = new SimpleCursorList<Stack>(data, new StackFromCursorMarshaller());
+            List<AndroidStack> stacks = new SimpleCursorList<AndroidStack>(data, new StackFromCursorMarshaller());
             adapter.swapList(stacks);
         }
     }
 
-    private void updateHeader(Stack stack) {
+    private void updateHeader(AndroidStack stack) {
         StackListHeaderView header = (StackListHeaderView) listView.findViewById(R.id.header_view);
         header.updateWith(stack);
     }
 
-    private Stack getStack() {
+    private AndroidStack getStack() {
         if (getActivity().getIntent().hasExtra(ViewStackActivity.EXTRA_STACK)) {
             return getActivity().getIntent().getParcelableExtra(ViewStackActivity.EXTRA_STACK);
         }
-        return Stack.ZERO;
+        return AndroidStack.ZERO;
     }
 
     @Override
     public void addStack(String summary) {
-        Stack stack = Stack.newInstance(getStack().id, summary, adapter.getCount());
+        AndroidStack stack = AndroidStack.newInstance(getStack().id, summary, adapter.getCount());
         InsertTask.newInstance(getActivity().getContentResolver(), stack).execute();
     }
 
     @Override
-    public void onStackClick(Stack stack) {
+    public void onStackClick(AndroidStack stack) {
         navigateTo().stack(stack);
     }
 
     @Override
-    public void onMoveClick(Stack stack) {
+    public void onMoveClick(AndroidStack stack) {
         navigateTo().pickNewParentForStack(getStack(), stack);
     }
 
     @Override
-    public void onDeleteClick(Stack stack) {
-        Stack deletedStack = Stack.Builder.from(stack).deleted(Time.now()).build();
+    public void onDeleteClick(AndroidStack stack) {
+        AndroidStack deletedStack = AndroidStack.Builder.from(stack).deleted(Time.now()).build();
         UpdateTask.newInstance(getActivity().getContentResolver(), deletedStack).execute();
     }
 

@@ -6,10 +6,10 @@ import android.view.ViewGroup;
 
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.base.StacksBaseAdapter;
-import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.model.AndroidStack;
 import com.ataulm.stacks.view.StackListItemView;
 
-public class StacksListAdapter extends StacksBaseAdapter<Stack> {
+public class StacksListAdapter extends StacksBaseAdapter<AndroidStack> {
 
     private final StackListItemView.Callback callback;
 

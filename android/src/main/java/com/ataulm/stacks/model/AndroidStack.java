@@ -5,9 +5,9 @@ import android.os.Parcelable;
 
 import java.util.UUID;
 
-public class Stack implements Parcelable {
+public class AndroidStack implements Parcelable {
 
-    public static final Stack ZERO = new Stack("id_zero", "as_batman", "zero", "this is root stack.", 0, 0, Time.UNSET, Time.UNSET, Time.UNSET);
+    public static final AndroidStack ZERO = new AndroidStack("id_zero", "as_batman", "zero", "this is root stack.", 0, 0, Time.UNSET, Time.UNSET, Time.UNSET);
     public static final Builder CREATOR = new Builder();
 
     public final String id;
@@ -20,7 +20,7 @@ public class Stack implements Parcelable {
     public final Time modified;
     public final Time deleted;
 
-    public static Stack newInstance(String parent, String summary, int position) {
+    public static AndroidStack newInstance(String parent, String summary, int position) {
         if (parent == null || parent.trim().length() == 0) {
             throw new IllegalArgumentException("parent id must be specified.");
         }
@@ -28,10 +28,10 @@ public class Stack implements Parcelable {
             throw new IllegalArgumentException("summary must be specified.");
         }
 
-        return new Stack(UUID.randomUUID().toString(), parent, summary, "", 0, position, Time.now(), Time.now(), Time.UNSET);
+        return new AndroidStack(UUID.randomUUID().toString(), parent, summary, "", 0, position, Time.now(), Time.now(), Time.UNSET);
     }
 
-    private Stack(String id, String parent, String summary, String description, int leafCount, int position, Time created, Time modified, Time deleted) {
+    private AndroidStack(String id, String parent, String summary, String description, int leafCount, int position, Time created, Time modified, Time deleted) {
         this.id = id;
         this.parent = parent;
         this.summary = summary;
@@ -43,27 +43,27 @@ public class Stack implements Parcelable {
         this.deleted = deleted;
     }
 
-    public Stack delete() {
+    public AndroidStack delete() {
         if (deleted.isSet()){
             return this;
         }
-        return new Stack(id, parent, summary, description, leafCount, position, created, Time.now(), Time.now());
+        return new AndroidStack(id, parent, summary, description, leafCount, position, created, Time.now(), Time.now());
     }
 
-    public Stack restore() {
+    public AndroidStack restore() {
         if (deleted.isSet()) {
-            return new Stack(id, parent, summary, description, leafCount, position, created, Time.now(), Time.UNSET);
+            return new AndroidStack(id, parent, summary, description, leafCount, position, created, Time.now(), Time.UNSET);
         }
         return this;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof Stack)) {
+        if (o == null || !(o instanceof AndroidStack)) {
             return false;
         }
 
-        return (((Stack) o).id.equals(id));
+        return (((AndroidStack) o).id.equals(id));
     }
 
     @Override
@@ -89,7 +89,7 @@ public class Stack implements Parcelable {
         dest.writeLong(deleted.asMillis());
     }
 
-    public static class Builder implements Creator<Stack> {
+    public static class Builder implements Creator<AndroidStack> {
 
         private String id;
         private String parent;
@@ -101,7 +101,7 @@ public class Stack implements Parcelable {
         private Time modified;
         private Time deleted;
 
-        public static Builder from(Stack stack) {
+        public static Builder from(AndroidStack stack) {
             return new Builder().id(stack.id)
                     .parent(stack.parent)
                     .summary(stack.summary)
@@ -119,7 +119,7 @@ public class Stack implements Parcelable {
         }
 
         @Override
-        public Stack createFromParcel(Parcel stack) {
+        public AndroidStack createFromParcel(Parcel stack) {
             return new Builder().id(stack.readString())
                     .parent(stack.readString())
                     .summary(stack.readString())
@@ -133,8 +133,8 @@ public class Stack implements Parcelable {
         }
 
         @Override
-        public Stack[] newArray(int size) {
-            return new Stack[size];
+        public AndroidStack[] newArray(int size) {
+            return new AndroidStack[size];
         }
 
         public Builder id(String id) {
@@ -182,7 +182,7 @@ public class Stack implements Parcelable {
             return this;
         }
 
-        public Stack build() {
+        public AndroidStack build() {
             if (id == null || id.trim().length() == 0) {
                 throw new IllegalStateException("id is not set");
             }
@@ -219,7 +219,7 @@ public class Stack implements Parcelable {
                 throw new IllegalStateException("deleted time is null; specify Time.UNSET if not deleted");
             }
 
-            return new Stack(id, parent, summary, description, leafCount, position, created, modified, deleted);
+            return new AndroidStack(id, parent, summary, description, leafCount, position, created, modified, deleted);
         }
     }
 

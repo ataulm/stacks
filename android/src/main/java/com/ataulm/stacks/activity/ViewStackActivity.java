@@ -7,7 +7,7 @@ import android.os.Bundle;
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.base.StacksBaseActivity;
 import com.ataulm.stacks.fragment.ViewStackFragment;
-import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.model.AndroidStack;
 
 public class ViewStackActivity extends StacksBaseActivity {
 
@@ -31,7 +31,7 @@ public class ViewStackActivity extends StacksBaseActivity {
             return;
         }
         if (resultCode == Activity.RESULT_OK) {
-            Stack editedStack = data.getParcelableExtra(EditStackActivity.EXTRA_UPDATED_STACK);
+            AndroidStack editedStack = data.getParcelableExtra(EditStackActivity.EXTRA_UPDATED_STACK);
             getIntent().putExtra(ViewStackActivity.EXTRA_STACK, editedStack);
             toast(R.string.success_updating_stack);
         } else {

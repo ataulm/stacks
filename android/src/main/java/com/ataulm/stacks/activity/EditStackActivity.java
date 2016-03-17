@@ -7,7 +7,7 @@ import android.widget.EditText;
 
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.base.StacksDoneDiscardActivity;
-import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.model.AndroidStack;
 import com.ataulm.stacks.persistence.StackPersistCallback;
 import com.ataulm.stacks.persistence.task.UpdateTask;
 import com.novoda.notils.caster.Views;
@@ -32,7 +32,7 @@ public class EditStackActivity extends StacksDoneDiscardActivity implements Stac
     }
 
     private void updateStack() {
-        Stack stack = getStack();
+        AndroidStack stack = getStack();
         summary.setText(stack.summary);
         description.setText(stack.description);
     }
@@ -45,7 +45,7 @@ public class EditStackActivity extends StacksDoneDiscardActivity implements Stac
             return;
         }
         String descriptionText = description.getText().toString().trim();
-        Stack stack = Stack.Builder.from(getStack()).summary(summaryText).description(descriptionText).build();
+        AndroidStack stack = AndroidStack.Builder.from(getStack()).summary(summaryText).description(descriptionText).build();
         UpdateTask.newInstance(getContentResolver(), this, stack).execute();
     }
 
@@ -56,21 +56,21 @@ public class EditStackActivity extends StacksDoneDiscardActivity implements Stac
         finish();
     }
 
-    private Stack getStack() {
+    private AndroidStack getStack() {
         if (getIntent().hasExtra(EXTRA_STACK)) {
             return getIntent().getParcelableExtra(EXTRA_STACK);
         }
-        return Stack.ZERO;
+        return AndroidStack.ZERO;
     }
 
     @Override
-    public void onSuccessPersisting(Stack stack) {
+    public void onSuccessPersisting(AndroidStack stack) {
         setResult(Activity.RESULT_OK, new Intent().putExtra(EXTRA_UPDATED_STACK, stack));
         finish();
     }
 
     @Override
-    public void onFailurePersisting(Stack stack) {
+    public void onFailurePersisting(AndroidStack stack) {
         setResult(RESULT_FAILURE);
         finish();
     }

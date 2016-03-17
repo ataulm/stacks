@@ -6,10 +6,10 @@ import android.view.ViewGroup;
 
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.base.StacksBaseAdapter;
-import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.model.AndroidStack;
 import com.ataulm.stacks.view.BasicStackListItemView;
 
-public class BasicStacksListAdapter extends StacksBaseAdapter<Stack> {
+public class BasicStacksListAdapter extends StacksBaseAdapter<AndroidStack> {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {

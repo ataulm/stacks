@@ -2,7 +2,7 @@ package com.ataulm.stacks.marshallers;
 
 import android.content.ContentValues;
 
-import com.ataulm.stacks.model.Stack;
+import com.ataulm.stacks.model.AndroidStack;
 import com.ataulm.stacks.persistence.Stacks;
 
 import org.junit.Before;
@@ -25,16 +25,16 @@ public class ContentValuesMarshallerShould {
 
     @Test
     public void addTheIdOfTheStack_whenInsertingANewStack() throws Exception {
-        marshaller.valuesForInsertFrom(Stack.ZERO);
+        marshaller.valuesForInsertFrom(AndroidStack.ZERO);
 
-        verify(mockValues).put(Stacks.ID, Stack.ZERO.id);
+        verify(mockValues).put(Stacks.ID, AndroidStack.ZERO.id);
     }
 
     @Test
     public void ignoreTheIdOfTheStack_whenUpdatingAnExistingStack() throws Exception {
-        marshaller.valuesForUpdateFrom(Stack.ZERO);
+        marshaller.valuesForUpdateFrom(AndroidStack.ZERO);
 
-        verify(mockValues, never()).put(Stacks.ID, Stack.ZERO.id);
+        verify(mockValues, never()).put(Stacks.ID, AndroidStack.ZERO.id);
     }
 
 }
