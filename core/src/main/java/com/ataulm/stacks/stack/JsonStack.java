@@ -1,4 +1,4 @@
-package com.ataulm.stacks;
+package com.ataulm.stacks.stack;
 
 import com.squareup.moshi.Json;
 

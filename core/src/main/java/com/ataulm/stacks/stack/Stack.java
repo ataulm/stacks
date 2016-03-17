@@ -1,13 +1,17 @@
-package com.ataulm.stacks;
+package com.ataulm.stacks.stack;
 
+import com.ataulm.stacks.Optional;
 import com.google.auto.value.AutoValue;
 
 @AutoValue
 public abstract class Stack {
 
     public abstract String id();
+
     public abstract String summary();
+
     public abstract Optional<String> parentId();
+
     public abstract Optional<String> description();
 
     public static Stack create(String id, String summary, Optional<String> parentId, Optional<String> description) {
