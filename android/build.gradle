@@ -1,27 +1,22 @@
-apply plugin: 'android'
-apply plugin: 'crashlytics'
-apply plugin: 'robolectric'
+apply plugin: 'com.android.application'
 
 dependencies {
-    androidTestCompile 'junit:junit:4.+'
-    androidTestCompile 'org.mockito:mockito-all:1.8.+'
-    androidTestCompile 'org.robolectric:robolectric:2.+'
+    compile project(':core')
 
-    compile 'com.novoda:notils:2.2.+'
-    compile 'com.novoda:sqliteprovider-core:1.0.1'
+    compile 'com.novoda:notils:2.2.16'
+    compile 'com.novoda:sqlite-provider:1.0.5'
     compile 'joda-time:joda-time:2.3'
-    compile 'com.crashlytics.android:crashlytics:1.+'
 }
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion '19.0.3'
+    compileSdkVersion 23
+    buildToolsVersion '22.0.1'
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 19
+        minSdkVersion 21
+        targetSdkVersion 23
         versionCode 1
-        versionName "0.0.1"
+        versionName "1.0.0"
     }
 
     buildTypes {
@@ -29,44 +24,14 @@ android {
         final String PROVIDER_AUTHORITY_KEY = "PROVIDER_AUTHORITY";
 
         debug {
-            packageNameSuffix ".debug"
+            applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
 
             buildConfigField PROVIDER_AUTHORITY_TYPE, PROVIDER_AUTHORITY_KEY, "\"com.ataulm.debug.StacksProvider\""
         }
 
         release {
-            debuggable false
-            jniDebugBuild false
-
             buildConfigField PROVIDER_AUTHORITY_TYPE, PROVIDER_AUTHORITY_KEY, "\"com.ataulm.StacksProvider\""
         }
     }
-}
-
-task addTest {
-    def src = ['src/test/java']
-    def file = file("android.iml")
-
-    doLast {
-        try {
-            def parsedXml = (new XmlParser()).parse(file)
-            def node = parsedXml.component[1].content[0]
-            src.each {
-                def path = 'file://$MODULE_DIR$/' + "${it}"
-                def set = node.find { it.@url == path }
-                if (set == null) {
-                    new Node(node, 'sourceFolder', ['url': 'file://$MODULE_DIR$/' + "${it}", 'isTestSource': "true"])
-                    def writer = new StringWriter()
-                    new XmlNodePrinter(new PrintWriter(writer)).print(parsedXml)
-                    file.text = writer.toString()
-                }
-            }
-        } catch (FileNotFoundException noActionNeeded) {
-        }
-    }
-}
-
-gradle.projectsEvaluated {
-    preBuild.dependsOn(addTest)
 }
