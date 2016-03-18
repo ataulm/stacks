@@ -16,4 +16,37 @@ public class JsonStack {
     @Json(name = "desc")
     public String description;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        JsonStack jsonStack = (JsonStack) o;
+
+        if (id != null ? !id.equals(jsonStack.id) : jsonStack.id != null) {
+            return false;
+        }
+        if (summary != null ? !summary.equals(jsonStack.summary) : jsonStack.summary != null) {
+            return false;
+        }
+        if (parentId != null ? !parentId.equals(jsonStack.parentId) : jsonStack.parentId != null) {
+            return false;
+        }
+        return description != null ? description.equals(jsonStack.description) : jsonStack.description == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (summary != null ? summary.hashCode() : 0);
+        result = 31 * result + (parentId != null ? parentId.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        return result;
+    }
+
 }
