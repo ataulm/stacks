@@ -1,6 +1,6 @@
 package com.ataulm.stacks.stack;
 
-import com.ataulm.stacks.Optional;
+import com.ataulm.Optional;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;

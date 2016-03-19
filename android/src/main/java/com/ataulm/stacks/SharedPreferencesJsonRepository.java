@@ -3,6 +3,7 @@ package com.ataulm.stacks;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.ataulm.Optional;
 import com.ataulm.stacks.stack.JsonRepository;
 
 final class SharedPreferencesJsonRepository implements JsonRepository {

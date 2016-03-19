@@ -1,6 +1,6 @@
 package com.ataulm.stacks.stack;
 
-import com.ataulm.stacks.Optional;
+import com.ataulm.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
