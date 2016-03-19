@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <string name="label_summary">@string/summary</string>
-  <string name="hint_summary">@string/stack_summary</string>
-  <string name="label_description">@string/description</string>
-  <string name="hint_description">@string/more_details</string>
-</resources>

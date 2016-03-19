@@ -7,8 +7,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:support-v4:23.2.1'
     compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'com.novoda:sqlite-provider:1.0.5'
-    compile 'joda-time:joda-time:2.3'
 }
 
 android {
@@ -20,21 +18,5 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0.0"
-    }
-
-    buildTypes {
-        final String PROVIDER_AUTHORITY_TYPE = "String";
-        final String PROVIDER_AUTHORITY_KEY = "PROVIDER_AUTHORITY";
-
-        debug {
-            applicationIdSuffix ".debug"
-            versionNameSuffix "-debug"
-
-            buildConfigField PROVIDER_AUTHORITY_TYPE, PROVIDER_AUTHORITY_KEY, "\"com.ataulm.debug.StacksProvider\""
-        }
-
-        release {
-            buildConfigField PROVIDER_AUTHORITY_TYPE, PROVIDER_AUTHORITY_KEY, "\"com.ataulm.StacksProvider\""
-        }
     }
 }
