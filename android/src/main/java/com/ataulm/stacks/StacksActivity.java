@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.ataulm.Event;
+import com.ataulm.stacks.stack.CreateStackUsecase;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
 import com.ataulm.stacks.stack.Stacks;
 
@@ -17,18 +18,20 @@ import rx.android.schedulers.AndroidSchedulers;
 public class StacksActivity extends AppCompatActivity {
 
     private final FetchStacksUsecase fetchStacksUsecase;
+    private final CreateStackUsecase createStackUsecase;
     private Subscription subscription;
     private RecyclerView recyclerView;
 
     public StacksActivity() {
         this.fetchStacksUsecase = StacksApplication.createFetchStacksUsecase();
+        this.createStackUsecase = StacksApplication.createCreateStackUsecase();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_my);
+        setContentView(R.layout.activity_stacks);
         recyclerView = (RecyclerView) findViewById(R.id.stacks_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -37,10 +40,12 @@ public class StacksActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: add debug stack
+                createStackUsecase.createStack("test " + ++count);
             }
         });
     }
+
+    private int count;
 
     @Override
     protected void onStart() {

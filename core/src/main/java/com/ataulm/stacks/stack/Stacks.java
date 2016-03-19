@@ -3,7 +3,6 @@ package com.ataulm.stacks.stack;
 import com.google.auto.value.AutoValue;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,16 +34,22 @@ public abstract class Stacks implements Iterable<Stack> {
 
     public Stacks add(Stack stack) {
         List<Stack> copy = new ArrayList<>(size() + 1);
-        Collections.copy(copy, stacks());
+        copy(stacks(), copy);
         copy.add(stack);
         return create(copy);
     }
 
     public Stacks remove(Stack stack) {
         List<Stack> copy = new ArrayList<>(size() - 1);
-        Collections.copy(copy, stacks());
+        copy(stacks(), copy);
         copy.remove(stack);
         return create(copy);
+    }
+
+    private static void copy(List<Stack> source, List<Stack> copy) {
+        for (Stack stack : source) {
+            copy.add(stack);
+        }
     }
 
 }
