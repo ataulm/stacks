@@ -1,5 +1,8 @@
 package com.ataulm.stacks.stack;
 
+import com.ataulm.Event;
+import com.ataulm.EventRxFunctions;
+
 import java.util.List;
 
 import rx.Observable;
@@ -14,15 +17,16 @@ public class SyncFetchStacksUsecase implements FetchStacksUsecase {
     }
 
     @Override
-    public Observable<List<Stack>> fetchStacks() {
-        return Observable.create(new Observable.OnSubscribe<List<Stack>>() {
+    public Observable<Event<Stacks>> fetchStacks() {
+        return Observable.create(new Observable.OnSubscribe<Stacks>() {
             @Override
-            public void call(Subscriber<? super List<Stack>> subscriber) {
-                List<Stack> stacks = stackOperations.getStacks();
+            public void call(Subscriber<? super Stacks> subscriber) {
+                List<Stack> stacksList = stackOperations.getStacks();
+                Stacks stacks = Stacks.create(stacksList);
                 subscriber.onNext(stacks);
                 subscriber.onCompleted();
             }
-        });
+        }).compose(EventRxFunctions.<Stacks>asEvents());
     }
 
 }

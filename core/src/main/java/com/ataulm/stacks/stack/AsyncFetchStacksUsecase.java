@@ -1,6 +1,6 @@
 package com.ataulm.stacks.stack;
 
-import java.util.List;
+import com.ataulm.Event;
 
 import rx.Observable;
 import rx.schedulers.Schedulers;
@@ -14,7 +14,7 @@ public class AsyncFetchStacksUsecase implements FetchStacksUsecase {
     }
 
     @Override
-    public Observable<List<Stack>> fetchStacks() {
+    public Observable<Event<Stacks>> fetchStacks() {
         return syncUsecase.fetchStacks().subscribeOn(Schedulers.io());
     }
 

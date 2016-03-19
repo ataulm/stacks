@@ -5,13 +5,18 @@ import rx.functions.Func1;
 
 public class EventRxFunctions {
 
+    /**
+     * Starts with an empty Event of type LOADING, with each
+     * onNext<T> being delivered as an Event of type IDLE; i.e.
+     * no partial loading. Errors will be delivered as Event of
+     * type ERROR.
+     */
     public static <T> Observable.Transformer<T, Event<T>> asEvents() {
         return new Observable.Transformer<T, Event<T>>() {
 
             @Override
             public Observable<Event<T>> call(Observable<T> data) {
                 return data
-                        .single()
                         .map(EventRxFunctions.<T>asIdleEventWithData())
                         .startWith(EventRxFunctions.<T>loadingEvent())
                         .onErrorReturn(EventRxFunctions.<T>errorEvent());
