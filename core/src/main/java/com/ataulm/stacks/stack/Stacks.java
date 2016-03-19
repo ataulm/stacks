@@ -2,6 +2,8 @@ package com.ataulm.stacks.stack;
 
 import com.google.auto.value.AutoValue;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -29,6 +31,20 @@ public abstract class Stacks implements Iterable<Stack> {
     @Override
     public Iterator<Stack> iterator() {
         return stacks().iterator();
+    }
+
+    public Stacks add(Stack stack) {
+        List<Stack> copy = new ArrayList<>(size() + 1);
+        Collections.copy(copy, stacks());
+        copy.add(stack);
+        return create(copy);
+    }
+
+    public Stacks remove(Stack stack) {
+        List<Stack> copy = new ArrayList<>(size() - 1);
+        Collections.copy(copy, stacks());
+        copy.remove(stack);
+        return create(copy);
     }
 
 }
