@@ -19,10 +19,9 @@ import com.ataulm.stacks.model.AndroidStack;
 import com.ataulm.stacks.persistence.BasicStacksListAdapter;
 import com.ataulm.stacks.persistence.SubStacksLoader;
 import com.ataulm.stacks.view.StackListHeaderView;
-import com.novoda.notils.caster.Classes;
-import com.novoda.notils.caster.Views;
-import com.novoda.notils.cursor.SimpleCursorList;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MoveStacksFragment extends StacksBaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -34,7 +33,7 @@ public class MoveStacksFragment extends StacksBaseFragment implements LoaderMana
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.callback = Classes.from(activity);
+        this.callback = ((Callback) activity);
     }
 
     @Override
@@ -46,7 +45,7 @@ public class MoveStacksFragment extends StacksBaseFragment implements LoaderMana
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         adapter = new BasicStacksListAdapter();
-        listView = Views.findById(view, R.id.listview_children);
+        listView = (ListView) view.findViewById(R.id.listview_children);
         StackListHeaderView headerView = new StackListHeaderView(getActivity());
         headerView.setId(R.id.header_view);
         headerView.updateWith(getParentStack());
@@ -88,9 +87,25 @@ public class MoveStacksFragment extends StacksBaseFragment implements LoaderMana
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader.getId() == R.id.loader_sub_stacks) {
-            List<AndroidStack> stacks = new SimpleCursorList<AndroidStack>(data, new StackFromCursorMarshaller());
+            List<AndroidStack> stacks = extractListFromCursor(data);
+            data.close();
             adapter.swapList(stacks);
         }
+    }
+
+    private List<AndroidStack> extractListFromCursor(Cursor data) {
+        if (data == null || !data.moveToFirst()) {
+            return Collections.emptyList();
+        }
+
+        List<AndroidStack> stacks = new ArrayList<>(data.getCount());
+        StackFromCursorMarshaller marshaller = new StackFromCursorMarshaller();
+        do {
+            AndroidStack stack = marshaller.marshall(data);
+            stacks.add(stack);
+        } while (data.moveToNext());
+
+        return stacks;
     }
 
     private AndroidStack getParentStack() {

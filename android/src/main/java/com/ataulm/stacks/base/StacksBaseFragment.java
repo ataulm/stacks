@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.widget.Toast;
 
-import com.novoda.notils.caster.Classes;
-
 public class StacksBaseFragment extends Fragment {
 
     private StacksBaseActivity activity;
@@ -13,7 +11,7 @@ public class StacksBaseFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(this.activity);
-        this.activity = Classes.from(activity);
+        this.activity = (StacksBaseActivity) activity;
     }
 
     protected void toast(int messageResId) {

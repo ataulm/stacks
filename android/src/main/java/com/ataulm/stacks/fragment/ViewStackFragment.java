@@ -4,7 +4,12 @@ import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.ataulm.stacks.R;
@@ -22,8 +27,6 @@ import com.ataulm.stacks.view.KeepLikeInputView;
 import com.ataulm.stacks.view.StackInputCallbacks;
 import com.ataulm.stacks.view.StackListHeaderView;
 import com.ataulm.stacks.view.StackListItemView;
-import com.novoda.notils.caster.Views;
-import com.novoda.notils.cursor.SimpleCursorList;
 
 import java.util.List;
 
@@ -50,7 +53,7 @@ public class ViewStackFragment extends StacksBaseFragment implements StackInputC
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         adapter = new StacksListAdapter(this);
-        listView = Views.findById(view, R.id.listview_children);
+        listView = (ListView) view.findViewById(R.id.listview_children);
         setupListViewSandwich();
         listView.setAdapter(adapter);
 

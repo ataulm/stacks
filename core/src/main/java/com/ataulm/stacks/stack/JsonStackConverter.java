@@ -6,7 +6,7 @@ import com.squareup.moshi.ToJson;
 
 import javax.annotation.Nullable;
 
-public class StackConverter {
+public class JsonStackConverter {
 
     @FromJson
     @Nullable

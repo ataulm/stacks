@@ -5,11 +5,9 @@ import android.database.Cursor;
 import com.ataulm.stacks.model.AndroidStack;
 import com.ataulm.stacks.model.Time;
 import com.ataulm.stacks.persistence.Stacks;
-import com.novoda.notils.cursor.CursorMarshaller;
 
-public class StackFromCursorMarshaller implements CursorMarshaller<AndroidStack> {
+public class StackFromCursorMarshaller {
 
-    @Override
     public AndroidStack marshall(Cursor cursor) {
         AndroidStack.Builder builder = new AndroidStack.Builder();
         builder.id(cursor.getString(cursor.getColumnIndex(Stacks.ID)));

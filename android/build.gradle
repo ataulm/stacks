@@ -3,7 +3,10 @@ apply plugin: 'com.android.application'
 dependencies {
     compile project(':core')
 
-    compile 'com.novoda:notils:2.2.16'
+    compile 'com.android.support:recyclerview-v7:23.2.1'
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.android.support:support-v4:23.2.1'
+    compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.novoda:sqlite-provider:1.0.5'
     compile 'joda-time:joda-time:2.3'
 }

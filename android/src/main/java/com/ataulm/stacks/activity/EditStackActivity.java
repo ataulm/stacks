@@ -10,7 +10,6 @@ import com.ataulm.stacks.base.StacksDoneDiscardActivity;
 import com.ataulm.stacks.model.AndroidStack;
 import com.ataulm.stacks.persistence.StackPersistCallback;
 import com.ataulm.stacks.persistence.task.UpdateTask;
-import com.novoda.notils.caster.Views;
 
 public class EditStackActivity extends StacksDoneDiscardActivity implements StacksDoneDiscardActivity.DoneDiscardListener, StackPersistCallback {
 
@@ -25,8 +24,8 @@ public class EditStackActivity extends StacksDoneDiscardActivity implements Stac
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_stack);
-        summary = Views.findById(this, R.id.edittext_summary);
-        description = Views.findById(this, R.id.edittext_description);
+        summary = (EditText) findViewById(R.id.edittext_summary);
+        description = (EditText) findViewById(R.id.edittext_description);
 
         updateStack();
     }

@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ataulm.stacks.R;
-import com.novoda.notils.caster.Classes;
 
 public class StacksDoneDiscardActivity extends StacksBaseActivity {
 
@@ -17,7 +16,7 @@ public class StacksDoneDiscardActivity extends StacksBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        listener = Classes.from(this);
+        listener = (DoneDiscardListener) this;
 
         setDoneDiscardActionBar();
     }
