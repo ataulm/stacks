@@ -24,7 +24,7 @@ import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class StacksActivity extends AppCompatActivity implements StackItemListener {
+public class ViewActivity extends AppCompatActivity implements StackItemListener {
 
     private static final String INTENT_EXTRA_SUMMARY = "summary";
     private static final String INTENT_EXTRA_PARENT_ID = "parent_id";
@@ -40,7 +40,7 @@ public class StacksActivity extends AppCompatActivity implements StackItemListen
     private Subscription subscription;
     private int count;
 
-    public StacksActivity() {
+    public ViewActivity() {
         this.fetchStacksUsecase = StacksApplication.createFetchStacksUsecase();
         this.createStackUsecase = StacksApplication.createCreateStackUsecase();
         this.removeStackUsecase = StacksApplication.createRemoveStackUsecase();
@@ -97,7 +97,7 @@ public class StacksActivity extends AppCompatActivity implements StackItemListen
 
     @Override
     public void onClick(Stack stack) {
-        Intent intent = new Intent(this, StacksActivity.class);
+        Intent intent = new Intent(this, ViewActivity.class);
         intent.putExtra(INTENT_EXTRA_PARENT_ID, stack.id());
         intent.putExtra(INTENT_EXTRA_SUMMARY, stack.summary());
         startActivity(intent);
@@ -128,11 +128,11 @@ public class StacksActivity extends AppCompatActivity implements StackItemListen
         }
 
         private void showEmptyScreen(Event.Type type) {
-            recyclerView.swapAdapter(new StacksAdapter(Stacks.create(Collections.<Stack>emptyList()), StacksActivity.this), false);
+            recyclerView.swapAdapter(new StacksAdapter(Stacks.create(Collections.<Stack>emptyList()), ViewActivity.this), false);
         }
 
         private void showData(Stacks stacks, Event.Type type) {
-            recyclerView.swapAdapter(new StacksAdapter(stacks, StacksActivity.this), false);
+            recyclerView.swapAdapter(new StacksAdapter(stacks, ViewActivity.this), false);
         }
 
     }
