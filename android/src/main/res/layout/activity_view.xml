@@ -10,10 +10,23 @@
     android:layout_height="0dp"
     android:layout_weight="100" />
 
-  <Button
-    android:id="@+id/view_debug_add_stack_button"
+  <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="ADD DEBUG STACK" />
+    android:layout_height="wrap_content">
+
+    <EditText
+      android:id="@+id/view_stack_edit_text"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="100"
+      android:inputType="text" />
+
+    <Button
+      android:id="@+id/view_stack_button_add"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="add" />
+
+  </LinearLayout>
 
 </LinearLayout>

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.EditText;
 
 import com.ataulm.Event;
 import com.ataulm.Optional;
@@ -34,8 +35,13 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
     @Bind(R.id.view_recycler_view)
     RecyclerView recyclerView;
 
+    @Bind(R.id.view_stack_edit_text)
+    EditText stackEditText;
+
+    @Bind(R.id.view_stack_button_add)
+    View addStackButton;
+
     private Subscription subscription;
-    private int count;
 
     public ViewActivity() {
         this.fetchStacksUsecase = StacksApplication.createFetchStacksUsecase();
@@ -58,12 +64,17 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
             setTitle(stack.get().summary());
         }
 
-        ButterKnife.findById(this, R.id.view_debug_add_stack_button).setOnClickListener(new View.OnClickListener() {
+        addStackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String summary = stackEditText.getText().toString();
+                if (summary.isEmpty()) {
+                    return;
+                }
                 Optional<Stack> stack = getStackFrom(getIntent());
                 Optional<String> id = stack.isPresent() ? Optional.of(stack.get().id()) : Optional.<String>absent();
-                createStackUsecase.createStack(id, "test " + ++count);
+                createStackUsecase.createStack(id, summary);
+                stackEditText.setText(null);
             }
         });
     }
