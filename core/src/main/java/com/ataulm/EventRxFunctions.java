@@ -3,7 +3,11 @@ package com.ataulm;
 import rx.Observable;
 import rx.functions.Func1;
 
-public class EventRxFunctions {
+public final class EventRxFunctions {
+
+    private EventRxFunctions() {
+        // utility class
+    }
 
     /**
      * Starts with an empty Event of type LOADING, with each
