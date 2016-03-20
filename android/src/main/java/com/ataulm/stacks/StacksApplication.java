@@ -10,10 +10,12 @@ import com.ataulm.stacks.stack.JsonStack;
 import com.ataulm.stacks.stack.JsonStackConverter;
 import com.ataulm.stacks.stack.JsonStacksRepository;
 import com.ataulm.stacks.stack.PersistStacksUsecase;
+import com.ataulm.stacks.stack.RemoveStackUsecase;
 import com.ataulm.stacks.stack.StacksRepository;
 import com.ataulm.stacks.stack.SyncCreateStackUsecase;
 import com.ataulm.stacks.stack.SyncFetchStacksUsecase;
 import com.ataulm.stacks.stack.SyncPersistStacksUsecase;
+import com.ataulm.stacks.stack.SyncRemoveStackUsecase;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
@@ -46,6 +48,10 @@ public class StacksApplication extends Application {
 
     public static PersistStacksUsecase createPersistStacksUsecase() {
         return new SyncPersistStacksUsecase(stacksRepository);
+    }
+
+    public static RemoveStackUsecase createRemoveStackUsecase() {
+        return new SyncRemoveStackUsecase(stacksRepository);
     }
 
 }
