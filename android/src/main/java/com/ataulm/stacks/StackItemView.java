@@ -16,6 +16,12 @@ public class StackItemView extends LinearLayout {
     @Bind(R.id.stack_item_text_summary)
     TextView summaryTextView;
 
+    @Bind(R.id.stack_item_text_id)
+    TextView idTextView;
+
+    @Bind(R.id.stack_item_text_parent_id)
+    TextView parentIdTextView;
+
     @Bind(R.id.stack_item_button_remove)
     View removeButton;
 
@@ -33,6 +39,13 @@ public class StackItemView extends LinearLayout {
 
     public void bind(final Stack stack, final StackItemListener listener) {
         summaryTextView.setText(stack.summary());
+        idTextView.setText("id: " + stack.id().substring(0, 5));
+        if (stack.parentId().isPresent()) {
+            parentIdTextView.setText("parent: " + stack.parentId().get().substring(0, 5));
+        } else {
+            parentIdTextView.setText("parent: none");
+        }
+
         removeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

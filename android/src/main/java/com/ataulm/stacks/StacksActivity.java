@@ -1,5 +1,6 @@
 package com.ataulm.stacks;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,8 @@ import com.ataulm.stacks.stack.RemoveStackUsecase;
 import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
 
+import java.util.Collections;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observer;
@@ -22,6 +25,9 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class StacksActivity extends AppCompatActivity implements StackItemListener {
+
+    private static final String INTENT_EXTRA_SUMMARY = "summary";
+    private static final String INTENT_EXTRA_PARENT_ID = "parent_id";
 
     private final FetchStacksUsecase fetchStacksUsecase;
     private final CreateStackUsecase createStackUsecase;
@@ -50,32 +56,51 @@ public class StacksActivity extends AppCompatActivity implements StackItemListen
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        final Optional<String> summary = getSummaryFrom(getIntent());
+        if (summary.isPresent()) {
+            setTitle(summary.get());
+        }
+
         ButterKnife.findById(this, R.id.stacks_debug_add_stack_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createStackUsecase.createStack("test " + ++count);
+                createStackUsecase.createStack(getParentIdFrom(getIntent()), "test " + ++count);
             }
         });
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        subscription = fetchStacksUsecase.fetchStacks(Optional.<Stack>absent())
+    protected void onResume() {
+        super.onResume();
+        Optional<String> parentId = getParentIdFrom(getIntent());
+        subscription = fetchStacksUsecase.fetchStacks(parentId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new StacksEventObserver());
     }
 
+    private static Optional<String> getSummaryFrom(Intent intent) {
+        String id = intent.getStringExtra(INTENT_EXTRA_SUMMARY);
+        return Optional.from(id);
+    }
+
+    private static Optional<String> getParentIdFrom(Intent intent) {
+        String id = intent.getStringExtra(INTENT_EXTRA_PARENT_ID);
+        return Optional.from(id);
+    }
+
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         persistStacksUsecase.persistStacks();
         subscription.unsubscribe();
     }
 
     @Override
     public void onClick(Stack stack) {
-        StacksApplication.displayToast("on click: " + stack.summary());
+        Intent intent = new Intent(this, StacksActivity.class);
+        intent.putExtra(INTENT_EXTRA_PARENT_ID, stack.id());
+        intent.putExtra(INTENT_EXTRA_SUMMARY, stack.summary());
+        startActivity(intent);
     }
 
     @Override
@@ -95,7 +120,7 @@ public class StacksActivity extends AppCompatActivity implements StackItemListen
 
         @Override
         public void onNext(Event<Stacks> event) {
-            if (event.getData().isPresent()) {
+            if (event.getData().isPresent() && event.getData().get().size() > 0) {
                 showData(event.getData().get(), event.getType());
             } else {
                 showEmptyScreen(event.getType());
@@ -103,7 +128,7 @@ public class StacksActivity extends AppCompatActivity implements StackItemListen
         }
 
         private void showEmptyScreen(Event.Type type) {
-
+            recyclerView.swapAdapter(new StacksAdapter(Stacks.create(Collections.<Stack>emptyList()), StacksActivity.this), false);
         }
 
         private void showData(Stacks stacks, Event.Type type) {

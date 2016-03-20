@@ -1,7 +1,6 @@
 package com.ataulm.stacks.stack;
 
 import com.ataulm.Optional;
-import com.ataulm.RxFunctions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,28 +21,41 @@ public class StacksRepository {
         this.jsonStackConverter = jsonStackConverter;
     }
 
-    public Observable<Stacks> getStacks(Optional<Stack> parent) {
+    public Observable<Stacks> getStacks(Optional<String> parentId) {
         refreshStacks();
-        if (parent.isPresent()) {
-            Optional<String> parentId = parent.get().parentId();
+        if (parentId.isPresent()) {
             return filterStacksWithParent(parentId);
         } else {
             return stacksSubject;
         }
     }
 
-    private Observable<Stacks> filterStacksWithParent(Optional<String> parentId) {
-        return stacksSubject.flatMap(RxFunctions.<Stack>emitEachElement())
-                .filter(onlyStacksWithParent(parentId))
-                .toList()
+    private Observable<Stacks> filterStacksWithParent(final Optional<String> parentId) {
+        return stacksSubject.map(extractList())
+                .map(filterOnlyStacksWithParent(parentId))
                 .map(asStacks());
     }
 
-    private static Func1<Stack, Boolean> onlyStacksWithParent(final Optional<String> parentId) {
-        return new Func1<Stack, Boolean>() {
+    private static Func1<Stacks, List<Stack>> extractList() {
+        return new Func1<Stacks, List<Stack>>() {
             @Override
-            public Boolean call(Stack stack) {
-                return stack.parentId().equals(parentId);
+            public List<Stack> call(Stacks stacks) {
+                return stacks.stacks();
+            }
+        };
+    }
+
+    private static Func1<List<Stack>, List<Stack>> filterOnlyStacksWithParent(final Optional<String> parentId) {
+        return new Func1<List<Stack>, List<Stack>>() {
+            @Override
+            public List<Stack> call(List<Stack> stacks) {
+                List<Stack> filtered = new ArrayList<>(stacks.size());
+                for (Stack stack : stacks) {
+                    if (stack.parentId().equals(parentId)) {
+                        filtered.add(stack);
+                    }
+                }
+                return filtered;
             }
         };
     }

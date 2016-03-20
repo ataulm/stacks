@@ -15,8 +15,8 @@ public class AsyncFetchStacksUsecase implements FetchStacksUsecase {
     }
 
     @Override
-    public Observable<Event<Stacks>> fetchStacks(Optional<Stack> parent) {
-        return syncUsecase.fetchStacks(parent).subscribeOn(Schedulers.io());
+    public Observable<Event<Stacks>> fetchStacks(Optional<String> parentId) {
+        return syncUsecase.fetchStacks(parentId).subscribeOn(Schedulers.io());
     }
 
 }
