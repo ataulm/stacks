@@ -44,10 +44,12 @@ public class StacksRepository {
         return Stacks.create(stacks);
     }
 
-    public void persist(Stacks stacks) {
+    public void persist() {
+        ensureSubjectHasBeenInitialised();
+        Stacks stacks = stacksSubject.getValue();
+
         List<JsonStack> jsonStacks = convertToJsonStacks(stacks);
         jsonStacksRepository.persist(jsonStacks);
-        stacksSubject.onNext(stacks);
     }
 
     private List<JsonStack> convertToJsonStacks(Stacks stacks) {

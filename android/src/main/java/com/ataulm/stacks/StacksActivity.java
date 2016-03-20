@@ -9,6 +9,7 @@ import android.view.View;
 import com.ataulm.Event;
 import com.ataulm.stacks.stack.CreateStackUsecase;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
+import com.ataulm.stacks.stack.PersistStacksUsecase;
 import com.ataulm.stacks.stack.Stacks;
 
 import rx.Observer;
@@ -19,12 +20,15 @@ public class StacksActivity extends AppCompatActivity {
 
     private final FetchStacksUsecase fetchStacksUsecase;
     private final CreateStackUsecase createStackUsecase;
-    private Subscription subscription;
+    private final PersistStacksUsecase persistStacksUsecase;
+
     private RecyclerView recyclerView;
+    private Subscription subscription;
 
     public StacksActivity() {
         this.fetchStacksUsecase = StacksApplication.createFetchStacksUsecase();
         this.createStackUsecase = StacksApplication.createCreateStackUsecase();
+        this.persistStacksUsecase = StacksApplication.createPersistStacksUsecase();
     }
 
     @Override
@@ -58,6 +62,7 @@ public class StacksActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        persistStacksUsecase.persistStacks();
         subscription.unsubscribe();
     }
 
