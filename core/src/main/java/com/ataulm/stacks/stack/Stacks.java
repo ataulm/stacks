@@ -1,5 +1,6 @@
 package com.ataulm.stacks.stack;
 
+import com.ataulm.Optional;
 import com.google.auto.value.AutoValue;
 
 import java.util.ArrayList;
@@ -10,10 +11,16 @@ import java.util.List;
 @AutoValue
 public abstract class Stacks implements Iterable<Stack> {
 
+    public abstract Optional<Stack> info();
+
     abstract List<Stack> stacks();
 
     public static Stacks create(List<Stack> stacks) {
-        return new AutoValue_Stacks(stacks);
+        return create(Optional.<Stack>absent(), stacks);
+    }
+
+    public static Stacks create(Optional<Stack> stack, List<Stack> stacks) {
+        return new AutoValue_Stacks(stack, stacks);
     }
 
     Stacks() {
