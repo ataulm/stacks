@@ -9,6 +9,7 @@
     android:theme="@style/Stacks.Theme">
 
     <activity android:name=".ViewActivity" />
+    <activity android:name=".EditActivity" />
 
     <activity-alias
       android:name="activity.primary_launcher"

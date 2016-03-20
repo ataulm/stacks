@@ -21,17 +21,17 @@ class StackBundle {
         return bundle;
     }
 
-    public Stack createStackFrom(Bundle bundle) {
+    public Optional<Stack> createStackFrom(Bundle bundle) {
         String id = bundle.getString(ID);
         String summary = bundle.getString(SUMMARY);
 
         if (id == null || id.isEmpty() || summary == null || summary.isEmpty()) {
-            throw new IllegalArgumentException("Missing values, bundle was not created with " + StackBundle.class.getName());
+            return Optional.absent();
         }
         String parentId = bundle.getString(PARENT_ID);
         String description = bundle.getString(DESCRIPTION);
 
-        return Stack.create(id, summary, Optional.from(parentId), Optional.from(description));
+        return Optional.of(Stack.create(id, summary, Optional.from(parentId), Optional.from(description)));
     }
 
 }

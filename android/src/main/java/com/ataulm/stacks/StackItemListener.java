@@ -8,4 +8,6 @@ public interface StackItemListener {
 
     void onClickRemove(Stack stack);
 
+    void onClickEdit(Stack stack);
+
 }

@@ -30,6 +30,12 @@
   </LinearLayout>
 
   <Button
+    android:id="@+id/stack_item_button_edit"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Edit" />
+
+  <Button
     android:id="@+id/stack_item_button_remove"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

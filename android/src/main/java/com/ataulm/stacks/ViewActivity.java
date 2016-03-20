@@ -31,7 +31,7 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
     private final RemoveStackUsecase removeStackUsecase;
     private final PersistStacksUsecase persistStacksUsecase;
 
-    @Bind(R.id.stacks_recycler_view)
+    @Bind(R.id.view_recycler_view)
     RecyclerView recyclerView;
 
     private Subscription subscription;
@@ -48,7 +48,7 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_stacks);
+        setContentView(R.layout.activity_view);
         ButterKnife.bind(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -58,7 +58,7 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
             setTitle(stack.get().summary());
         }
 
-        ButterKnife.findById(this, R.id.stacks_debug_add_stack_button).setOnClickListener(new View.OnClickListener() {
+        ButterKnife.findById(this, R.id.view_debug_add_stack_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Optional<Stack> stack = getStackFrom(getIntent());
@@ -69,8 +69,8 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         Optional<Stack> stack = getStackFrom(getIntent());
         Optional<String> parentId = stack.isPresent() ? stack.get().parentId() : Optional.<String>absent();
 
@@ -81,16 +81,12 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
 
     private Optional<Stack> getStackFrom(Intent intent) {
         Bundle extras = intent.getExtras();
-        if (extras == null) {
-            return Optional.absent();
-        } else {
-            return Optional.of(new StackBundle().createStackFrom(extras));
-        }
+        return extras == null ? Optional.<Stack>absent() : new StackBundle().createStackFrom(extras);
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
         persistStacksUsecase.persistStacks();
         subscription.unsubscribe();
     }
@@ -98,6 +94,13 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
     @Override
     public void onClick(Stack stack) {
         Intent intent = new Intent(this, ViewActivity.class);
+        intent.putExtras(new StackBundle().createBundleFrom(stack));
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClickEdit(Stack stack) {
+        Intent intent = new Intent(this, EditActivity.class);
         intent.putExtras(new StackBundle().createBundleFrom(stack));
         startActivity(intent);
     }

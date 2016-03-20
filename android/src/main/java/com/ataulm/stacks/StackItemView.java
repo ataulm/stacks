@@ -22,6 +22,9 @@ public class StackItemView extends LinearLayout {
     @Bind(R.id.stack_item_text_parent_id)
     TextView parentIdTextView;
 
+    @Bind(R.id.stack_item_button_edit)
+    View editButton;
+
     @Bind(R.id.stack_item_button_remove)
     View removeButton;
 
@@ -50,6 +53,13 @@ public class StackItemView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 listener.onClickRemove(stack);
+            }
+        });
+
+        editButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickEdit(stack);
             }
         });
         setOnClickListener(new OnClickListener() {
