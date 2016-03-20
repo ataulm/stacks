@@ -1,9 +1,13 @@
 package com.ataulm.stacks.stack;
 
+import com.ataulm.Optional;
+import com.ataulm.RxFunctions;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
+import rx.functions.Func1;
 import rx.subjects.BehaviorSubject;
 
 public class StacksRepository {
@@ -18,9 +22,39 @@ public class StacksRepository {
         this.jsonStackConverter = jsonStackConverter;
     }
 
-    public Observable<Stacks> getStacks() {
+    public Observable<Stacks> getStacks(Optional<Stack> parent) {
         refreshStacks();
-        return stacksSubject;
+        if (parent.isPresent()) {
+            Optional<String> parentId = parent.get().parentId();
+            return filterStacksWithParent(parentId);
+        } else {
+            return stacksSubject;
+        }
+    }
+
+    private Observable<Stacks> filterStacksWithParent(Optional<String> parentId) {
+        return stacksSubject.flatMap(RxFunctions.<Stack>emitEachElement())
+                .filter(onlyStacksWithParent(parentId))
+                .toList()
+                .map(asStacks());
+    }
+
+    private static Func1<Stack, Boolean> onlyStacksWithParent(final Optional<String> parentId) {
+        return new Func1<Stack, Boolean>() {
+            @Override
+            public Boolean call(Stack stack) {
+                return stack.parentId().equals(parentId);
+            }
+        };
+    }
+
+    private static Func1<List<Stack>, Stacks> asStacks() {
+        return new Func1<List<Stack>, Stacks>() {
+            @Override
+            public Stacks call(List<Stack> stacks) {
+                return Stacks.create(stacks);
+            }
+        };
     }
 
     private void refreshStacks() {

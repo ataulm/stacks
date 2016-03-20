@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.ataulm.Event;
+import com.ataulm.Optional;
 import com.ataulm.stacks.stack.CreateStackUsecase;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
 import com.ataulm.stacks.stack.PersistStacksUsecase;
@@ -60,7 +61,7 @@ public class StacksActivity extends AppCompatActivity implements StackItemListen
     @Override
     protected void onStart() {
         super.onStart();
-        subscription = fetchStacksUsecase.fetchStacks()
+        subscription = fetchStacksUsecase.fetchStacks(Optional.<Stack>absent())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new StacksEventObserver());
     }
