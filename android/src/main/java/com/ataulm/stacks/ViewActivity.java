@@ -26,9 +26,6 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class ViewActivity extends AppCompatActivity implements StackItemListener {
 
-    private static final String INTENT_EXTRA_SUMMARY = "summary";
-    private static final String INTENT_EXTRA_PARENT_ID = "parent_id";
-
     private final FetchStacksUsecase fetchStacksUsecase;
     private final CreateStackUsecase createStackUsecase;
     private final RemoveStackUsecase removeStackUsecase;
@@ -56,15 +53,17 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        final Optional<String> summary = getSummaryFrom(getIntent());
-        if (summary.isPresent()) {
-            setTitle(summary.get());
+        Optional<Stack> stack = getStackFrom(getIntent());
+        if (stack.isPresent()) {
+            setTitle(stack.get().summary());
         }
 
         ButterKnife.findById(this, R.id.stacks_debug_add_stack_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createStackUsecase.createStack(getParentIdFrom(getIntent()), "test " + ++count);
+                Optional<Stack> stack = getStackFrom(getIntent());
+                Optional<String> id = stack.isPresent() ? Optional.of(stack.get().id()) : Optional.<String>absent();
+                createStackUsecase.createStack(id, "test " + ++count);
             }
         });
     }
@@ -72,20 +71,21 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
     @Override
     protected void onResume() {
         super.onResume();
-        Optional<String> parentId = getParentIdFrom(getIntent());
+        Optional<Stack> stack = getStackFrom(getIntent());
+        Optional<String> parentId = stack.isPresent() ? stack.get().parentId() : Optional.<String>absent();
+
         subscription = fetchStacksUsecase.fetchStacks(parentId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new StacksEventObserver());
     }
 
-    private static Optional<String> getSummaryFrom(Intent intent) {
-        String id = intent.getStringExtra(INTENT_EXTRA_SUMMARY);
-        return Optional.from(id);
-    }
-
-    private static Optional<String> getParentIdFrom(Intent intent) {
-        String id = intent.getStringExtra(INTENT_EXTRA_PARENT_ID);
-        return Optional.from(id);
+    private Optional<Stack> getStackFrom(Intent intent) {
+        Bundle extras = intent.getExtras();
+        if (extras == null) {
+            return Optional.absent();
+        } else {
+            return Optional.of(new StackBundle().createStackFrom(extras));
+        }
     }
 
     @Override
@@ -98,8 +98,7 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
     @Override
     public void onClick(Stack stack) {
         Intent intent = new Intent(this, ViewActivity.class);
-        intent.putExtra(INTENT_EXTRA_PARENT_ID, stack.id());
-        intent.putExtra(INTENT_EXTRA_SUMMARY, stack.summary());
+        intent.putExtras(new StackBundle().createBundleFrom(stack));
         startActivity(intent);
     }
 
