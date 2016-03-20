@@ -5,27 +5,35 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.ataulm.Event;
 import com.ataulm.stacks.stack.CreateStackUsecase;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
 import com.ataulm.stacks.stack.PersistStacksUsecase;
 import com.ataulm.stacks.stack.RemoveStackUsecase;
+import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class StacksActivity extends AppCompatActivity {
+public class StacksActivity extends AppCompatActivity implements StackItemListener {
 
     private final FetchStacksUsecase fetchStacksUsecase;
     private final CreateStackUsecase createStackUsecase;
     private final RemoveStackUsecase removeStackUsecase;
     private final PersistStacksUsecase persistStacksUsecase;
 
-    private RecyclerView recyclerView;
+    @Bind(R.id.stacks_recycler_view)
+    RecyclerView recyclerView;
+
     private Subscription subscription;
+    private Toast toast;
+    private int count;
 
     public StacksActivity() {
         this.fetchStacksUsecase = StacksApplication.createFetchStacksUsecase();
@@ -39,20 +47,17 @@ public class StacksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_stacks);
-        recyclerView = (RecyclerView) findViewById(R.id.stacks_recycler_view);
+        ButterKnife.bind(this);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        View addButton = findViewById(R.id.stacks_debug_add_stack_button);
-        assert addButton != null;
-        addButton.setOnClickListener(new View.OnClickListener() {
+        ButterKnife.findById(this, R.id.stacks_debug_add_stack_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createStackUsecase.createStack("test " + ++count);
             }
         });
     }
-
-    private int count;
 
     @Override
     protected void onStart() {
@@ -67,6 +72,24 @@ public class StacksActivity extends AppCompatActivity {
         super.onStop();
         persistStacksUsecase.persistStacks();
         subscription.unsubscribe();
+    }
+
+    @Override
+    public void onClick(Stack stack) {
+        displayToast("on click: " + stack.summary());
+    }
+
+    private void displayToast(String text) {
+        if (toast != null) {
+            toast.cancel();
+        }
+        toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    @Override
+    public void onClickRemove(Stack stack) {
+        removeStackUsecase.remove(stack);
     }
 
     private class StacksEventObserver implements Observer<Event<Stacks>> {
@@ -93,7 +116,7 @@ public class StacksActivity extends AppCompatActivity {
         }
 
         private void showData(Stacks stacks, Event.Type type) {
-            recyclerView.swapAdapter(new StacksAdapter(stacks), false);
+            recyclerView.swapAdapter(new StacksAdapter(stacks, StacksActivity.this), false);
         }
 
     }

@@ -9,9 +9,11 @@ import com.ataulm.stacks.stack.Stacks;
 class StacksAdapter extends RecyclerView.Adapter<StackViewHolder> {
 
     private final Stacks stacks;
+    private final StackItemListener listener;
 
-    StacksAdapter(Stacks stacks) {
+    StacksAdapter(Stacks stacks, StackItemListener listener) {
         this.stacks = stacks;
+        this.listener = listener;
         setHasStableIds(true);
     }
 
@@ -23,7 +25,7 @@ class StacksAdapter extends RecyclerView.Adapter<StackViewHolder> {
     @Override
     public void onBindViewHolder(StackViewHolder holder, int position) {
         Stack stack = stacks.get(position);
-        holder.bind(stack);
+        holder.bind(stack, listener);
     }
 
     @Override
