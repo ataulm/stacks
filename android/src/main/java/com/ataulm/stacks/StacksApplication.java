@@ -18,6 +18,8 @@ import com.ataulm.stacks.stack.SyncCreateStackUsecase;
 import com.ataulm.stacks.stack.SyncFetchStacksUsecase;
 import com.ataulm.stacks.stack.SyncPersistStacksUsecase;
 import com.ataulm.stacks.stack.SyncRemoveStackUsecase;
+import com.ataulm.stacks.stack.SyncUpdateStackUsecase;
+import com.ataulm.stacks.stack.UpdateStackUsecase;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
@@ -58,6 +60,10 @@ public class StacksApplication extends Application {
 
     public static RemoveStackUsecase createRemoveStackUsecase() {
         return new SyncRemoveStackUsecase(stacksRepository);
+    }
+
+    public static UpdateStackUsecase createUpdateStackUsecase() {
+        return new SyncUpdateStackUsecase(stacksRepository);
     }
 
     public static void displayToast(String text) {

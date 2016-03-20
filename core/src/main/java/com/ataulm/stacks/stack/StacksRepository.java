@@ -100,7 +100,58 @@ public class StacksRepository {
     public void add(Stack stack) {
         ensureSubjectHasBeenInitialised();
         Stacks stacks = stacksSubject.getValue();
+
         Stacks updated = stacks.add(stack);
+
+        stacksSubject.onNext(updated);
+    }
+
+    public void remove(Stack stack) {
+        ensureSubjectHasBeenInitialised();
+        Stacks stacks = stacksSubject.getValue();
+
+        Stacks updated = stacks.remove(stack);
+
+        stacksSubject.onNext(updated);
+    }
+
+    public void update(Stack stack, String summary) {
+        ensureSubjectHasBeenInitialised();
+        Stacks stacks = stacksSubject.getValue();
+
+        Stack updatedStack = Stack.create(stack.id(), summary, stack.parentId(), stack.description());
+        Stacks updated = stacks.update(updatedStack);
+
+        stacksSubject.onNext(updated);
+    }
+
+    public void updateDescription(Stack stack, String description) {
+        ensureSubjectHasBeenInitialised();
+        Stacks stacks = stacksSubject.getValue();
+
+        Stack updatedStack = Stack.create(stack.id(), stack.summary(), stack.parentId(), Optional.of(description));
+        Stacks updated = stacks.update(updatedStack);
+
+        stacksSubject.onNext(updated);
+    }
+
+    public void updateStack(Stack stack, String summary, String description) {
+        ensureSubjectHasBeenInitialised();
+        Stacks stacks = stacksSubject.getValue();
+
+        Stack updatedStack = Stack.create(stack.id(), summary, stack.parentId(), Optional.of(description));
+        Stacks updated = stacks.update(updatedStack);
+
+        stacksSubject.onNext(updated);
+    }
+
+    public void updateParent(Stack stack, String parentId) {
+        ensureSubjectHasBeenInitialised();
+        Stacks stacks = stacksSubject.getValue();
+
+        Stack updatedStack = Stack.create(stack.id(), stack.summary(), Optional.of(parentId), stack.description());
+        Stacks updated = stacks.update(updatedStack);
+
         stacksSubject.onNext(updated);
     }
 
@@ -108,13 +159,6 @@ public class StacksRepository {
         if (!stacksSubject.hasValue()) {
             throw new IllegalStateException("Failed to add(Stack) - subject is not initialised");
         }
-    }
-
-    public void remove(Stack stack) {
-        ensureSubjectHasBeenInitialised();
-        Stacks stacks = stacksSubject.getValue();
-        Stacks updated = stacks.remove(stack);
-        stacksSubject.onNext(updated);
     }
 
 }

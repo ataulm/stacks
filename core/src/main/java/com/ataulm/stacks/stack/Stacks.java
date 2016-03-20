@@ -52,4 +52,20 @@ public abstract class Stacks implements Iterable<Stack> {
         }
     }
 
+    public Stacks update(Stack updatedStack) {
+        List<Stack> copy = new ArrayList<>(size());
+        copyUpdatingStack(stacks(), copy, updatedStack);
+        return create(copy);
+    }
+
+    private static void copyUpdatingStack(List<Stack> source, List<Stack> copy, Stack updatedStack) {
+        for (Stack stack : source) {
+            if (stack.id().equals(updatedStack.id())) {
+                copy.add(updatedStack);
+            } else {
+                copy.add(stack);
+            }
+        }
+    }
+
 }
