@@ -16,9 +16,6 @@ public class StackHeaderView extends LinearLayout {
     @Bind(R.id.stack_header_text_summary)
     TextView summaryTextView;
 
-    @Bind(R.id.stack_header_text_description)
-    TextView descriptionTextView;
-
     public StackHeaderView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOrientation(VERTICAL);
@@ -33,12 +30,6 @@ public class StackHeaderView extends LinearLayout {
 
     public void bind(final Stack stack) {
         summaryTextView.setText(stack.summary());
-        if (stack.description().isPresent()) {
-            descriptionTextView.setText(stack.description().get());
-            descriptionTextView.setVisibility(VISIBLE);
-        } else {
-            descriptionTextView.setVisibility(GONE);
-        }
     }
 
 }

@@ -13,9 +13,6 @@ public class JsonStack {
     @Json(name = "parent")
     public String parentId;
 
-    @Json(name = "desc")
-    public String description;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -36,8 +33,8 @@ public class JsonStack {
         if (parentId != null ? !parentId.equals(jsonStack.parentId) : jsonStack.parentId != null) {
             return false;
         }
-        return description != null ? description.equals(jsonStack.description) : jsonStack.description == null;
 
+        return true;
     }
 
     @Override
@@ -45,7 +42,6 @@ public class JsonStack {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (summary != null ? summary.hashCode() : 0);
         result = 31 * result + (parentId != null ? parentId.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
     }
 

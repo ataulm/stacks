@@ -143,27 +143,7 @@ public class StacksRepository {
         ensureSubjectHasBeenInitialised();
         Stacks stacks = stacksSubject.getValue();
 
-        Stack updatedStack = Stack.create(stack.id(), summary, stack.parentId(), stack.description());
-        Stacks updated = stacks.update(updatedStack);
-
-        stacksSubject.onNext(updated);
-    }
-
-    public void updateDescription(Stack stack, String description) {
-        ensureSubjectHasBeenInitialised();
-        Stacks stacks = stacksSubject.getValue();
-
-        Stack updatedStack = Stack.create(stack.id(), stack.summary(), stack.parentId(), Optional.of(description));
-        Stacks updated = stacks.update(updatedStack);
-
-        stacksSubject.onNext(updated);
-    }
-
-    public void updateStack(Stack stack, String summary, String description) {
-        ensureSubjectHasBeenInitialised();
-        Stacks stacks = stacksSubject.getValue();
-
-        Stack updatedStack = Stack.create(stack.id(), summary, stack.parentId(), Optional.of(description));
+        Stack updatedStack = Stack.create(stack.id(), summary, stack.parentId());
         Stacks updated = stacks.update(updatedStack);
 
         stacksSubject.onNext(updated);
@@ -173,7 +153,7 @@ public class StacksRepository {
         ensureSubjectHasBeenInitialised();
         Stacks stacks = stacksSubject.getValue();
 
-        Stack updatedStack = Stack.create(stack.id(), stack.summary(), Optional.of(parentId), stack.description());
+        Stack updatedStack = Stack.create(stack.id(), stack.summary(), Optional.of(parentId));
         Stacks updated = stacks.update(updatedStack);
 
         stacksSubject.onNext(updated);

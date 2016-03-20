@@ -21,9 +21,6 @@ public class EditActivity extends AppCompatActivity {
     @Bind(R.id.edit_text_summary)
     EditText summaryEditText;
 
-    @Bind(R.id.edit_text_description)
-    EditText descriptionEditText;
-
     @Bind(R.id.button_save)
     View saveButton;
 
@@ -43,19 +40,11 @@ public class EditActivity extends AppCompatActivity {
         setTitle("Edit " + stack.summary());
 
         summaryEditText.setText(stack.summary());
-        if (stack.description().isPresent()) {
-            descriptionEditText.setText(stack.description().get());
-        }
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String description = descriptionEditText.getText().toString();
-                if (description.isEmpty()) {
-                    updateStackUsecase.updateSummary(stack, summaryEditText.getText().toString());
-                } else {
-                    updateStackUsecase.updateStack(stack, summaryEditText.getText().toString(), description);
-                }
+                updateStackUsecase.updateSummary(stack, summaryEditText.getText().toString());
                 finish();
             }
         });

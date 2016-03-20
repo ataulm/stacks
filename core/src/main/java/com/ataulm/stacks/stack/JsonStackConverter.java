@@ -22,14 +22,7 @@ public class JsonStackConverter {
             parentId = Optional.of(jsonStack.parentId);
         }
 
-        Optional<String> description;
-        if (emptyString(jsonStack.description)) {
-            description = Optional.absent();
-        } else {
-            description = Optional.of(jsonStack.description);
-        }
-
-        return Stack.create(jsonStack.id, jsonStack.summary, parentId, description);
+        return Stack.create(jsonStack.id, jsonStack.summary, parentId);
     }
 
     private static boolean emptyString(String value) {
@@ -47,7 +40,6 @@ public class JsonStackConverter {
         json.id = stack.id();
         json.summary = stack.summary();
         json.parentId = stack.parentId().isPresent() ? stack.parentId().get() : null;
-        json.description = stack.description().isPresent() ? stack.description().get() : null;
         return json;
     }
 

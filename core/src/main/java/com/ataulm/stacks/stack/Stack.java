@@ -12,10 +12,8 @@ public abstract class Stack {
 
     public abstract Optional<String> parentId();
 
-    public abstract Optional<String> description();
-
-    public static Stack create(String id, String summary, Optional<String> parentId, Optional<String> description) {
-        return new AutoValue_Stack(id, summary, parentId, description);
+    public static Stack create(String id, String summary, Optional<String> parentId) {
+        return new AutoValue_Stack(id, summary, parentId);
     }
 
     Stack() {
