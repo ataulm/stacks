@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -77,6 +79,31 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
                 stackEditText.setText(null);
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (getStackFrom(getIntent()).isPresent()) {
+            getMenuInflater().inflate(R.menu.view_stack, menu);
+            return true;
+        } else {
+            return super.onCreateOptionsMenu(menu);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_edit:
+                onClickEdit(getStackFrom(getIntent()).get());
+                return true;
+            case R.id.menu_remove:
+                onClickRemove(getStackFrom(getIntent()).get());
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
