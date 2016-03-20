@@ -72,7 +72,7 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
     protected void onStart() {
         super.onStart();
         Optional<Stack> stack = getStackFrom(getIntent());
-        Optional<String> parentId = stack.isPresent() ? stack.get().parentId() : Optional.<String>absent();
+        Optional<String> parentId = stack.isPresent() ? Optional.of(stack.get().id()) : Optional.<String>absent();
 
         subscription = fetchStacksUsecase.fetchStacks(parentId)
                 .observeOn(AndroidSchedulers.mainThread())
