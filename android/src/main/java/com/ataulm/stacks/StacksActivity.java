@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.ataulm.Event;
 import com.ataulm.stacks.stack.CreateStackUsecase;
@@ -32,7 +31,6 @@ public class StacksActivity extends AppCompatActivity implements StackItemListen
     RecyclerView recyclerView;
 
     private Subscription subscription;
-    private Toast toast;
     private int count;
 
     public StacksActivity() {
@@ -76,15 +74,7 @@ public class StacksActivity extends AppCompatActivity implements StackItemListen
 
     @Override
     public void onClick(Stack stack) {
-        displayToast("on click: " + stack.summary());
-    }
-
-    private void displayToast(String text) {
-        if (toast != null) {
-            toast.cancel();
-        }
-        toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
-        toast.show();
+        StacksApplication.displayToast("on click: " + stack.summary());
     }
 
     @Override

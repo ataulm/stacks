@@ -1,6 +1,8 @@
 package com.ataulm.stacks;
 
 import android.app.Application;
+import android.content.Context;
+import android.widget.Toast;
 
 import com.ataulm.stacks.stack.AsyncFetchStacksUsecase;
 import com.ataulm.stacks.stack.CreateStackUsecase;
@@ -24,11 +26,15 @@ import java.util.List;
 
 public class StacksApplication extends Application {
 
+    private static Context context;
+    private static Toast toast;
     private static StacksRepository stacksRepository;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        context = this;
+
         JsonRepository jsonRepository = SharedPreferencesJsonRepository.create(this);
         JsonAdapter<List<JsonStack>> adapter = new Moshi.Builder().build().adapter(Types.newParameterizedType(List.class, JsonStack.class));
         JsonStacksRepository jsonStacksRepository = new JsonStacksRepository(
@@ -52,6 +58,14 @@ public class StacksApplication extends Application {
 
     public static RemoveStackUsecase createRemoveStackUsecase() {
         return new SyncRemoveStackUsecase(stacksRepository);
+    }
+
+    public static void displayToast(String text) {
+        if (toast != null) {
+            toast.cancel();
+        }
+        toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
 }
