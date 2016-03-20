@@ -80,8 +80,8 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         Optional<Stack> stack = getStackFrom(getIntent());
         Optional<String> parentId = stack.isPresent() ? Optional.of(stack.get().id()) : Optional.<String>absent();
 
@@ -96,8 +96,8 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         persistStacksUsecase.persistStacks();
         subscription.unsubscribe();
     }
