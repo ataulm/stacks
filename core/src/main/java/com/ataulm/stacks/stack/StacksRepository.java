@@ -30,7 +30,19 @@ public class StacksRepository {
         }
     }
 
-    private Observable<Stacks> filterStacksWithParent(final Optional<String> parentId) {
+    private Observable<Stacks> filterStacksWithParent(Optional<String> parentId) {
+        // TODO: why didn't the following work? (toList() did not output any event)
+//        final Optional<String> targetParentId = parentId;
+//        stacksSubject.flatMap(RxFunctions.<Stack>emitEachElement())
+//                .filter(new Func1<Stack, Boolean>() {
+//                    @Override
+//                    public Boolean call(Stack stack) {
+//                        return stack.parentId().equals(targetParentId);
+//                    }
+//                })
+//                .toList()
+//                .map(asStacks());
+
         return stacksSubject.map(extractList())
                 .map(filterOnlyStacksWithParent(parentId))
                 .map(asStacks());
