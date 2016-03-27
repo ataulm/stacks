@@ -7,6 +7,7 @@ import java.util.List;
 
 import rx.Observable;
 import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.subjects.BehaviorSubject;
 
 public class StacksRepository {
@@ -24,28 +25,29 @@ public class StacksRepository {
     public Observable<Stacks> getStacks(Optional<String> parentId) {
         refreshStacks();
         if (parentId.isPresent()) {
-            return filterStacksWithParent(parentId);
+            Observable<List<Stack>> allStacks = stacksSubject.map(extractList());
+            return Observable.zip(
+                    allStacks.map(filterOnlyStackWithId(parentId.get())),
+                    allStacks.map(filterOnlyStacksWithParent(parentId)),
+                    asStacks()
+            );
         } else {
             return stacksSubject;
         }
     }
 
-    private Observable<Stacks> filterStacksWithParent(Optional<String> parentId) {
-        // TODO: why didn't the following work? (toList() did not output any event)
-//        final Optional<String> targetParentId = parentId;
-//        stacksSubject.flatMap(RxFunctions.<Stack>emitEachElement())
-//                .filter(new Func1<Stack, Boolean>() {
-//                    @Override
-//                    public Boolean call(Stack stack) {
-//                        return stack.parentId().equals(targetParentId);
-//                    }
-//                })
-//                .toList()
-//                .map(asStacks());
-
-        return stacksSubject.map(extractList())
-                .map(filterOnlyStacksWithParent(parentId))
-                .map(asStacks());
+    private static Func1<List<Stack>, Optional<Stack>> filterOnlyStackWithId(final String id) {
+        return new Func1<List<Stack>, Optional<Stack>>() {
+            @Override
+            public Optional<Stack> call(List<Stack> stacks) {
+                for (Stack stack : stacks) {
+                    if (stack.id().equals(id)) {
+                        return Optional.of(stack);
+                    }
+                }
+                return Optional.absent();
+            }
+        };
     }
 
     private static Func1<Stacks, List<Stack>> extractList() {
@@ -72,11 +74,11 @@ public class StacksRepository {
         };
     }
 
-    private static Func1<List<Stack>, Stacks> asStacks() {
-        return new Func1<List<Stack>, Stacks>() {
+    private static Func2<Optional<Stack>, List<Stack>, Stacks> asStacks() {
+        return new Func2<Optional<Stack>, List<Stack>, Stacks>() {
             @Override
-            public Stacks call(List<Stack> stacks) {
-                return Stacks.create(stacks);
+            public Stacks call(Optional<Stack> stackOptional, List<Stack> stacks) {
+                return Stacks.create(stackOptional, stacks);
             }
         };
     }
