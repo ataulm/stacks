@@ -52,7 +52,7 @@ public class StacksRepository {
         return new Func1<Stacks, List<Stack>>() {
             @Override
             public List<Stack> call(Stacks stacks) {
-                return stacks.stacks();
+                return stacks.children();
             }
         };
     }

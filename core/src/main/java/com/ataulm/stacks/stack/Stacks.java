@@ -13,7 +13,7 @@ public abstract class Stacks implements Iterable<Stack> {
 
     public abstract Optional<Stack> info();
 
-    abstract List<Stack> stacks();
+    abstract List<Stack> children();
 
     public static Stacks create(List<Stack> stacks) {
         return create(Optional.<Stack>absent(), stacks);
@@ -28,31 +28,31 @@ public abstract class Stacks implements Iterable<Stack> {
     }
 
     public Stack get(int position) {
-        return stacks().get(position);
+        return children().get(position);
     }
 
     public int size() {
-        return stacks().size();
+        return children().size();
     }
 
     @Override
     public Iterator<Stack> iterator() {
-        return stacks().iterator();
+        return children().iterator();
     }
 
     public Stacks add(Stack stack) {
         List<Stack> copy = new ArrayList<>(size() + 1);
-        copy(stacks(), copy);
+        copy(children(), copy);
         copy.add(stack);
         return create(copy);
     }
 
     public Stacks remove(Stack stack) {
-        if (size() == 1 && stacks().contains(stack)) {
+        if (size() == 1 && children().contains(stack)) {
             return create(Collections.<Stack>emptyList());
         } else {
             List<Stack> copy = new ArrayList<>(size());
-            copy(stacks(), copy);
+            copy(children(), copy);
             copy.remove(stack);
             return create(copy);
         }
@@ -66,7 +66,7 @@ public abstract class Stacks implements Iterable<Stack> {
 
     public Stacks update(Stack updatedStack) {
         List<Stack> copy = new ArrayList<>(size());
-        copyUpdatingStack(stacks(), copy, updatedStack);
+        copyUpdatingStack(children(), copy, updatedStack);
         return create(copy);
     }
 
