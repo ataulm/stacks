@@ -15,6 +15,10 @@ public abstract class Stacks implements Iterable<Stack> {
 
     abstract List<Stack> children();
 
+    public static Stacks empty() {
+        return create(Collections.<Stack>emptyList());
+    }
+
     public static Stacks create(List<Stack> stacks) {
         return create(Optional.<Stack>absent(), stacks);
     }
