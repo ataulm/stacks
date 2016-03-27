@@ -163,6 +163,7 @@ public class StacksRepository {
         ensureSubjectHasBeenInitialised();
         Stacks stacks = stacksSubject.getValue();
 
+        // TODO: this should keep iterating through list until all descendents are removed too
         Stacks updated = stacks.remove(stack);
 
         stacksSubject.onNext(updated);
