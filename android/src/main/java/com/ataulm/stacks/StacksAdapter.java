@@ -9,15 +9,20 @@ import com.ataulm.stacks.stack.Stacks;
 
 class StacksAdapter extends RecyclerView.Adapter {
 
+    private final Optional<Stack> header;
     private final Stacks stacks;
     private final StackItemListener listener;
-    private final Optional<Stack> header;
 
-    StacksAdapter(Stacks stacks, StackItemListener listener) {
+    static StacksAdapter create(Stacks stacks, StackItemListener listener) {
+        StacksAdapter stacksAdapter = new StacksAdapter(stacks.info(), stacks, listener);
+        stacksAdapter.setHasStableIds(true);
+        return stacksAdapter;
+    }
+
+    private StacksAdapter(Optional<Stack> header, Stacks stacks, StackItemListener listener) {
+        this.header = header;
         this.stacks = stacks;
         this.listener = listener;
-        this.header = stacks.info();
-        setHasStableIds(true);
     }
 
     @Override

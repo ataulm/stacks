@@ -19,8 +19,6 @@ import com.ataulm.stacks.stack.RemoveStackUsecase;
 import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
 
-import java.util.Collections;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observer;
@@ -168,12 +166,12 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
         }
 
         private void showData(Stacks stacks) {
-            StacksAdapter adapter = new StacksAdapter(stacks, ViewActivity.this);
+            StacksAdapter adapter = StacksAdapter.create(stacks, ViewActivity.this);
             recyclerView.swapAdapter(adapter, false);
         }
 
         private void showEmptyScreen() {
-            StacksAdapter adapter = new StacksAdapter(Stacks.empty(), ViewActivity.this);
+            StacksAdapter adapter = StacksAdapter.create(Stacks.empty(), ViewActivity.this);
             recyclerView.swapAdapter(adapter, false);
         }
 
