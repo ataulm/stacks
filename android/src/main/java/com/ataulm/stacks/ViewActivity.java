@@ -160,21 +160,20 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
 
         @Override
         public void onNext(Event<Stacks> event) {
-            Optional<Stack> stack = getStackFrom(getIntent());
             if (event.getData().isPresent() && event.getData().get().size() > 0) {
-                showData(stack, event.getData().get(), event.getType());
+                showData(event.getData().get());
             } else {
-                showEmptyScreen(stack, event.getType());
+                showEmptyScreen();
             }
         }
 
-        private void showEmptyScreen(Optional<Stack> stack, Event.Type type) {
-            StacksAdapter adapter = new StacksAdapter(stack, Stacks.create(Collections.<Stack>emptyList()), ViewActivity.this);
+        private void showData(Stacks stacks) {
+            StacksAdapter adapter = new StacksAdapter(stacks, ViewActivity.this);
             recyclerView.swapAdapter(adapter, false);
         }
 
-        private void showData(Optional<Stack> stack, Stacks stacks, Event.Type type) {
-            StacksAdapter adapter = new StacksAdapter(stack, stacks, ViewActivity.this);
+        private void showEmptyScreen() {
+            StacksAdapter adapter = new StacksAdapter(Stacks.empty(), ViewActivity.this);
             recyclerView.swapAdapter(adapter, false);
         }
 
