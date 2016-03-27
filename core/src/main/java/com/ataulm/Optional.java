@@ -10,7 +10,6 @@ public abstract class Optional<T> {
     @SuppressWarnings("unchecked")
     private static final Optional ABSENT = new AutoValue_Optional(null);
 
-    @Nullable
     public abstract T get();
 
     @SuppressWarnings("unchecked")
