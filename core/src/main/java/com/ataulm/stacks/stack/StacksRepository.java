@@ -32,8 +32,35 @@ public class StacksRepository {
                     asStacks()
             );
         } else {
-            return stacksSubject;
+            return stacksSubject
+                    .map(extractList())
+                    .map(filterOnlyRootStacks())
+                    .map(listAsStacks());
         }
+    }
+
+    private static Func1<List<Stack>, List<Stack>> filterOnlyRootStacks() {
+        return new Func1<List<Stack>, List<Stack>>() {
+            @Override
+            public List<Stack> call(List<Stack> stacks) {
+                List<Stack> filtered = new ArrayList<>(stacks.size());
+                for (Stack stack : stacks) {
+                    if (!stack.parentId().isPresent()) {
+                        filtered.add(stack);
+                    }
+                }
+                return filtered;
+            }
+        };
+    }
+
+    private static Func1<List<Stack>, Stacks> listAsStacks() {
+        return new Func1<List<Stack>, Stacks>() {
+            @Override
+            public Stacks call(List<Stack> stacks) {
+                return Stacks.create(stacks);
+            }
+        };
     }
 
     private static Func1<List<Stack>, Optional<Stack>> filterOnlyStackWithId(final String id) {
