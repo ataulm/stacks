@@ -4,12 +4,14 @@
   <EditText
     android:id="@+id/current_edit_text"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    android:hint="Add new stack" />
 
   <EditText
     android:id="@+id/next_edit_text"
     android:visibility="gone"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    android:hint="Add new stack" />
 
 </merge>
