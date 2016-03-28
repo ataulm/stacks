@@ -106,4 +106,28 @@ public abstract class Stacks implements Iterable<Stack> {
         return stacks;
     }
 
+    public Stacks getEligibleParentsFor(Stack stack) {
+        List<Stack> ineligibleParents = getIneligibleParents(children(), stack);
+        List<Stack> eligibleParents = new ArrayList<>();
+
+        for (Stack s : children()) {
+            if (!ineligibleParents.contains(s)) {
+                eligibleParents.add(s);
+            }
+        }
+
+        return Stacks.create(eligibleParents);
+    }
+
+    private static List<Stack> getIneligibleParents(List<Stack> stacks, Stack stack) {
+        List<Stack> ineligibleParents = new ArrayList<>();
+        ineligibleParents.add(stack);
+        for (Stack s : stacks) {
+            if (stack.isParentOf(s)) {
+                ineligibleParents.addAll(getIneligibleParents(stacks, s));
+            }
+        }
+        return ineligibleParents;
+    }
+
 }
