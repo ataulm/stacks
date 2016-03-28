@@ -25,12 +25,6 @@ public class StackItemView extends LinearLayout {
     @Bind(R.id.stack_item_text_summary)
     TextView summaryTextView;
 
-    @Bind(R.id.stack_item_button_edit)
-    View editButton;
-
-    @Bind(R.id.stack_item_button_remove)
-    View removeButton;
-
     private final AccessibilityServices accessibilityServices;
 
     public StackItemView(Context context, AttributeSet attrs) {
@@ -57,7 +51,7 @@ public class StackItemView extends LinearLayout {
             ViewCompat.setAccessibilityDelegate(this, new ActionsAccessibilityDelegate(getResources(), actions));
             addOnClickToShow(alertDialog);
         } else {
-            addIndividualInteractions(stack, listener);
+            addOnClickToOpen(stack, listener);
             addOnLongClickToShow(alertDialog);
         }
     }
@@ -106,25 +100,11 @@ public class StackItemView extends LinearLayout {
         });
     }
 
-    private void addIndividualInteractions(final Stack stack, final StackItemListener listener) {
+    private void addOnClickToOpen(final Stack stack, final StackItemListener listener) {
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onClick(stack);
-            }
-        });
-
-        removeButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClickRemove(stack);
-            }
-        });
-
-        editButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClickEdit(stack);
             }
         });
     }
