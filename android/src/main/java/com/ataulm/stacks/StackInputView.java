@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-class StackInputView extends LinearLayout {
+public class StackInputView extends LinearLayout {
 
     @Bind(R.id.current_edit_text)
     EditText currentEditText;
