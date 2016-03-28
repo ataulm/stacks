@@ -45,56 +45,54 @@ public class StackMoshiJsonAdapterTest {
 
     @Test
     public void given_completeStack_when_convertingToJson_then_allStackFieldsAreRepresentedInJson() {
-        Stack stack = Stack.create("testId", "testSummary", Optional.of("testParentId"), Optional.of("testDescription"));
+        Stack stack = Stack.create("testId", "testSummary", Optional.of("testParentId"));
 
         String json = stackJsonAdapter.toJson(stack);
 
-        assertThat(json).isEqualTo("{\"desc\":\"testDescription\",\"id\":\"testId\",\"parent\":\"testParentId\",\"summary\":\"testSummary\"}");
+        assertThat(json).isEqualTo("{\"id\":\"testId\",\"parent\":\"testParentId\",\"summary\":\"testSummary\"}");
     }
 
     @Test
     public void given_completeJson_when_convertingToStack_then_allStackFieldsArePopulatedCorrectly() throws IOException {
-        String json = "{\"desc\":\"testDescription\",\"id\":\"testId\",\"parent\":\"testParentId\",\"summary\":\"testSummary\"}";
+        String json = "{\"id\":\"testId\",\"parent\":\"testParentId\",\"summary\":\"testSummary\"}";
 
         Stack stack = stackJsonAdapter.fromJson(json);
 
-        Stack expected = Stack.create("testId", "testSummary", Optional.of("testParentId"), Optional.of("testDescription"));
+        Stack expected = Stack.create("testId", "testSummary", Optional.of("testParentId"));
         assertThat(stack).isEqualTo(expected);
     }
 
     @Test
     public void given_jsonArrayOfStacks_when_convertingToListOfJsonStacks_then_returnListOfJsonStacks() throws IOException {
         String jsonList = "[" +
-                getStackAsJsonObject("1", "sum1", "p1", "desc1") + "," +
-                getStackAsJsonObject("2", "sum2", "p2", "desc2") + "," +
-                getStackAsJsonObject("3", "sum3", "p3", "desc3") +
+                getStackAsJsonObject("1", "sum1", "p1") + "," +
+                getStackAsJsonObject("2", "sum2", "p2") + "," +
+                getStackAsJsonObject("3", "sum3", "p3") +
                 "]";
 
         List<JsonStack> stacks = jsonStackListAdapter.fromJson(jsonList);
 
         List<JsonStack> expected = Arrays.asList(
-                createJsonStack("1", "sum1", "p1", "desc1"),
-                createJsonStack("2", "sum2", "p2", "desc2"),
-                createJsonStack("3", "sum3", "p3", "desc3")
+                createJsonStack("1", "sum1", "p1"),
+                createJsonStack("2", "sum2", "p2"),
+                createJsonStack("3", "sum3", "p3")
         );
         assertThat(stacks).isEqualTo(expected);
     }
 
-    private static String getStackAsJsonObject(String id, String summary, String parent, String description) {
+    private static String getStackAsJsonObject(String id, String summary, String parent) {
         return "{" +
                 "\"id\":\"" + id + "\"" + "," +
                 "\"summary\":\"" + summary + "\"" + "," +
-                "\"parent\":\"" + parent + "\"" + "," +
-                "\"desc\":\"" + description + "\"" +
+                "\"parent\":\"" + parent + "\"" +
                 "}";
     }
 
-    private static JsonStack createJsonStack(String id, String summary, String parent, String description) {
+    private static JsonStack createJsonStack(String id, String summary, String parent) {
         JsonStack json = new JsonStack();
         json.id = id;
         json.summary = summary;
         json.parentId = parent;
-        json.description = description;
         return json;
     }
 
