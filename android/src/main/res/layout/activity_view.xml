@@ -1,32 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/view_recycler_view"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:orientation="vertical">
-
-  <android.support.v7.widget.RecyclerView
-    android:id="@+id/view_recycler_view"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="100" />
-
-  <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <EditText
-      android:id="@+id/view_stack_edit_text"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_weight="100"
-      android:inputType="text" />
-
-    <Button
-      android:id="@+id/view_stack_button_add"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="add" />
-
-  </LinearLayout>
-
-</LinearLayout>
+  android:layout_height="match_parent" />

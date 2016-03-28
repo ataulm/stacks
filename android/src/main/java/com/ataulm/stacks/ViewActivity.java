@@ -25,7 +25,7 @@ import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class ViewActivity extends AppCompatActivity implements StackItemListener {
+public class ViewActivity extends AppCompatActivity implements StackItemListener, StackInputListener {
 
     private final FetchStacksUsecase fetchStacksUsecase;
     private final CreateStackUsecase createStackUsecase;
@@ -34,12 +34,6 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
 
     @Bind(R.id.view_recycler_view)
     RecyclerView recyclerView;
-
-    @Bind(R.id.view_stack_edit_text)
-    EditText stackEditText;
-
-    @Bind(R.id.view_stack_button_add)
-    View addStackButton;
 
     private Subscription subscription;
 
@@ -63,20 +57,6 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
         if (stack.isPresent()) {
             setTitle(stack.get().summary());
         }
-
-        addStackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String summary = stackEditText.getText().toString();
-                if (summary.isEmpty()) {
-                    return;
-                }
-                Optional<Stack> stack = getStackFrom(getIntent());
-                Optional<String> id = stack.isPresent() ? Optional.of(stack.get().id()) : Optional.<String>absent();
-                createStackUsecase.createStack(id, summary);
-                stackEditText.setText(null);
-            }
-        });
     }
 
     @Override
@@ -146,6 +126,13 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
         removeStackUsecase.remove(stack);
     }
 
+    @Override
+    public void onClickAddStack(String summary) {
+        Optional<Stack> stack = getStackFrom(getIntent());
+        Optional<String> id = stack.isPresent() ? Optional.of(stack.get().id()) : Optional.<String>absent();
+        createStackUsecase.createStack(id, summary);
+    }
+
     private class StacksEventObserver implements Observer<Event<Stacks>> {
 
         @Override
@@ -166,12 +153,12 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
         }
 
         private void showData(Stacks stacks) {
-            StacksAdapter adapter = StacksAdapter.create(stacks, ViewActivity.this);
+            StacksAdapter adapter = StacksAdapter.create(stacks, ViewActivity.this, ViewActivity.this);
             recyclerView.swapAdapter(adapter, false);
         }
 
         private void showEmptyScreen() {
-            StacksAdapter adapter = StacksAdapter.create(Stacks.empty(), ViewActivity.this);
+            StacksAdapter adapter = StacksAdapter.create(Stacks.empty(), ViewActivity.this, ViewActivity.this);
             recyclerView.swapAdapter(adapter, false);
         }
 
