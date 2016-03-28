@@ -57,14 +57,10 @@ public abstract class Stacks implements Iterable<Stack> {
         } else {
             List<Stack> copy = new ArrayList<>(size());
             copy(children(), copy);
-            copy.remove(stack);
-            return create(copy);
-        }
-    }
+            removeStackAndDescendents(copy, stack);
+            List<Stack> nonNullStacks = nonNulls(copy);
 
-    private static void copy(List<Stack> source, List<Stack> copy) {
-        for (Stack stack : source) {
-            copy.add(stack);
+            return create(nonNullStacks);
         }
     }
 
@@ -72,6 +68,12 @@ public abstract class Stacks implements Iterable<Stack> {
         List<Stack> copy = new ArrayList<>(size());
         copyUpdatingStack(children(), copy, updatedStack);
         return create(copy);
+    }
+
+    private static void copy(List<Stack> source, List<Stack> copy) {
+        for (Stack stack : source) {
+            copy.add(stack);
+        }
     }
 
     private static void copyUpdatingStack(List<Stack> source, List<Stack> copy, Stack updatedStack) {
@@ -82,6 +84,26 @@ public abstract class Stacks implements Iterable<Stack> {
                 copy.add(stack);
             }
         }
+    }
+
+    private static void removeStackAndDescendents(List<Stack> stacks, Stack stack) {
+        stacks.set(stacks.indexOf(stack), null);
+        for (int i = 0; i < stacks.size(); i++) {
+            Stack s = stacks.get(i);
+            if (s != null && stack.isParentOf(s)) {
+                removeStackAndDescendents(stacks, s);
+            }
+        }
+    }
+
+    private static List<Stack> nonNulls(List<Stack> copy) {
+        List<Stack> stacks = new ArrayList<>(copy.size());
+        for (Stack stack : copy) {
+            if (stack != null) {
+                stacks.add(stack);
+            }
+        }
+        return stacks;
     }
 
 }

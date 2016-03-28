@@ -20,4 +20,11 @@ public abstract class Stack {
         // instantiate AutoValue generated class
     }
 
+    public boolean isParentOf(Stack stack) {
+        if (stack.parentId().isPresent()) {
+            return stack.parentId().get().equals(id());
+        }
+        return false;
+    }
+
 }
