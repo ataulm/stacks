@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <item type="id" name="loader_stack" />
-  <item type="id" name="loader_sub_stacks" />
-  <item type="id" name="req_code_edit_stack" />
-  <item name="header_view" type="id" />
+  <item name="loader_stack"
+    type="id" />
+  <item name="loader_sub_stacks"
+    type="id" />
+  <item name="req_code_edit_stack"
+    type="id" />
+  <item name="header_view"
+    type="id" />
+  <item name="stack_item_action_view"
+    type="id" />
+  <item name="stack_item_action_remove"
+    type="id" />
+  <item name="stack_item_action_edit"
+    type="id" />
 </resources>
