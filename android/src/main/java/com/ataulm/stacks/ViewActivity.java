@@ -25,7 +25,7 @@ import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class ViewActivity extends AppCompatActivity implements StackItemListener, StackInputListener {
+public class ViewActivity extends NavigationDrawerActivity implements StackItemListener, StackInputListener {
 
     private final FetchStacksUsecase fetchStacksUsecase;
     private final CreateStackUsecase createStackUsecase;
