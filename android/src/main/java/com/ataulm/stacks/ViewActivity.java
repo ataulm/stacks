@@ -17,7 +17,6 @@ import com.ataulm.stacks.view.ViewStackScreen;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -125,15 +124,7 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
         createStackUsecase.createStack(id, summary);
     }
 
-    private class StacksEventObserver implements Observer<Event<Stacks>> {
-
-        @Override
-        public void onCompleted() {
-        }
-
-        @Override
-        public void onError(Throwable e) {
-        }
+    private class StacksEventObserver extends LoggingObserver<Event<Stacks>> {
 
         @Override
         public void onNext(Event<Stacks> event) {
