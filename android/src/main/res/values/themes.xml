@@ -3,6 +3,6 @@
 
   <style name="Stacks" />
 
-  <style name="Stacks.Theme" parent="Theme.AppCompat.Light" />
+  <style name="Stacks.Theme" parent="Theme.AppCompat.Light.NoActionBar" />
 
 </resources>
