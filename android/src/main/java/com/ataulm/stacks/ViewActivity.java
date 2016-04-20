@@ -20,24 +20,19 @@ import butterknife.ButterKnife;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
+import static com.ataulm.stacks.StacksApplication.*;
+
 public class ViewActivity extends NavigationDrawerActivity implements StackItemListener, StackInputListener {
 
-    private final FetchStacksUsecase fetchStacksUsecase;
-    private final CreateStackUsecase createStackUsecase;
-    private final RemoveStackUsecase removeStackUsecase;
-    private final PersistStacksUsecase persistStacksUsecase;
+    private final FetchStacksUsecase fetchStacksUsecase = createFetchStacksUsecase();
+    private final CreateStackUsecase createStackUsecase = createCreateStackUsecase();
+    private final RemoveStackUsecase removeStackUsecase = createRemoveStackUsecase();
+    private final PersistStacksUsecase persistStacksUsecase = createPersistStacksUsecase();
 
     private Subscription subscription;
 
     @Bind(R.id.content)
     ViewStackScreen viewStackScreen;
-
-    public ViewActivity() {
-        this.fetchStacksUsecase = StacksApplication.createFetchStacksUsecase();
-        this.createStackUsecase = StacksApplication.createCreateStackUsecase();
-        this.removeStackUsecase = StacksApplication.createRemoveStackUsecase();
-        this.persistStacksUsecase = StacksApplication.createPersistStacksUsecase();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
