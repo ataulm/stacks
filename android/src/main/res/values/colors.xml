@@ -11,6 +11,7 @@
   <color name="dark_grey">#5e5e5e</color>
   <!-- end swatch-->
 
+  <color name="navigation_drawer_background">@color/off_white</color>
   <color name="app_background">@color/off_white</color>
   <color name="actionbar_background">@color/off_white</color>
   <color name="actionbar_trim_highlight">@color/grey</color>
