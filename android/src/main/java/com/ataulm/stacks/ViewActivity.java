@@ -29,10 +29,10 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
     private final RemoveStackUsecase removeStackUsecase = createRemoveStackUsecase();
     private final PersistStacksUsecase persistStacksUsecase = createPersistStacksUsecase();
 
-    private Subscription subscription;
-
     @Bind(R.id.content)
     ViewStackScreen viewStackScreen;
+
+    private Subscription subscription;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
