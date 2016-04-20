@@ -2,13 +2,8 @@ package com.ataulm.stacks;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
 
 import com.ataulm.Event;
 import com.ataulm.Optional;
@@ -18,6 +13,7 @@ import com.ataulm.stacks.stack.PersistStacksUsecase;
 import com.ataulm.stacks.stack.RemoveStackUsecase;
 import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
+import com.ataulm.stacks.view.ViewStackScreen;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,10 +28,10 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
     private final RemoveStackUsecase removeStackUsecase;
     private final PersistStacksUsecase persistStacksUsecase;
 
-    @Bind(R.id.view_recycler_view)
-    RecyclerView recyclerView;
-
     private Subscription subscription;
+
+    @Bind(R.id.content)
+    ViewStackScreen viewStackScreen;
 
     public ViewActivity() {
         this.fetchStacksUsecase = StacksApplication.createFetchStacksUsecase();
@@ -50,8 +46,6 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
 
         setContentView(R.layout.activity_view);
         ButterKnife.bind(this);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         Optional<Stack> stack = getStackFrom(getIntent());
         if (stack.isPresent()) {
@@ -144,20 +138,10 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
         @Override
         public void onNext(Event<Stacks> event) {
             if (event.getData().isPresent() && event.getData().get().size() > 0) {
-                showData(event.getData().get());
+                viewStackScreen.showData(event.getData().get(), ViewActivity.this, ViewActivity.this);
             } else {
-                showEmptyScreen();
+                viewStackScreen.showEmptyScreen(ViewActivity.this, ViewActivity.this);
             }
-        }
-
-        private void showData(Stacks stacks) {
-            StacksAdapter adapter = StacksAdapter.create(stacks, ViewActivity.this, ViewActivity.this);
-            recyclerView.swapAdapter(adapter, false);
-        }
-
-        private void showEmptyScreen() {
-            StacksAdapter adapter = StacksAdapter.create(Stacks.empty(), ViewActivity.this, ViewActivity.this);
-            recyclerView.swapAdapter(adapter, false);
         }
 
     }

@@ -7,7 +7,7 @@ import com.ataulm.Optional;
 import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
 
-class StacksAdapter extends RecyclerView.Adapter {
+public class StacksAdapter extends RecyclerView.Adapter {
 
     private static final int INPUT_TYPE_COUNT = 1;
 
@@ -16,7 +16,7 @@ class StacksAdapter extends RecyclerView.Adapter {
     private final StackItemListener stackItemListener;
     private final StackInputListener stackInputListener;
 
-    static StacksAdapter create(Stacks stacks, StackItemListener listener, StackInputListener stackInputListener) {
+    public static StacksAdapter create(Stacks stacks, StackItemListener listener, StackInputListener stackInputListener) {
         StacksAdapter stacksAdapter = new StacksAdapter(stacks.info(), stacks, listener, stackInputListener);
         stacksAdapter.setHasStableIds(true);
         return stacksAdapter;
