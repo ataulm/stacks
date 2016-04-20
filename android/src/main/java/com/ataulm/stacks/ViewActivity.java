@@ -116,9 +116,7 @@ public class ViewActivity extends AppCompatActivity implements StackItemListener
 
     @Override
     public void onClickEdit(Stack stack) {
-        Intent intent = new Intent(this, EditActivity.class);
-        intent.putExtras(new StackBundle().createBundleFrom(stack));
-        startActivity(intent);
+        // TODO: edit
     }
 
     @Override
