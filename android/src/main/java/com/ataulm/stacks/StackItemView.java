@@ -22,8 +22,14 @@ import butterknife.ButterKnife;
 
 public class StackItemView extends LinearLayout {
 
+    @Bind(R.id.stack_item_button_remove)
+    View removeButton;
+
     @Bind(R.id.stack_item_text_summary)
     TextView summaryTextView;
+
+    @Bind(R.id.stack_item_button_delete)
+    View remoteButton;
 
     private final AccessibilityServices accessibilityServices;
 
@@ -52,6 +58,7 @@ public class StackItemView extends LinearLayout {
             addOnClickToShow(alertDialog);
         } else {
             addOnClickToOpen(stack, listener);
+            addOnClickToRemove(stack, listener);
             addOnLongClickToShow(alertDialog);
         }
     }
@@ -105,6 +112,15 @@ public class StackItemView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 listener.onClick(stack);
+            }
+        });
+    }
+
+    private void addOnClickToRemove(final Stack stack, final StackItemListener listener) {
+        remoteButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickRemove(stack);
             }
         });
     }
