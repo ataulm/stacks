@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -13,15 +14,15 @@ import butterknife.ButterKnife;
 
 public class StackInputView extends LinearLayout {
 
-    @Bind(R.id.current_edit_text)
-    EditText currentEditText;
+    @Bind(R.id.input_edit_text)
+    EditText inputEditText;
 
-    @Bind(R.id.next_edit_text)
-    EditText nextEditText;
+    @Bind(R.id.add_button)
+    Button addButton;
 
     public StackInputView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        super.setOrientation(VERTICAL);
+        super.setOrientation(HORIZONTAL);
     }
 
     @Override
@@ -30,32 +31,34 @@ public class StackInputView extends LinearLayout {
         View.inflate(getContext(), R.layout.merge_stack_input_view, this);
         ButterKnife.bind(this);
 
-        addTextChangedListenerToShowOrHideNextEditText();
-        setEnterKeyListenerToMoveToNextAndPreventMultilineInput();
-    }
-
-    private void addTextChangedListenerToShowOrHideNextEditText() {
-        currentEditText.addTextChangedListener(new SimpleTextWatcher() {
+        inputEditText.addTextChangedListener(new SimpleTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() > 0) {
-                    nextEditText.setVisibility(VISIBLE);
-                } else {
-                    nextEditText.setVisibility(GONE);
-                }
+                boolean ifTextIsNotEmpty = s.length() > 0;
+                addButton.setEnabled(ifTextIsNotEmpty);
             }
         });
     }
 
-    private void setEnterKeyListenerToMoveToNextAndPreventMultilineInput() {
-        currentEditText.setOnKeyListener(new OnKeyListener() {
+    public void bind(final StackInputListener listener) {
+        setEnterKeyListenerToMoveToNextAndPreventMultilineInput(listener);
+        addButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addStack(listener);
+            }
+        });
+    }
+
+    private void setEnterKeyListenerToMoveToNextAndPreventMultilineInput(final StackInputListener listener) {
+        inputEditText.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 boolean enterPressed = keyCode == KeyEvent.KEYCODE_ENTER;
-                boolean currentIsNotEmpty = currentEditText.getText().toString().trim().length() > 0;
+                boolean currentIsNotEmpty = inputEditText.getText().toString().trim().length() > 0;
 
                 if (enterPressed && currentIsNotEmpty) {
-                    nextEditText.requestFocus();
+                    addStack(listener);
                     return true;
                 }
 
@@ -64,27 +67,9 @@ public class StackInputView extends LinearLayout {
         });
     }
 
-    public void bind(final StackInputListener listener) {
-        setFocusChangeListenerToAddStackThenReset(listener);
-    }
-
-    private void setFocusChangeListenerToAddStackThenReset(final StackInputListener listener) {
-        nextEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (v.equals(nextEditText) && hasFocus) {
-                    addStackThenReset();
-                }
-            }
-
-            private void addStackThenReset() {
-                listener.onClickAddStack(currentEditText.getText().toString().trim());
-                currentEditText.setText(null);
-                currentEditText.requestFocus();
-            }
-
-        });
+    private void addStack(StackInputListener listener) {
+        listener.onClickAddStack(inputEditText.getText().toString().trim());
+        inputEditText.setText(null);
     }
 
 }
