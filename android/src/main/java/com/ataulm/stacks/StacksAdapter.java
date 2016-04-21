@@ -9,7 +9,7 @@ import com.ataulm.stacks.stack.Stacks;
 
 public class StacksAdapter extends RecyclerView.Adapter {
 
-    private static final int INPUT_TYPE_COUNT = 1;
+    private static final int VIEW_TYPE_INPUT_COUNT = 1;
 
     private final Optional<Stack> header;
     private final Stacks stacks;
@@ -54,7 +54,7 @@ public class StacksAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return headerCount() + stacks.size() + INPUT_TYPE_COUNT;
+        return headerCount() + stacks.size() + VIEW_TYPE_INPUT_COUNT;
     }
 
     private int headerCount() {
@@ -72,7 +72,7 @@ public class StacksAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         if (headerCount() != 0 && position == 0) {
             return ViewType.HEADER.ordinal();
-        } else if (position == getItemCount() - INPUT_TYPE_COUNT) {
+        } else if (position == getItemCount() - VIEW_TYPE_INPUT_COUNT) {
             return ViewType.INPUT.ordinal();
         } else {
             return ViewType.ROW.ordinal();
