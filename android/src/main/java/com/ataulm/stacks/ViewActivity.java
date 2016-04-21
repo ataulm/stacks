@@ -43,7 +43,9 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
 
         Optional<Stack> stack = getStackFrom(getIntent());
         if (stack.isPresent()) {
-            setTitle(stack.get().summary());
+            viewStackScreen.setTitle(stack.get().summary());
+        } else {
+            viewStackScreen.setTitle("Stacks");
         }
     }
 

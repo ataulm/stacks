@@ -3,6 +3,7 @@ package com.ataulm.stacks.view;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,11 +19,15 @@ import butterknife.ButterKnife;
 
 public class ViewStackScreenLayout extends LinearLayout implements ViewStackScreen {
 
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+
     @Bind(R.id.view_recycler_view)
     RecyclerView recyclerView;
 
     public ViewStackScreenLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setOrientation(VERTICAL);
     }
 
     @Override
@@ -32,6 +37,11 @@ public class ViewStackScreenLayout extends LinearLayout implements ViewStackScre
         ButterKnife.bind(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    @Override
+    public void setTitle(String title) {
+        toolbar.setTitle(title);
     }
 
     @Override
