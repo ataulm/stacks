@@ -59,7 +59,6 @@ public class StackItemView extends LinearLayout {
         } else {
             addOnClickToOpen(stack, listener);
             addOnClickToRemove(stack, listener);
-            addOnLongClickToShow(alertDialog);
         }
     }
 
@@ -121,16 +120,6 @@ public class StackItemView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 listener.onClickRemove(stack);
-            }
-        });
-    }
-
-    private void addOnLongClickToShow(final AlertDialog alertDialog) {
-        setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                alertDialog.show();
-                return true;
             }
         });
     }
