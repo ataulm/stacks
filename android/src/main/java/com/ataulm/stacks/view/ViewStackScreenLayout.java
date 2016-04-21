@@ -36,7 +36,7 @@ public class ViewStackScreenLayout extends LinearLayout implements ViewStackScre
 
     @Override
     public void showData(Stacks stacks, StackItemListener interactionListener, StackInputListener inputListener) {
-        StacksAdapter adapter = StacksAdapter.create(Stacks.empty(), interactionListener, inputListener);
+        StacksAdapter adapter = StacksAdapter.create(stacks, interactionListener, inputListener);
         recyclerView.swapAdapter(adapter, false);
     }
 
