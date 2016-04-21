@@ -12,6 +12,4 @@
     type="id" />
   <item name="stack_item_action_remove"
     type="id" />
-  <item name="stack_item_action_edit"
-    type="id" />
 </resources>

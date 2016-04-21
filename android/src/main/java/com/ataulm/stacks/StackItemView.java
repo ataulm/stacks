@@ -65,7 +65,6 @@ public class StackItemView extends LinearLayout {
     private static Actions createActions(Stack stack, StackItemListener listener) {
         return new Actions(Arrays.asList(
                 createViewActionFor(stack, listener),
-                createEditActionFor(stack, listener),
                 createRemoveActionFor(stack, listener)
         ));
     }
@@ -84,15 +83,6 @@ public class StackItemView extends LinearLayout {
             @Override
             public void run() {
                 listener.onClickRemove(stack);
-            }
-        });
-    }
-
-    private static Action createEditActionFor(final Stack stack, final StackItemListener listener) {
-        return new Action(R.id.stack_item_action_edit, R.string.stack_item_edit, new Runnable() {
-            @Override
-            public void run() {
-                listener.onClickEdit(stack);
             }
         });
     }

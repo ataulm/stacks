@@ -4,7 +4,6 @@
   <string name="app_name">Stacks</string>
   <string name="stack_item_view">Open</string>
   <string name="stack_item_remove">Remove</string>
-  <string name="stack_item_edit">Edit</string>
   <string name="stack_actions_title">Options</string>
 
 </resources>
