@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <View
-    android:id="@+id/stack_item_button_remove"
-    android:layout_width="48dp"
-    android:layout_height="48dp"
-    android:background="@android:color/holo_red_dark" />
-
   <TextView
     android:id="@+id/stack_item_text_summary"
     android:layout_width="0dp"
@@ -15,7 +9,7 @@
     android:layout_weight="100" />
 
   <Button
-    android:id="@+id/stack_item_button_delete"
+    android:id="@+id/stack_item_button_remove"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="x" />

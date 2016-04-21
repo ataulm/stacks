@@ -22,14 +22,11 @@ import butterknife.ButterKnife;
 
 public class StackItemView extends LinearLayout {
 
-    @Bind(R.id.stack_item_button_remove)
-    View removeButton;
-
     @Bind(R.id.stack_item_text_summary)
     TextView summaryTextView;
 
-    @Bind(R.id.stack_item_button_delete)
-    View remoteButton;
+    @Bind(R.id.stack_item_button_remove)
+    View removeButton;
 
     private final AccessibilityServices accessibilityServices;
 
@@ -106,7 +103,7 @@ public class StackItemView extends LinearLayout {
     }
 
     private void addOnClickToRemove(final Stack stack, final StackItemListener listener) {
-        remoteButton.setOnClickListener(new OnClickListener() {
+        removeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onClickRemove(stack);
