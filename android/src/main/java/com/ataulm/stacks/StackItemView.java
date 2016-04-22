@@ -50,12 +50,12 @@ public class StackItemView extends LinearLayout {
         Actions actions = createActions(stack, listener);
         final AlertDialog alertDialog = new ActionsAlertDialogCreator(getContext(), R.string.stack_actions_title, actions).create();
 
+        addOnClickToOpen(stack, listener);
         if (accessibilityServices.isSpokenFeedbackEnabled()) {
             ViewCompat.setAccessibilityDelegate(this, new ActionsAccessibilityDelegate(getResources(), actions));
-            addOnClickToShow(alertDialog);
+            addOnLongClickToShow(alertDialog);
         } else {
-            addOnClickToOpen(stack, listener);
-            addOnClickToRemove(stack, listener);
+            addOnClickRemoveButtonToRemove(stack, listener);
         }
     }
 
@@ -84,11 +84,12 @@ public class StackItemView extends LinearLayout {
         });
     }
 
-    private void addOnClickToShow(final AlertDialog alertDialog) {
-        setOnClickListener(new OnClickListener() {
+    private void addOnLongClickToShow(final AlertDialog alertDialog) {
+        setOnLongClickListener(new OnLongClickListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onLongClick(View v) {
                 alertDialog.show();
+                return true;
             }
         });
     }
@@ -102,7 +103,7 @@ public class StackItemView extends LinearLayout {
         });
     }
 
-    private void addOnClickToRemove(final Stack stack, final StackItemListener listener) {
+    private void addOnClickRemoveButtonToRemove(final Stack stack, final StackItemListener listener) {
         removeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
