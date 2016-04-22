@@ -16,6 +16,8 @@ import butterknife.ButterKnife;
 
 public class StackInputView extends LinearLayout {
 
+    private static final int REQUEST_FOCUS_AFTER_DELAY_MILLIS = 200;
+
     @Bind(R.id.input_edit_text)
     EditText inputEditText;
 
@@ -91,6 +93,16 @@ public class StackInputView extends LinearLayout {
 
         listener.onClickAddStack(summary);
         inputEditText.setText(null);
+        requestFocusAfterDelay();
+    }
+
+    private void requestFocusAfterDelay() {
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                inputEditText.requestFocus();
+            }
+        }, REQUEST_FOCUS_AFTER_DELAY_MILLIS);
     }
 
 }
