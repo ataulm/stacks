@@ -5,9 +5,11 @@ import android.text.Editable;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -51,24 +53,43 @@ public class StackInputView extends LinearLayout {
     }
 
     private void setEnterKeyListenerToMoveToNextAndPreventMultilineInput(final StackInputListener listener) {
+        inputEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (enterOrDone(actionId)) {
+                    addStack(listener);
+                    return true;
+                }
+                return false;
+            }
+
+            private boolean enterOrDone(int actionId) {
+                return actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_NULL;
+            }
+        });
+
         inputEditText.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 boolean enterPressed = keyCode == KeyEvent.KEYCODE_ENTER;
-                boolean currentIsNotEmpty = inputEditText.getText().toString().trim().length() > 0;
 
-                if (enterPressed && currentIsNotEmpty) {
+                if (enterPressed) {
                     addStack(listener);
                     return true;
                 }
 
-                return enterPressed;
+                return false;
             }
         });
     }
 
     private void addStack(StackInputListener listener) {
-        listener.onClickAddStack(inputEditText.getText().toString().trim());
+        String summary = inputEditText.getText().toString().trim();
+        if (summary.isEmpty()) {
+            return;
+        }
+
+        listener.onClickAddStack(summary);
         inputEditText.setText(null);
     }
 
