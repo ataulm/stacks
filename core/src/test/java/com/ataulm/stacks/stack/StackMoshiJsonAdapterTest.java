@@ -45,7 +45,7 @@ public class StackMoshiJsonAdapterTest {
 
     @Test
     public void given_completeStack_when_convertingToJson_then_allStackFieldsAreRepresentedInJson() {
-        Stack stack = Stack.create("testId", "testSummary", Optional.of("testParentId"));
+        Stack stack = Stack.create(Id.create("testId"), "testSummary", Optional.of(Id.create("testParentId")));
 
         String json = stackJsonAdapter.toJson(stack);
 
@@ -58,7 +58,7 @@ public class StackMoshiJsonAdapterTest {
 
         Stack stack = stackJsonAdapter.fromJson(json);
 
-        Stack expected = Stack.create("testId", "testSummary", Optional.of("testParentId"));
+        Stack expected = Stack.create(Id.create("testId"), "testSummary", Optional.of(Id.create("testParentId")));
         assertThat(stack).isEqualTo(expected);
     }
 

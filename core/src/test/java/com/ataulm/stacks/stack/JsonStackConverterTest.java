@@ -90,7 +90,7 @@ public class JsonStackConverterTest {
 
         Stack stack = jsonStackConverter.convert(json);
 
-        Stack expected = Stack.create(TEST_ID, TEST_SUMMARY, Optional.of(TEST_PARENT_ID));
+        Stack expected = Stack.create(Id.create(TEST_ID), TEST_SUMMARY, Optional.of(Id.create(TEST_PARENT_ID)));
         assertThat(stack).isEqualTo(expected);
     }
 
@@ -105,7 +105,7 @@ public class JsonStackConverterTest {
 
     @Test
     public void given_completeStack_when_convertingToJsonStack_then_returnCompleteJsonStack() {
-        Stack stack = Stack.create(TEST_ID, TEST_SUMMARY, Optional.of(TEST_PARENT_ID));
+        Stack stack = Stack.create(Id.create(TEST_ID), TEST_SUMMARY, Optional.of(Id.create(TEST_PARENT_ID)));
 
         JsonStack json = jsonStackConverter.convert(stack);
 
@@ -115,7 +115,7 @@ public class JsonStackConverterTest {
 
     @Test
     public void given_stackWithAbsentParentId_when_convertingToJsonStack_then_returnJsonStackWithMissingParentId() {
-        Stack stack = Stack.create(TEST_ID, TEST_SUMMARY, Optional.<String>absent());
+        Stack stack = Stack.create(Id.create(TEST_ID), TEST_SUMMARY, Optional.<Id>absent());
 
         JsonStack json = jsonStackConverter.convert(stack);
 
