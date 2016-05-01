@@ -14,7 +14,7 @@ public class SyncUpdateStackUsecase implements UpdateStackUsecase {
     }
 
     @Override
-    public void updateParent(Stack stack, String parentId) {
+    public void updateParent(Stack stack, Id parentId) {
         stacksRepository.updateParent(stack, parentId);
     }
 

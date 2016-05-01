@@ -6,13 +6,13 @@ import com.google.auto.value.AutoValue;
 @AutoValue
 public abstract class Stack {
 
-    public abstract String id();
+    public abstract Id id();
 
     public abstract String summary();
 
-    public abstract Optional<String> parentId();
+    public abstract Optional<Id> parentId();
 
-    public static Stack create(String id, String summary, Optional<String> parentId) {
+    public static Stack create(Id id, String summary, Optional<Id> parentId) {
         return new AutoValue_Stack(id, summary, parentId);
     }
 

@@ -7,6 +7,6 @@ import rx.Observable;
 
 public interface FetchStacksUsecase {
 
-    Observable<Event<Stacks>> fetchStacks(Optional<String> parentId);
+    Observable<Event<Stacks>> fetchStacks(Optional<Id> parentId);
 
 }

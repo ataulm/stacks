@@ -22,7 +22,7 @@ public class StacksRepository {
         this.jsonStackConverter = jsonStackConverter;
     }
 
-    public Observable<Stacks> getStacks(Optional<String> parentId) {
+    public Observable<Stacks> getStacks(Optional<Id> parentId) {
         refreshStacks();
         if (parentId.isPresent()) {
             Observable<List<Stack>> allStacks = stacksSubject.map(extractList());
@@ -63,7 +63,7 @@ public class StacksRepository {
         };
     }
 
-    private static Func1<List<Stack>, Optional<Stack>> filterOnlyStackWithId(final String id) {
+    private static Func1<List<Stack>, Optional<Stack>> filterOnlyStackWithId(final Id id) {
         return new Func1<List<Stack>, Optional<Stack>>() {
             @Override
             public Optional<Stack> call(List<Stack> stacks) {
@@ -86,7 +86,7 @@ public class StacksRepository {
         };
     }
 
-    private static Func1<List<Stack>, List<Stack>> filterOnlyStacksWithParent(final Optional<String> parentId) {
+    private static Func1<List<Stack>, List<Stack>> filterOnlyStacksWithParent(final Optional<Id> parentId) {
         return new Func1<List<Stack>, List<Stack>>() {
             @Override
             public List<Stack> call(List<Stack> stacks) {
@@ -178,7 +178,7 @@ public class StacksRepository {
         stacksSubject.onNext(updated);
     }
 
-    public void updateParent(Stack stack, String parentId) {
+    public void updateParent(Stack stack, Id parentId) {
         ensureSubjectHasBeenInitialised();
         Stacks stacks = stacksSubject.getValue();
 

@@ -4,6 +4,6 @@ public interface UpdateStackUsecase {
 
     void updateSummary(Stack stack, String summary);
 
-    void updateParent(Stack stack, String parentId);
+    void updateParent(Stack stack, Id parentId);
 
 }

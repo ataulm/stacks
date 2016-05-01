@@ -4,6 +4,6 @@ import com.ataulm.Optional;
 
 public interface CreateStackUsecase {
 
-    void createStack(Optional<String> parentId, String summary);
+    void createStack(Optional<Id> parentId, String summary);
 
 }

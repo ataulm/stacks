@@ -13,8 +13,9 @@ public class SyncCreateStackUsecase implements CreateStackUsecase {
     }
 
     @Override
-    public void createStack(Optional<String> parentId, String summary) {
-        Stack stack = Stack.create(UUID.randomUUID().toString(), summary, parentId);
+    public void createStack(Optional<Id> parentId, String summary) {
+        Id id = Id.create(UUID.randomUUID().toString());
+        Stack stack = Stack.create(id, summary, parentId);
         stacksRepository.add(stack);
     }
 

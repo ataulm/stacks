@@ -9,6 +9,7 @@ import com.ataulm.Event;
 import com.ataulm.Optional;
 import com.ataulm.stacks.stack.CreateStackUsecase;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
+import com.ataulm.stacks.stack.Id;
 import com.ataulm.stacks.stack.PersistStacksUsecase;
 import com.ataulm.stacks.stack.RemoveStackUsecase;
 import com.ataulm.stacks.stack.Stack;
@@ -78,7 +79,7 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
     protected void onResume() {
         super.onResume();
         Optional<Stack> stack = getStackFrom(getIntent());
-        Optional<String> parentId = stack.isPresent() ? Optional.of(stack.get().id()) : Optional.<String>absent();
+        Optional<Id> parentId = stack.isPresent() ? Optional.of(stack.get().id()) : Optional.<Id>absent();
 
         subscription = fetchStacksUsecase.fetchStacks(parentId)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -117,7 +118,7 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
     @Override
     public void onClickAddStack(String summary) {
         Optional<Stack> stack = getStackFrom(getIntent());
-        Optional<String> id = stack.isPresent() ? Optional.of(stack.get().id()) : Optional.<String>absent();
+        Optional<Id> id = stack.isPresent() ? Optional.of(stack.get().id()) : Optional.<Id>absent();
         createStackUsecase.createStack(id, summary);
     }
 
