@@ -52,6 +52,10 @@ public abstract class Stacks implements Iterable<Stack> {
     }
 
     public Stacks remove(Stack stack) {
+        if (!children().contains(stack)) {
+            return this;
+        }
+
         if (size() == 1 && children().contains(stack)) {
             return create(Collections.<Stack>emptyList());
         } else {
