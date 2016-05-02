@@ -18,4 +18,14 @@ public class SyncUpdateStackUsecase implements UpdateStackUsecase {
         stacksRepository.updateParent(stack, parentId);
     }
 
+    @Override
+    public void addLabel(Stack stack, Label label) {
+        stacksRepository.addLabel(stack, label);
+    }
+
+    @Override
+    public void removeLabel(Stack stack, Label label) {
+        stacksRepository.removeLabel(stack, label);
+    }
+
 }

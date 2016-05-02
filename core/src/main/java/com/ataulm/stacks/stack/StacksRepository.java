@@ -194,4 +194,26 @@ public class StacksRepository {
         }
     }
 
+    public void addLabel(Stack stack, Label label) {
+        ensureSubjectHasBeenInitialised();
+        Stacks stacks = stacksSubject.getValue();
+
+        Labels updatedLabels = stack.labels().add(label);
+        Stack updatedStack = Stack.create(stack.id(), stack.summary(), stack.parentId(), updatedLabels);
+        Stacks updated = stacks.update(updatedStack);
+
+        stacksSubject.onNext(updated);
+    }
+
+    public void removeLabel(Stack stack, Label label) {
+        ensureSubjectHasBeenInitialised();
+        Stacks stacks = stacksSubject.getValue();
+
+        Labels updatedLabels = stack.labels().remove(label);
+        Stack updatedStack = Stack.create(stack.id(), stack.summary(), stack.parentId(), updatedLabels);
+        Stacks updated = stacks.update(updatedStack);
+
+        stacksSubject.onNext(updated);
+    }
+
 }

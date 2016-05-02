@@ -2,6 +2,7 @@ package com.ataulm.stacks.stack;
 
 import com.google.auto.value.AutoValue;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -25,6 +26,18 @@ public abstract class Labels implements Iterable<Label> {
 
     public int size() {
         return value().size();
+    }
+
+    public Labels add(Label label) {
+        Set<Label> labels = new HashSet<>(value());
+        labels.add(label);
+        return create(labels);
+    }
+
+    public Labels remove(Label label) {
+        Set<Label> labels = new HashSet<>(value());
+        labels.remove(label);
+        return create(labels);
     }
 
 }
