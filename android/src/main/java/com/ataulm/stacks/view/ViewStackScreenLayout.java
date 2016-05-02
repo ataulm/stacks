@@ -22,7 +22,10 @@ public class ViewStackScreenLayout extends LinearLayout implements ViewStackScre
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
-    @Bind(R.id.view_recycler_view)
+    @Bind(R.id.view_screen_empty_view)
+    View emptyView;
+
+    @Bind(R.id.view_screen_recycler_view)
     RecyclerView recyclerView;
 
     public ViewStackScreenLayout(Context context, AttributeSet attrs) {
@@ -48,12 +51,16 @@ public class ViewStackScreenLayout extends LinearLayout implements ViewStackScre
     public void showData(Stacks stacks, StackItemListener interactionListener, StackInputListener inputListener) {
         StacksAdapter adapter = StacksAdapter.create(stacks, interactionListener, inputListener);
         recyclerView.swapAdapter(adapter, false);
+
+        emptyView.setVisibility(GONE);
     }
 
     @Override
     public void showEmptyScreen(StackItemListener interactionListener, StackInputListener inputListener) {
         StacksAdapter adapter = StacksAdapter.create(Stacks.empty(), interactionListener, inputListener);
         recyclerView.swapAdapter(adapter, false);
+
+        emptyView.setVisibility(VISIBLE);
     }
 
 }
