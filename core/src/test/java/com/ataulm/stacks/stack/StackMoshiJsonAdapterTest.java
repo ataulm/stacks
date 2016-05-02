@@ -49,7 +49,7 @@ public class StackMoshiJsonAdapterTest {
 
         String json = stackJsonAdapter.toJson(stack);
 
-        assertThat(json).isEqualTo("{\"id\":\"testId\",\"parent\":\"testParentId\",\"summary\":\"testSummary\"}");
+        assertThat(json).isEqualTo("{\"id\":\"testId\",\"labels\":[],\"parent\":\"testParentId\",\"summary\":\"testSummary\"}");
     }
 
     @Test

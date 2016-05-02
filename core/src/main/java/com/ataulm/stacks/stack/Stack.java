@@ -3,6 +3,9 @@ package com.ataulm.stacks.stack;
 import com.ataulm.Optional;
 import com.google.auto.value.AutoValue;
 
+import java.util.Collections;
+import java.util.Set;
+
 @AutoValue
 public abstract class Stack {
 
@@ -12,8 +15,14 @@ public abstract class Stack {
 
     public abstract Optional<Id> parentId();
 
+    public abstract Set<Label> labels();
+
     public static Stack create(Id id, String summary, Optional<Id> parentId) {
-        return new AutoValue_Stack(id, summary, parentId);
+        return new AutoValue_Stack(id, summary, parentId, Collections.<Label>emptySet());
+    }
+
+    public static Stack create(Id id, String summary, Optional<Id> parentId, Set<Label> labels) {
+        return new AutoValue_Stack(id, summary, parentId, labels);
     }
 
     Stack() {

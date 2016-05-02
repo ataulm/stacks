@@ -5,8 +5,12 @@ import com.squareup.moshi.FromJson;
 import com.squareup.moshi.ToJson;
 
 import javax.annotation.Nullable;
+import java.util.HashSet;
+import java.util.Set;
 
 public class JsonStackConverter {
+
+    // TODO: should provide Id and Label jsonConverters, not do it manually
 
     @FromJson
     @Nullable
@@ -23,7 +27,19 @@ public class JsonStackConverter {
             parentId = Optional.of(Id.create(jsonStack.parentId));
         }
 
-        return Stack.create(id, jsonStack.summary, parentId);
+        if (jsonStack.labels == null || jsonStack.labels.isEmpty()) {
+            return Stack.create(id, jsonStack.summary, parentId);
+        } else {
+            return Stack.create(id, jsonStack.summary, parentId, makeLabels(jsonStack.labels));
+        }
+    }
+
+    private static Set<Label> makeLabels(Set<String> stringLabels) {
+        Set<Label> labels = new HashSet<>(stringLabels.size());
+        for (String label : stringLabels) {
+            labels.add(Label.create(label));
+        }
+        return labels;
     }
 
     private static boolean emptyString(String value) {
@@ -41,7 +57,16 @@ public class JsonStackConverter {
         json.id = stack.id().value();
         json.summary = stack.summary();
         json.parentId = stack.parentId().isPresent() ? stack.parentId().get().value() : null;
+        json.labels = unmakeLabels(stack.labels());
         return json;
+    }
+
+    private static Set<String> unmakeLabels(Set<Label> labels) {
+        Set<String> stringLabels = new HashSet<>(labels.size());
+        for (Label label : labels) {
+            stringLabels.add(label.value());
+        }
+        return stringLabels;
     }
 
 }

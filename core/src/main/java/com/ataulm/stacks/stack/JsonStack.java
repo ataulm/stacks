@@ -2,6 +2,8 @@ package com.ataulm.stacks.stack;
 
 import com.squareup.moshi.Json;
 
+import java.util.Set;
+
 public class JsonStack {
 
     @Json(name = "id")
@@ -12,6 +14,9 @@ public class JsonStack {
 
     @Json(name = "parent")
     public String parentId;
+
+    @Json(name = "labels")
+    public Set<String> labels;
 
     @Override
     public boolean equals(Object o) {
@@ -33,8 +38,8 @@ public class JsonStack {
         if (parentId != null ? !parentId.equals(jsonStack.parentId) : jsonStack.parentId != null) {
             return false;
         }
+        return labels != null ? labels.equals(jsonStack.labels) : jsonStack.labels == null;
 
-        return true;
     }
 
     @Override
@@ -42,6 +47,7 @@ public class JsonStack {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (summary != null ? summary.hashCode() : 0);
         result = 31 * result + (parentId != null ? parentId.hashCode() : 0);
+        result = 31 * result + (labels != null ? labels.hashCode() : 0);
         return result;
     }
 

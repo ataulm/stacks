@@ -2,6 +2,9 @@ package com.ataulm.stacks.stack;
 
 import com.ataulm.Optional;
 
+import java.util.Collections;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,7 +15,6 @@ public class JsonStackConverterTest {
     private static final String TEST_ID = "TEST_ID";
     private static final String TEST_SUMMARY = "TEST_SUMMARY";
     private static final String TEST_PARENT_ID = "TEST_PARENT_ID";
-    private static final String TEST_DESCRIPTION = "TEST_DESCRIPTION";
 
     private JsonStackConverter jsonStackConverter;
 
@@ -32,7 +34,7 @@ public class JsonStackConverterTest {
 
     @Test
     public void given_jsonStackWithMissingId_when_convertingToStack_then_returnNull() {
-        JsonStack json = createJsonStack(null, TEST_SUMMARY, TEST_PARENT_ID);
+        JsonStack json = createJsonStack(null, TEST_SUMMARY, TEST_PARENT_ID, Collections.<String>emptySet());
 
         Stack stack = jsonStackConverter.convert(json);
 
@@ -41,7 +43,7 @@ public class JsonStackConverterTest {
 
     @Test
     public void given_jsonStackWithEmptyId_when_convertingToStack_then_returnNull() {
-        JsonStack json = createJsonStack("", TEST_SUMMARY, TEST_PARENT_ID);
+        JsonStack json = createJsonStack("", TEST_SUMMARY, TEST_PARENT_ID, Collections.<String>emptySet());
 
         Stack stack = jsonStackConverter.convert(json);
 
@@ -50,7 +52,7 @@ public class JsonStackConverterTest {
 
     @Test
     public void given_jsonStackWithMissingSummary_when_convertingToStack_then_returnNull() {
-        JsonStack json = createJsonStack(TEST_ID, null, TEST_PARENT_ID);
+        JsonStack json = createJsonStack(TEST_ID, null, TEST_PARENT_ID, Collections.<String>emptySet());
 
         Stack stack = jsonStackConverter.convert(json);
 
@@ -59,7 +61,7 @@ public class JsonStackConverterTest {
 
     @Test
     public void given_jsonStackWithEmptySummary_when_convertingToStack_then_returnNull() {
-        JsonStack json = createJsonStack(TEST_ID, "", TEST_PARENT_ID);
+        JsonStack json = createJsonStack(TEST_ID, "", TEST_PARENT_ID, Collections.<String>emptySet());
 
         Stack stack = jsonStackConverter.convert(json);
 
@@ -68,7 +70,7 @@ public class JsonStackConverterTest {
 
     @Test
     public void given_jsonStackWithMissingParentId_when_convertingToStack_then_stackHasAbsentParentId() {
-        JsonStack json = createJsonStack(TEST_ID, TEST_SUMMARY, null);
+        JsonStack json = createJsonStack(TEST_ID, TEST_SUMMARY, null, Collections.<String>emptySet());
 
         Stack stack = jsonStackConverter.convert(json);
 
@@ -77,7 +79,7 @@ public class JsonStackConverterTest {
 
     @Test
     public void given_jsonStackWithEmptyParentId_when_convertingToStack_then_stackHasAbsentParentId() {
-        JsonStack json = createJsonStack(TEST_ID, TEST_SUMMARY, "");
+        JsonStack json = createJsonStack(TEST_ID, TEST_SUMMARY, "", Collections.<String>emptySet());
 
         Stack stack = jsonStackConverter.convert(json);
 
@@ -86,7 +88,7 @@ public class JsonStackConverterTest {
 
     @Test
     public void given_completeJsonStack_when_convertingToStack_then_returnCompleteStack() {
-        JsonStack json = createJsonStack(TEST_ID, TEST_SUMMARY, TEST_PARENT_ID);
+        JsonStack json = createJsonStack(TEST_ID, TEST_SUMMARY, TEST_PARENT_ID, Collections.<String>emptySet());
 
         Stack stack = jsonStackConverter.convert(json);
 
@@ -109,7 +111,7 @@ public class JsonStackConverterTest {
 
         JsonStack json = jsonStackConverter.convert(stack);
 
-        JsonStack expected = createJsonStack(TEST_ID, TEST_SUMMARY, TEST_PARENT_ID);
+        JsonStack expected = createJsonStack(TEST_ID, TEST_SUMMARY, TEST_PARENT_ID, Collections.<String>emptySet());
         assertThat(json).isEqualTo(expected);
     }
 
@@ -119,15 +121,16 @@ public class JsonStackConverterTest {
 
         JsonStack json = jsonStackConverter.convert(stack);
 
-        JsonStack expected = createJsonStack(TEST_ID, TEST_SUMMARY, null);
+        JsonStack expected = createJsonStack(TEST_ID, TEST_SUMMARY, null, Collections.<String>emptySet());
         assertThat(json).isEqualTo(expected);
     }
 
-    private static JsonStack createJsonStack(String testId, String testSummary, String testParentId) {
+    private static JsonStack createJsonStack(String testId, String testSummary, String testParentId, Set<String> testLabels) {
         JsonStack json = new JsonStack();
         json.id = testId;
         json.summary = testSummary;
         json.parentId = testParentId;
+        json.labels = testLabels;
         return json;
     }
 
