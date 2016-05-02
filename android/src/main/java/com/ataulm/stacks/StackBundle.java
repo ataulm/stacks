@@ -27,9 +27,10 @@ class StackBundle {
         if (id == null || id.isEmpty() || summary == null || summary.isEmpty()) {
             return Optional.absent();
         }
-        Optional<Id> parentId = bundle.containsKey(PARENT_ID)
-                ? Optional.of(Id.create(bundle.getString(PARENT_ID)))
-                : Optional.<Id>absent();
+        String rawParentId = bundle.getString(PARENT_ID);
+        Optional<Id> parentId = rawParentId == null || rawParentId.isEmpty()
+                ? Optional.<Id>absent()
+                : Optional.of(Id.create(rawParentId));
 
         return Optional.of(Stack.create(Id.create(id), summary, parentId));
     }
