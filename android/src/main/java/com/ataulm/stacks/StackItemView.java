@@ -53,8 +53,10 @@ public class StackItemView extends LinearLayout {
         addOnClickToOpen(stack, listener);
         if (accessibilityServices.isSpokenFeedbackEnabled()) {
             ViewCompat.setAccessibilityDelegate(this, new ActionsAccessibilityDelegate(getResources(), actions));
+            removeButton.setVisibility(GONE);
             addOnLongClickToShow(alertDialog);
         } else {
+            removeButton.setVisibility(VISIBLE);
             addOnClickRemoveButtonToRemove(stack, listener);
         }
     }
