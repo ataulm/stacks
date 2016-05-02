@@ -34,12 +34,12 @@ public class JsonStackConverter {
         }
     }
 
-    private static Set<Label> makeLabels(Set<String> stringLabels) {
+    private static Labels makeLabels(Set<String> stringLabels) {
         Set<Label> labels = new HashSet<>(stringLabels.size());
         for (String label : stringLabels) {
             labels.add(Label.create(label));
         }
-        return labels;
+        return Labels.create(labels);
     }
 
     private static boolean emptyString(String value) {
@@ -61,7 +61,7 @@ public class JsonStackConverter {
         return json;
     }
 
-    private static Set<String> unmakeLabels(Set<Label> labels) {
+    private static Set<String> unmakeLabels(Labels labels) {
         Set<String> stringLabels = new HashSet<>(labels.size());
         for (Label label : labels) {
             stringLabels.add(label.value());

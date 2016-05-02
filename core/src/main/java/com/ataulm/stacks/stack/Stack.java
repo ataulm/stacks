@@ -15,13 +15,13 @@ public abstract class Stack {
 
     public abstract Optional<Id> parentId();
 
-    public abstract Set<Label> labels();
+    public abstract Labels labels();
 
     public static Stack create(Id id, String summary, Optional<Id> parentId) {
-        return new AutoValue_Stack(id, summary, parentId, Collections.<Label>emptySet());
+        return new AutoValue_Stack(id, summary, parentId, Labels.create(Collections.<Label>emptySet()));
     }
 
-    public static Stack create(Id id, String summary, Optional<Id> parentId, Set<Label> labels) {
+    public static Stack create(Id id, String summary, Optional<Id> parentId, Labels labels) {
         return new AutoValue_Stack(id, summary, parentId, labels);
     }
 

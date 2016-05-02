@@ -3,6 +3,7 @@ package com.ataulm.stacks.stack;
 import com.ataulm.Optional;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
@@ -15,6 +16,14 @@ public class JsonStackConverterTest {
     private static final String TEST_ID = "TEST_ID";
     private static final String TEST_SUMMARY = "TEST_SUMMARY";
     private static final String TEST_PARENT_ID = "TEST_PARENT_ID";
+    private static final Set<String> TEST_LABELS;
+
+    static {
+        TEST_LABELS = new HashSet<>(3);
+        TEST_LABELS.add("test1");
+        TEST_LABELS.add("test2");
+        TEST_LABELS.add("test3");
+    }
 
     private JsonStackConverter jsonStackConverter;
 
@@ -87,12 +96,35 @@ public class JsonStackConverterTest {
     }
 
     @Test
-    public void given_completeJsonStack_when_convertingToStack_then_returnCompleteStack() {
-        JsonStack json = createJsonStack(TEST_ID, TEST_SUMMARY, TEST_PARENT_ID, Collections.<String>emptySet());
+    public void given_jsonStackWithMissingLabels_when_convertingToStack_then_stackHasEmptyLabels() {
+        JsonStack json = createJsonStack(TEST_ID, TEST_SUMMARY, null, null);
 
         Stack stack = jsonStackConverter.convert(json);
 
-        Stack expected = Stack.create(Id.create(TEST_ID), TEST_SUMMARY, Optional.of(Id.create(TEST_PARENT_ID)));
+        assertThat(stack.labels()).isEmpty();
+    }
+
+    @Test
+    public void given_jsonStackWithEmptyLabels_when_convertingToStack_then_stackHasEmptyLabels() {
+        JsonStack json = createJsonStack(TEST_ID, TEST_SUMMARY, null, Collections.<String>emptySet());
+
+        Stack stack = jsonStackConverter.convert(json);
+
+        assertThat(stack.labels()).isEmpty();
+    }
+
+    @Test
+    public void given_completeJsonStack_when_convertingToStack_then_returnCompleteStack() {
+        JsonStack json = createJsonStack(TEST_ID, TEST_SUMMARY, TEST_PARENT_ID, TEST_LABELS);
+
+        Stack stack = jsonStackConverter.convert(json);
+
+        Set<Label> labels = new HashSet<>(TEST_LABELS.size());
+        for (String testLabel : TEST_LABELS) {
+            labels.add(Label.create(testLabel));
+        }
+        Labels expectedLabels = Labels.create(labels);
+        Stack expected = Stack.create(Id.create(TEST_ID), TEST_SUMMARY, Optional.of(Id.create(TEST_PARENT_ID)), expectedLabels);
         assertThat(stack).isEqualTo(expected);
     }
 
