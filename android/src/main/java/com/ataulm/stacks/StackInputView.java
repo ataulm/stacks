@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -55,6 +56,17 @@ public class StackInputView extends LinearLayout {
     }
 
     public void bind(final StackInputListener listener) {
+        completedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // TODO: mark it as complete simultaneously
+                    addStack(listener);
+                    completedCheckBox.setChecked(false);
+                }
+            }
+        });
+
         addButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

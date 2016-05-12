@@ -17,7 +17,7 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_weight="100"
-      android:hint="Add a stack"
+      android:hint="Write a stack"
       android:inputType="text" />
 
   </LinearLayout>
@@ -26,7 +26,7 @@
     android:id="@+id/add_another_button"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="Add stack"
+    android:text="Add"
     android:visibility="gone" />
 
 </merge>
