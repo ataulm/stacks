@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,15 +18,18 @@ public class StackInputView extends LinearLayout {
 
     private static final int REQUEST_FOCUS_AFTER_DELAY_MILLIS = 200;
 
-    @Bind(R.id.input_edit_text)
+    @Bind(R.id.input_checkbox)
+    CheckBox completedCheckBox;
+
+    @Bind(R.id.input_edit_current)
     EditText inputEditText;
 
-    @Bind(R.id.add_button)
-    Button addButton;
+    @Bind(R.id.add_another_button)
+    View addButton;
 
     public StackInputView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        super.setOrientation(HORIZONTAL);
+        super.setOrientation(VERTICAL);
     }
 
     @Override
@@ -38,20 +41,28 @@ public class StackInputView extends LinearLayout {
         inputEditText.addTextChangedListener(new SimpleTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                boolean ifTextIsNotEmpty = s.length() > 0;
-                addButton.setEnabled(ifTextIsNotEmpty);
+                boolean textIsPresent = s.length() > 0;
+
+                completedCheckBox.setEnabled(textIsPresent);
+
+                if (textIsPresent) {
+                    addButton.setVisibility(VISIBLE);
+                } else {
+                    addButton.setVisibility(GONE);
+                }
             }
         });
     }
 
     public void bind(final StackInputListener listener) {
-        setEnterKeyListenerToMoveToNextAndPreventMultilineInput(listener);
         addButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 addStack(listener);
             }
         });
+
+        setEnterKeyListenerToMoveToNextAndPreventMultilineInput(listener);
     }
 
     private void setEnterKeyListenerToMoveToNextAndPreventMultilineInput(final StackInputListener listener) {
