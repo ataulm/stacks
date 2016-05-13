@@ -134,7 +134,7 @@ public class StackItemView extends LinearLayout {
         removeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickRemove(stack);
+                confirmRemove(stack, listener);
             }
         });
     }
