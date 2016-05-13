@@ -5,6 +5,7 @@ import com.google.auto.value.AutoValue;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public abstract class Stacks implements Iterable<Stack> {
     }
 
     public static Stacks create(Optional<Stack> stack, List<Stack> stacks) {
+        Collections.sort(stacks, new StackComparator());
         return new AutoValue_Stacks(stack, stacks);
     }
 
@@ -132,6 +134,22 @@ public abstract class Stacks implements Iterable<Stack> {
             }
         }
         return ineligibleParents;
+    }
+
+    private static class StackComparator implements Comparator<Stack> {
+
+        @Override
+        public int compare(Stack o1, Stack o2) {
+            if (o1.completed() == o2.completed()) {
+                return 0;
+            }
+            if (o1.completed()) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+
     }
 
 }
