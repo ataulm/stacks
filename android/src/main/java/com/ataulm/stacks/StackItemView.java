@@ -49,7 +49,7 @@ public class StackItemView extends LinearLayout {
         ButterKnife.bind(this);
     }
 
-    public void bind(final Stack stack, final StackItemListener listener) {
+    public void bind(Stack stack, StackItemListener listener) {
         summaryTextView.setText(stack.summary());
         setContentDescription(stack.summary());
 
