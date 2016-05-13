@@ -60,9 +60,7 @@ public class StackInputView extends LinearLayout {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    // TODO: mark it as complete simultaneously
-                    addStack(listener);
-                    completedCheckBox.setChecked(false);
+                    addStackCompleted(listener);
                 }
             }
         });
@@ -110,11 +108,22 @@ public class StackInputView extends LinearLayout {
 
     private void addStack(StackInputListener listener) {
         String summary = inputEditText.getText().toString().trim();
-        if (summary.isEmpty()) {
-            return;
+        if (!summary.isEmpty()) {
+            listener.onClickAddStack(summary);
         }
+        resetInput();
+    }
 
-        listener.onClickAddStack(summary);
+    private void addStackCompleted(StackInputListener listener) {
+        String summary = inputEditText.getText().toString().trim();
+        if (!summary.isEmpty()) {
+            listener.onClickAddStackCompleted(summary);
+        }
+        resetInput();
+    }
+
+    private void resetInput() {
+        completedCheckBox.setChecked(false);
         inputEditText.setText(null);
         requestFocusAfterDelay();
     }
