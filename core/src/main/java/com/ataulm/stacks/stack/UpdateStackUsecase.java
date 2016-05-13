@@ -10,4 +10,8 @@ public interface UpdateStackUsecase {
 
     void removeLabel(Stack stack, Label label);
 
+    void markCompleted(Stack stack);
+
+    void markNotCompleted(Stack stack);
+
 }

@@ -14,6 +14,7 @@ import com.ataulm.stacks.stack.PersistStacksUsecase;
 import com.ataulm.stacks.stack.RemoveStackUsecase;
 import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
+import com.ataulm.stacks.stack.UpdateStackUsecase;
 import com.ataulm.stacks.view.ViewStackScreen;
 
 import butterknife.Bind;
@@ -29,6 +30,7 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
     private final CreateStackUsecase createStackUsecase = createCreateStackUsecase();
     private final RemoveStackUsecase removeStackUsecase = createRemoveStackUsecase();
     private final PersistStacksUsecase persistStacksUsecase = createPersistStacksUsecase();
+    private final UpdateStackUsecase updateStacksUsecase = createUpdateStackUsecase();
 
     @Bind(R.id.content)
     ViewStackScreen viewStackScreen;
@@ -107,6 +109,16 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
     @Override
     public void onClickEdit(Stack stack) {
         // TODO: edit
+    }
+
+    @Override
+    public void onClickMarkComplete(Stack stack) {
+        updateStacksUsecase.markCompleted(stack);
+    }
+
+    @Override
+    public void onClickMarkNotComplete(Stack stack) {
+        updateStacksUsecase.markNotCompleted(stack);
     }
 
     @Override

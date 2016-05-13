@@ -28,4 +28,14 @@ public class SyncUpdateStackUsecase implements UpdateStackUsecase {
         stacksRepository.removeLabel(stack, label);
     }
 
+    @Override
+    public void markCompleted(Stack stack) {
+        stacksRepository.markCompleted(stack);
+    }
+
+    @Override
+    public void markNotCompleted(Stack stack) {
+        stacksRepository.markNotCompleted(stack);
+    }
+
 }

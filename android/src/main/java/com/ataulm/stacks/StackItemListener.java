@@ -10,4 +10,8 @@ public interface StackItemListener {
 
     void onClickEdit(Stack stack);
 
+    void onClickMarkComplete(Stack stack);
+
+    void onClickMarkNotComplete(Stack stack);
+
 }

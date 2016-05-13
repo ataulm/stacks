@@ -6,6 +6,8 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,6 +24,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class StackItemView extends LinearLayout {
+
+    @Bind(R.id.stack_item_check_completed)
+    CheckBox completedCheckBox;
 
     @Bind(R.id.stack_item_text_summary)
     TextView summaryTextView;
@@ -44,15 +49,28 @@ public class StackItemView extends LinearLayout {
         ButterKnife.bind(this);
     }
 
-    public void bind(Stack stack, StackItemListener listener) {
+    public void bind(final Stack stack, final StackItemListener listener) {
         setContentDescription(stack.summary());
 
         summaryTextView.setText(stack.summary());
         if (stack.completed()) {
             summaryTextView.setAlpha(0.54f);
+            completedCheckBox.setChecked(true);
         } else {
             summaryTextView.setAlpha(1f);
+            completedCheckBox.setChecked(false);
         }
+
+        completedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked && !stack.completed()) {
+                    listener.onClickMarkComplete(stack);
+                } else if (stack.completed()) {
+                    listener.onClickMarkNotComplete(stack);
+                }
+            }
+        });
 
         Actions actions = createActions(stack, listener);
         AlertDialog alertDialog = new ActionsAlertDialogCreator(getContext(), R.string.stack_actions_title, actions).create();

@@ -216,4 +216,22 @@ public class StacksRepository {
         stacksSubject.onNext(updated);
     }
 
+    public void markCompleted(Stack stack) {
+        markCompleted(stack, true);
+    }
+
+    public void markNotCompleted(Stack stack) {
+        markCompleted(stack, false);
+    }
+
+    private void markCompleted(Stack stack, boolean completed) {
+        ensureSubjectHasBeenInitialised();
+        Stacks stacks = stacksSubject.getValue();
+
+        Stack updatedStack = Stack.create(stack.id(), stack.summary(), stack.parentId(), completed);
+        Stacks updated = stacks.update(updatedStack);
+
+        stacksSubject.onNext(updated);
+    }
+
 }

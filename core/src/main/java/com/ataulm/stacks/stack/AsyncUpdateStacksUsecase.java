@@ -53,6 +53,26 @@ public class AsyncUpdateStacksUsecase implements UpdateStackUsecase {
         });
     }
 
+    @Override
+    public void markCompleted(final Stack stack) {
+        doItNowOffTheMainThread(new Action0() {
+            @Override
+            public void call() {
+                syncUsecase.markCompleted(stack);
+            }
+        });
+    }
+
+    @Override
+    public void markNotCompleted(final Stack stack) {
+        doItNowOffTheMainThread(new Action0() {
+            @Override
+            public void call() {
+                syncUsecase.markNotCompleted(stack);
+            }
+        });
+    }
+
     private static void doItNowOffTheMainThread(final Action0 action) {
         Observable.create(
                 new Observable.OnSubscribe<Void>() {

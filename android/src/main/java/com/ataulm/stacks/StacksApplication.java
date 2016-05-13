@@ -5,6 +5,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.ataulm.stacks.stack.AsyncFetchStacksUsecase;
+import com.ataulm.stacks.stack.AsyncUpdateStacksUsecase;
 import com.ataulm.stacks.stack.CreateStackUsecase;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
 import com.ataulm.stacks.stack.JsonRepository;
@@ -63,7 +64,7 @@ public class StacksApplication extends Application {
     }
 
     public static UpdateStackUsecase createUpdateStackUsecase() {
-        return new SyncUpdateStackUsecase(stacksRepository);
+        return new AsyncUpdateStacksUsecase(new SyncUpdateStackUsecase(stacksRepository));
     }
 
     public static void displayToast(String text) {
