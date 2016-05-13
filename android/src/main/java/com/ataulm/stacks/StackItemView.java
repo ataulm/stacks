@@ -46,10 +46,16 @@ public class StackItemView extends LinearLayout {
 
     public void bind(Stack stack, StackItemListener listener) {
         setContentDescription(stack.summary());
+
         summaryTextView.setText(stack.summary());
+        if (stack.completed()) {
+            summaryTextView.setAlpha(0.54f);
+        } else {
+            summaryTextView.setAlpha(1f);
+        }
 
         Actions actions = createActions(stack, listener);
-        final AlertDialog alertDialog = new ActionsAlertDialogCreator(getContext(), R.string.stack_actions_title, actions).create();
+        AlertDialog alertDialog = new ActionsAlertDialogCreator(getContext(), R.string.stack_actions_title, actions).create();
 
         addOnClickToOpen(stack, listener);
         if (accessibilityServices.isSpokenFeedbackEnabled()) {
