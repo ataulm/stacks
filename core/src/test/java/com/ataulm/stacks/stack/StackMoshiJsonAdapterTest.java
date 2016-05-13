@@ -45,20 +45,20 @@ public class StackMoshiJsonAdapterTest {
 
     @Test
     public void given_completeStack_when_convertingToJson_then_allStackFieldsAreRepresentedInJson() {
-        Stack stack = Stack.create(Id.create("testId"), "testSummary", Optional.of(Id.create("testParentId")));
+        Stack stack = Stack.create(Id.create("testId"), "testSummary", Optional.of(Id.create("testParentId")), false);
 
         String json = stackJsonAdapter.toJson(stack);
 
-        assertThat(json).isEqualTo("{\"id\":\"testId\",\"labels\":[],\"parent\":\"testParentId\",\"summary\":\"testSummary\"}");
+        assertThat(json).isEqualTo("{\"id\":\"testId\",\"labels\":[],\"parent\":\"testParentId\",\"summary\":\"testSummary\",\"completed\":\"false\"}");
     }
 
     @Test
     public void given_completeJson_when_convertingToStack_then_allStackFieldsArePopulatedCorrectly() throws IOException {
-        String json = "{\"id\":\"testId\",\"parent\":\"testParentId\",\"summary\":\"testSummary\"}";
+        String json = "{\"id\":\"testId\",\"parent\":\"testParentId\",\"summary\":\"testSummary\",\"completed\":\"true\"}";
 
         Stack stack = stackJsonAdapter.fromJson(json);
 
-        Stack expected = Stack.create(Id.create("testId"), "testSummary", Optional.of(Id.create("testParentId")));
+        Stack expected = Stack.create(Id.create("testId"), "testSummary", Optional.of(Id.create("testParentId")), true);
         assertThat(stack).isEqualTo(expected);
     }
 

@@ -28,9 +28,9 @@ public class JsonStackConverter {
         }
 
         if (jsonStack.labels == null || jsonStack.labels.isEmpty()) {
-            return Stack.create(id, jsonStack.summary, parentId);
+            return Stack.create(id, jsonStack.summary, parentId, jsonStack.completed);
         } else {
-            return Stack.create(id, jsonStack.summary, parentId, makeLabels(jsonStack.labels));
+            return Stack.create(id, jsonStack.summary, parentId, makeLabels(jsonStack.labels), jsonStack.completed);
         }
     }
 
@@ -58,6 +58,7 @@ public class JsonStackConverter {
         json.summary = stack.summary();
         json.parentId = stack.parentId().isPresent() ? stack.parentId().get().value() : null;
         json.labels = unmakeLabels(stack.labels());
+        json.completed = stack.completed();
         return json;
     }
 

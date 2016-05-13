@@ -78,8 +78,7 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
     @Override
     protected void onResume() {
         super.onResume();
-        Optional<Stack> stack = getStackFrom(getIntent());
-        Optional<Id> parentId = stack.isPresent() ? Optional.of(stack.get().id()) : Optional.<Id>absent();
+        Optional<Id> parentId = getThisStacksParentId();
 
         subscription = fetchStacksUsecase.fetchStacks(parentId)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -117,9 +116,19 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
 
     @Override
     public void onClickAddStack(String summary) {
+        Optional<Id> parentId = getThisStacksParentId();
+        createStackUsecase.createStack(parentId, summary);
+    }
+
+    @Override
+    public void onClickAddStackCompleted(String summary) {
+        Optional<Id> parentId = getThisStacksParentId();
+        createStackUsecase.createStackCompleted(parentId, summary);
+    }
+
+    private Optional<Id> getThisStacksParentId() {
         Optional<Stack> stack = getStackFrom(getIntent());
-        Optional<Id> id = stack.isPresent() ? Optional.of(stack.get().id()) : Optional.<Id>absent();
-        createStackUsecase.createStack(id, summary);
+        return stack.isPresent() ? Optional.of(stack.get().id()) : Optional.<Id>absent();
     }
 
     private class StacksEventObserver extends LoggingObserver<Event<Stacks>> {

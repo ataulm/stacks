@@ -172,7 +172,7 @@ public class StacksRepository {
         ensureSubjectHasBeenInitialised();
         Stacks stacks = stacksSubject.getValue();
 
-        Stack updatedStack = Stack.create(stack.id(), summary, stack.parentId());
+        Stack updatedStack = Stack.create(stack.id(), summary, stack.parentId(), stack.completed());
         Stacks updated = stacks.update(updatedStack);
 
         stacksSubject.onNext(updated);
@@ -182,7 +182,7 @@ public class StacksRepository {
         ensureSubjectHasBeenInitialised();
         Stacks stacks = stacksSubject.getValue();
 
-        Stack updatedStack = Stack.create(stack.id(), stack.summary(), Optional.of(parentId));
+        Stack updatedStack = Stack.create(stack.id(), stack.summary(), Optional.of(parentId), stack.completed());
         Stacks updated = stacks.update(updatedStack);
 
         stacksSubject.onNext(updated);
@@ -199,7 +199,7 @@ public class StacksRepository {
         Stacks stacks = stacksSubject.getValue();
 
         Labels updatedLabels = stack.labels().add(label);
-        Stack updatedStack = Stack.create(stack.id(), stack.summary(), stack.parentId(), updatedLabels);
+        Stack updatedStack = Stack.create(stack.id(), stack.summary(), stack.parentId(), updatedLabels, stack.completed());
         Stacks updated = stacks.update(updatedStack);
 
         stacksSubject.onNext(updated);
@@ -210,7 +210,7 @@ public class StacksRepository {
         Stacks stacks = stacksSubject.getValue();
 
         Labels updatedLabels = stack.labels().remove(label);
-        Stack updatedStack = Stack.create(stack.id(), stack.summary(), stack.parentId(), updatedLabels);
+        Stack updatedStack = Stack.create(stack.id(), stack.summary(), stack.parentId(), updatedLabels, stack.completed());
         Stacks updated = stacks.update(updatedStack);
 
         stacksSubject.onNext(updated);

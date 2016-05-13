@@ -6,4 +6,6 @@ public interface CreateStackUsecase {
 
     void createStack(Optional<Id> parentId, String summary);
 
+    void createStackCompleted(Optional<Id> parentId, String summary);
+
 }

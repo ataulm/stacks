@@ -18,6 +18,9 @@ public class JsonStack {
     @Json(name = "labels")
     public Set<String> labels;
 
+    @Json(name = "completed")
+    public boolean completed;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -29,6 +32,9 @@ public class JsonStack {
 
         JsonStack jsonStack = (JsonStack) o;
 
+        if (completed != jsonStack.completed) {
+            return false;
+        }
         if (id != null ? !id.equals(jsonStack.id) : jsonStack.id != null) {
             return false;
         }
@@ -48,7 +54,7 @@ public class JsonStack {
         result = 31 * result + (summary != null ? summary.hashCode() : 0);
         result = 31 * result + (parentId != null ? parentId.hashCode() : 0);
         result = 31 * result + (labels != null ? labels.hashCode() : 0);
+        result = 31 * result + (completed ? 1 : 0);
         return result;
     }
-
 }
