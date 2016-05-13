@@ -149,7 +149,7 @@ public class StackItemView extends LinearLayout {
     private void confirmRemove(final Stack stack, final StackItemListener listener) {
         new AlertDialog.Builder(getContext())
                 .setTitle("Remove this stack?")
-                .setMessage("This stack and all its children will be permanently removed.")
+                .setMessage("This stack and all its children will be removed.")
                 .setPositiveButton("Remove", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
