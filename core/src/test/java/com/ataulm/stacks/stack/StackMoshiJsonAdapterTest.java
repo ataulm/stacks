@@ -45,20 +45,25 @@ public class StackMoshiJsonAdapterTest {
 
     @Test
     public void given_completeStack_when_convertingToJson_then_allStackFieldsAreRepresentedInJson() {
-        Stack stack = Stack.create(Id.create("testId"), "testSummary", Optional.of(Id.create("testParentId")), false);
+        Stack.Dates dates = createDates(0, 1, 2, 3);
+        Stack stack = Stack.create(Id.create("testId"), "testSummary", Optional.of(Id.create("testParentId")), dates);
 
         String json = stackJsonAdapter.toJson(stack);
 
-        assertThat(json).isEqualTo("{\"id\":\"testId\",\"labels\":[],\"parent\":\"testParentId\",\"summary\":\"testSummary\",\"completed\":\"false\"}");
+        String expectedJson = getStackAsJsonObject("testId", "testSummary", "testParentId", 0, 1, 2, 3);
+        assertThat(json).isEqualTo(expectedJson);
     }
+
+
 
     @Test
     public void given_completeJson_when_convertingToStack_then_allStackFieldsArePopulatedCorrectly() throws IOException {
-        String json = "{\"id\":\"testId\",\"parent\":\"testParentId\",\"summary\":\"testSummary\",\"completed\":\"true\"}";
+        String json = getStackAsJsonObject("testId", "testSummary", "testParentId", 0, 1, 2, 3);
 
         Stack stack = stackJsonAdapter.fromJson(json);
 
-        Stack expected = Stack.create(Id.create("testId"), "testSummary", Optional.of(Id.create("testParentId")), true);
+        Stack.Dates dates = createDates(0, 1, 2, 3);
+        Stack expected = Stack.create(Id.create("testId"), "testSummary", Optional.of(Id.create("testParentId")), dates);
         assertThat(stack).isEqualTo(expected);
     }
 
@@ -86,6 +91,25 @@ public class StackMoshiJsonAdapterTest {
                 "\"summary\":\"" + summary + "\"" + "," +
                 "\"parent\":\"" + parent + "\"" +
                 "}";
+    }
+
+    private static String getStackAsJsonObject(String id, String summary, String parent, long created, long modified, long completed, long deleted) {
+        return "{" +
+                "\"dates\":{" +
+                "\"completed\":\"" + completed + "\"" + "," +
+                "\"created\":\"" + created + "\"" + "," +
+                "\"deleted\":\"" + deleted + "\"" + "," +
+                "\"modified\":\"" + modified + "\"" +
+                "}," +
+                "\"id\":\"" + id + "\"" + "," +
+                "\"labels\":[]," +
+                "\"parent\":\"" + parent + "\"" + "," +
+                "\"summary\":\"" + summary + "\"" +
+                "}";
+    }
+
+    private static Stack.Dates createDates(long created, long modified, long completed, long deleted) {
+        return Stack.Dates.create(created, modified, Optional.of(completed), Optional.of(deleted));
     }
 
     private static JsonStack createJsonStack(String id, String summary, String parent) {

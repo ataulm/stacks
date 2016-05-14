@@ -17,7 +17,11 @@ public class JsonStackConverterTest {
     private static final String TEST_SUMMARY = "TEST_SUMMARY";
     private static final String TEST_PARENT_ID = "TEST_PARENT_ID";
     private static final Set<String> TEST_LABELS;
-    private static final boolean TEST_COMPLETED = false;
+    private static final long TEST_CREATED = 1;
+    private static final long TEST_MODIFIED = 2;
+    private static final long TEST_COMPLETED = 3;
+    private static final long TEST_DELETED = 4;
+    private static final Stack.Dates TEST_DATES = Stack.Dates.create(TEST_CREATED, TEST_MODIFIED, Optional.of(TEST_COMPLETED), Optional.of(TEST_DELETED));
 
     static {
         TEST_LABELS = new HashSet<>(3);
@@ -125,7 +129,7 @@ public class JsonStackConverterTest {
             labels.add(Label.create(testLabel));
         }
         Labels expectedLabels = Labels.create(labels);
-        Stack expected = Stack.create(Id.create(TEST_ID), TEST_SUMMARY, Optional.of(Id.create(TEST_PARENT_ID)), expectedLabels, TEST_COMPLETED);
+        Stack expected = Stack.create(Id.create(TEST_ID), TEST_SUMMARY, Optional.of(Id.create(TEST_PARENT_ID)), TEST_DATES, expectedLabels);
         assertThat(stack).isEqualTo(expected);
     }
 
@@ -140,7 +144,7 @@ public class JsonStackConverterTest {
 
     @Test
     public void given_completeStack_when_convertingToJsonStack_then_returnCompleteJsonStack() {
-        Stack stack = Stack.create(Id.create(TEST_ID), TEST_SUMMARY, Optional.of(Id.create(TEST_PARENT_ID)), TEST_COMPLETED);
+        Stack stack = Stack.create(Id.create(TEST_ID), TEST_SUMMARY, Optional.of(Id.create(TEST_PARENT_ID)), TEST_DATES);
 
         JsonStack json = jsonStackConverter.convert(stack);
 
@@ -150,7 +154,7 @@ public class JsonStackConverterTest {
 
     @Test
     public void given_stackWithAbsentParentId_when_convertingToJsonStack_then_returnJsonStackWithMissingParentId() {
-        Stack stack = Stack.create(Id.create(TEST_ID), TEST_SUMMARY, Optional.<Id>absent(), TEST_COMPLETED);
+        Stack stack = Stack.create(Id.create(TEST_ID), TEST_SUMMARY, Optional.<Id>absent(), TEST_DATES);
 
         JsonStack json = jsonStackConverter.convert(stack);
 
@@ -159,10 +163,25 @@ public class JsonStackConverterTest {
     }
 
     private static JsonStack createJsonStack(String testId, String testSummary, String testParentId, Set<String> testLabels) {
+        JsonStack.Dates testDates = createJsonDates();
+        return createJsonStack(testId, testSummary, testParentId, testDates, testLabels);
+    }
+
+    private static JsonStack.Dates createJsonDates() {
+        JsonStack.Dates dates = new JsonStack.Dates();
+        dates.created = String.valueOf(TEST_CREATED);
+        dates.modified = String.valueOf(TEST_MODIFIED);
+        dates.completed = String.valueOf(TEST_COMPLETED);
+        dates.deleted = String.valueOf(TEST_DELETED);
+        return dates;
+    }
+
+    private static JsonStack createJsonStack(String testId, String testSummary, String testParentId, JsonStack.Dates testDates, Set<String> testLabels) {
         JsonStack json = new JsonStack();
         json.id = testId;
         json.summary = testSummary;
         json.parentId = testParentId;
+        json.dates = testDates;
         json.labels = testLabels;
         return json;
     }
