@@ -24,7 +24,16 @@ public class SyncCreateStackUsecase implements CreateStackUsecase {
 
     private void createStack(Optional<Id> parentId, String summary, boolean completed) {
         Id id = Id.create(UUID.randomUUID().toString());
-        Stack stack = Stack.create(id, summary, parentId, completed);
+
+        Stack.Dates dates;
+        long currentTime = System.currentTimeMillis();
+        if (completed) {
+            dates = Stack.Dates.create(currentTime, currentTime, Optional.of(currentTime), Optional.<Long>absent());
+        } else {
+            dates = Stack.Dates.create(currentTime);
+        }
+
+        Stack stack = Stack.create(id, summary, parentId, dates);
         stacksRepository.add(stack);
     }
 

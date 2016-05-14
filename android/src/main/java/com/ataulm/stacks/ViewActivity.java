@@ -123,7 +123,7 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
 
     @Override
     public void onClickRemove(Stack stack) {
-        removeStackUsecase.remove(stack);
+        removeStackUsecase.markPendingRemove(stack);
     }
 
     @Override

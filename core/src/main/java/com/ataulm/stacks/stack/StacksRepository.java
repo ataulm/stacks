@@ -10,6 +10,9 @@ import rx.functions.Func1;
 import rx.functions.Func2;
 import rx.subjects.BehaviorSubject;
 
+import static com.ataulm.stacks.stack.Stack.Dates;
+import static com.ataulm.stacks.stack.Stack.create;
+
 public class StacksRepository {
 
     private final JsonStacksRepository jsonStacksRepository;
@@ -159,6 +162,31 @@ public class StacksRepository {
         stacksSubject.onNext(updated);
     }
 
+    public void markPendingRemove(Stack stack) {
+        markPendingRemove(stack, true);
+    }
+
+    public void unmarkPendingRemove(Stack stack) {
+        markPendingRemove(stack, false);
+    }
+
+    private void markPendingRemove(Stack stack, boolean pendingRemove) {
+        ensureSubjectHasBeenInitialised();
+        Stacks stacks = stacksSubject.getValue();
+
+        Dates updatedDates;
+        if (pendingRemove) {
+            updatedDates = Dates.create(stack.dates().created(), System.currentTimeMillis(), stack.dates().completed(), Optional.of(System.currentTimeMillis()));
+        } else {
+            updatedDates = Dates.create(stack.dates().created(), System.currentTimeMillis(), stack.dates().completed(), Optional.<Long>absent());
+        }
+
+        Stack updatedStack = create(stack.id(), stack.summary(), stack.parentId(), updatedDates);
+        Stacks updated = stacks.update(updatedStack);
+
+        stacksSubject.onNext(updated);
+    }
+
     public void remove(Stack stack) {
         ensureSubjectHasBeenInitialised();
         Stacks stacks = stacksSubject.getValue();
@@ -172,7 +200,8 @@ public class StacksRepository {
         ensureSubjectHasBeenInitialised();
         Stacks stacks = stacksSubject.getValue();
 
-        Stack updatedStack = Stack.create(stack.id(), summary, stack.parentId(), stack.completed());
+        Dates updatedDates = Dates.create(stack.dates().created(), System.currentTimeMillis(), stack.dates().completed(), stack.dates().deleted());
+        Stack updatedStack = create(stack.id(), summary, stack.parentId(), updatedDates);
         Stacks updated = stacks.update(updatedStack);
 
         stacksSubject.onNext(updated);
@@ -182,7 +211,8 @@ public class StacksRepository {
         ensureSubjectHasBeenInitialised();
         Stacks stacks = stacksSubject.getValue();
 
-        Stack updatedStack = Stack.create(stack.id(), stack.summary(), Optional.of(parentId), stack.completed());
+        Dates updatedDates = Dates.create(stack.dates().created(), System.currentTimeMillis(), stack.dates().completed(), stack.dates().deleted());
+        Stack updatedStack = create(stack.id(), stack.summary(), Optional.of(parentId), updatedDates);
         Stacks updated = stacks.update(updatedStack);
 
         stacksSubject.onNext(updated);
@@ -198,8 +228,9 @@ public class StacksRepository {
         ensureSubjectHasBeenInitialised();
         Stacks stacks = stacksSubject.getValue();
 
+        Dates updatedDates = Dates.create(stack.dates().created(), System.currentTimeMillis(), stack.dates().completed(), stack.dates().deleted());
         Labels updatedLabels = stack.labels().add(label);
-        Stack updatedStack = Stack.create(stack.id(), stack.summary(), stack.parentId(), updatedLabels, stack.completed());
+        Stack updatedStack = create(stack.id(), stack.summary(), stack.parentId(), updatedDates, updatedLabels);
         Stacks updated = stacks.update(updatedStack);
 
         stacksSubject.onNext(updated);
@@ -209,8 +240,9 @@ public class StacksRepository {
         ensureSubjectHasBeenInitialised();
         Stacks stacks = stacksSubject.getValue();
 
+        Dates updatedDates = Dates.create(stack.dates().created(), System.currentTimeMillis(), stack.dates().completed(), stack.dates().deleted());
         Labels updatedLabels = stack.labels().remove(label);
-        Stack updatedStack = Stack.create(stack.id(), stack.summary(), stack.parentId(), updatedLabels, stack.completed());
+        Stack updatedStack = create(stack.id(), stack.summary(), stack.parentId(), updatedDates, updatedLabels);
         Stacks updated = stacks.update(updatedStack);
 
         stacksSubject.onNext(updated);
@@ -228,7 +260,14 @@ public class StacksRepository {
         ensureSubjectHasBeenInitialised();
         Stacks stacks = stacksSubject.getValue();
 
-        Stack updatedStack = Stack.create(stack.id(), stack.summary(), stack.parentId(), completed);
+        Dates updatedDates;
+        if (completed) {
+            updatedDates = Dates.create(stack.dates().created(), System.currentTimeMillis(), Optional.of(System.currentTimeMillis()), stack.dates().deleted());
+        } else {
+            updatedDates = Dates.create(stack.dates().created(), System.currentTimeMillis(), Optional.<Long>absent(), stack.dates().deleted());
+        }
+
+        Stack updatedStack = create(stack.id(), stack.summary(), stack.parentId(), updatedDates);
         Stacks updated = stacks.update(updatedStack);
 
         stacksSubject.onNext(updated);

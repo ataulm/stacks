@@ -9,6 +9,16 @@ public class SyncRemoveStackUsecase implements RemoveStackUsecase {
     }
 
     @Override
+    public void markPendingRemove(Stack stack) {
+        stacksRepository.markPendingRemove(stack);
+    }
+
+    @Override
+    public void unmarkPendingRemove(Stack stack) {
+        stacksRepository.unmarkPendingRemove(stack);
+    }
+
+    @Override
     public void remove(Stack stack) {
         stacksRepository.remove(stack);
     }

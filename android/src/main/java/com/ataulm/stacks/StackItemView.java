@@ -2,6 +2,7 @@ package com.ataulm.stacks;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
@@ -57,6 +58,12 @@ public class StackItemView extends LinearLayout {
             summaryTextView.setAlpha(0.54f);
         } else {
             summaryTextView.setAlpha(1f);
+        }
+
+        if (stack.deleted()) {
+            summaryTextView.setTextColor(Color.RED);
+        } else {
+            summaryTextView.setTextColor(Color.BLACK);
         }
 
         bindCompletedCheckBox(stack, listener);

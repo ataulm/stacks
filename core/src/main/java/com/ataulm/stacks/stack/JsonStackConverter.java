@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class JsonStackConverter {
 
-    // TODO: should provide Id and Label jsonConverters, not do it manually
+    // TODO: should provide Id, Dates and Label jsonConverters, not do it manually
 
     @FromJson
     @Nullable
@@ -28,9 +28,30 @@ public class JsonStackConverter {
         }
 
         if (jsonStack.labels == null || jsonStack.labels.isEmpty()) {
-            return Stack.create(id, jsonStack.summary, parentId, jsonStack.completed);
+            return Stack.create(id, jsonStack.summary, parentId, makeDates(jsonStack, jsonStack.dates));
         } else {
-            return Stack.create(id, jsonStack.summary, parentId, makeLabels(jsonStack.labels), jsonStack.completed);
+            return Stack.create(id, jsonStack.summary, parentId, makeDates(jsonStack, jsonStack.dates), makeLabels(jsonStack.labels));
+        }
+    }
+
+    private static Stack.Dates makeDates(JsonStack stack, @Nullable JsonStack.Dates jsonDates) {
+        if (jsonDates == null) {
+            return Stack.Dates.create(System.currentTimeMillis());
+        }
+        try {
+            long created = Long.parseLong(jsonDates.created);
+            long modified = Long.parseLong(jsonDates.modified);
+            Optional<Long> completed = jsonDates.completed == null ? Optional.<Long>absent() : Optional.of(Long.parseLong(jsonDates.completed));
+            Optional<Long> deleted = jsonDates.deleted == null ? Optional.<Long>absent() : Optional.of(Long.parseLong(jsonDates.deleted));
+            return Stack.Dates.create(
+                    created,
+                    modified,
+                    completed,
+                    deleted
+            );
+        } catch (NumberFormatException e) {
+            System.out.println(stack);
+            throw e;
         }
     }
 
@@ -57,9 +78,18 @@ public class JsonStackConverter {
         json.id = stack.id().value();
         json.summary = stack.summary();
         json.parentId = stack.parentId().isPresent() ? stack.parentId().get().value() : null;
+        json.dates = unmakeDates(stack.dates());
         json.labels = unmakeLabels(stack.labels());
-        json.completed = stack.completed();
         return json;
+    }
+
+    private static JsonStack.Dates unmakeDates(Stack.Dates dates) {
+        JsonStack.Dates jsonDates = new JsonStack.Dates();
+        jsonDates.created = String.valueOf(dates.created());
+        jsonDates.modified = String.valueOf(dates.modified());
+        jsonDates.completed = dates.completed().isPresent() ? String.valueOf(dates.completed().get()) : null;
+        jsonDates.deleted = dates.deleted().isPresent() ? String.valueOf(dates.deleted().get()) : null;
+        return jsonDates;
     }
 
     private static Set<String> unmakeLabels(Labels labels) {

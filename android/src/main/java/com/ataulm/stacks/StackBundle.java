@@ -20,7 +20,10 @@ class StackBundle {
     private static final String SUMMARY = "SUMMARY";
     private static final String PARENT_ID = "PARENT_ID";
     private static final String LABELS = "LABELS";
+    private static final String CREATED = "CREATED";
+    private static final String MODIFIED = "MODIFIED";
     private static final String COMPLETED = "COMPLETED";
+    private static final String DELETED = "DELETED";
 
     public Bundle createBundleFrom(Stack stack) {
         Bundle bundle = new Bundle();
@@ -28,8 +31,14 @@ class StackBundle {
         bundle.putString(SUMMARY, stack.summary());
         bundle.putString(PARENT_ID, stack.parentId().isPresent() ? stack.parentId().get().value() : null);
         bundle.putStringArrayList(LABELS, arrayListOfLabelsFrom(stack.labels()));
-        bundle.putBoolean(COMPLETED, stack.completed());
-
+        bundle.putLong(CREATED, stack.dates().created());
+        bundle.putLong(MODIFIED, stack.dates().modified());
+        if (stack.dates().completed().isPresent()) {
+            bundle.putLong(COMPLETED, stack.dates().completed().get());
+        }
+        if (stack.dates().deleted().isPresent()) {
+            bundle.putLong(DELETED, stack.dates().deleted().get());
+        }
         return bundle;
     }
 
@@ -53,14 +62,23 @@ class StackBundle {
                 ? Optional.<Id>absent()
                 : Optional.of(Id.create(rawParentId));
 
+        Stack.Dates dates = datesFrom(bundle);
+
         Labels labels = labelsFrom(bundle);
-        boolean completed = bundle.getBoolean(COMPLETED, false);
 
         if (labels == null) {
-            return Optional.of(Stack.create(Id.create(id), summary, parentId, completed));
+            return Optional.of(Stack.create(Id.create(id), summary, parentId, dates));
         } else {
-            return Optional.of(Stack.create(Id.create(id), summary, parentId, labels, completed));
+            return Optional.of(Stack.create(Id.create(id), summary, parentId, dates, labels));
         }
+    }
+
+    private static Stack.Dates datesFrom(Bundle bundle) {
+        long created = bundle.getLong(CREATED);
+        long modified = bundle.getLong(MODIFIED);
+        Optional<Long> completed = bundle.containsKey(COMPLETED) ? Optional.of(bundle.getLong(COMPLETED)) : Optional.<Long>absent();
+        Optional<Long> deleted = bundle.containsKey(DELETED) ? Optional.of(bundle.getLong(DELETED)) : Optional.<Long>absent();
+        return Stack.Dates.create(created, modified, completed, deleted);
     }
 
     @Nullable
