@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-class StackBundle {
+public class StackBundleConverter {
 
     private static final String ID = "ID";
     private static final String SUMMARY = "SUMMARY";

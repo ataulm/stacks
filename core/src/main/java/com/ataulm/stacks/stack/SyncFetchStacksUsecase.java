@@ -20,4 +20,10 @@ public class SyncFetchStacksUsecase implements FetchStacksUsecase {
                 .compose(EventRxFunctions.<Stacks>asEvents());
     }
 
+    @Override
+    public Observable<Event<Stacks>> fetchStacksPendingRemoval() {
+        return stacksRepository.getStacksPendingRemoval()
+                .compose(EventRxFunctions.<Stacks>asEvents());
+    }
+
 }

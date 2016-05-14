@@ -8,12 +8,13 @@
     android:label="@string/app_name"
     android:theme="@style/Stacks.Theme">
 
-    <activity android:name=".ViewActivity" />
+    <activity android:name=".view.ViewActivity" />
+    <activity android:name=".remove.RemovedActivity" />
 
     <activity-alias
       android:name="activity.primary_launcher"
       android:label="@string/app_name"
-      android:targetActivity=".ViewActivity">
+      android:targetActivity=".view.ViewActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />

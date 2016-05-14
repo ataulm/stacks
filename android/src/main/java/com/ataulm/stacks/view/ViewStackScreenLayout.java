@@ -49,7 +49,7 @@ public class ViewStackScreenLayout extends LinearLayout implements ViewStackScre
 
     @Override
     public void showData(Stacks stacks, StackItemListener interactionListener, StackInputListener inputListener) {
-        StacksAdapter adapter = StacksAdapter.create(stacks, interactionListener, inputListener);
+        RecyclerView.Adapter adapter = StacksAdapter.create(stacks, interactionListener, inputListener);
         recyclerView.swapAdapter(adapter, false);
 
         emptyView.setVisibility(GONE);
@@ -57,7 +57,7 @@ public class ViewStackScreenLayout extends LinearLayout implements ViewStackScre
 
     @Override
     public void showEmptyScreen(StackItemListener interactionListener, StackInputListener inputListener) {
-        StacksAdapter adapter = StacksAdapter.create(Stacks.empty(), interactionListener, inputListener);
+        RecyclerView.Adapter adapter = StacksAdapter.create(Stacks.empty(), interactionListener, inputListener);
         recyclerView.swapAdapter(adapter, false);
 
         emptyView.setVisibility(VISIBLE);

@@ -273,4 +273,26 @@ public class StacksRepository {
         stacksSubject.onNext(updated);
     }
 
+    public Observable<Stacks> getStacksPendingRemoval() {
+        refreshStacks();
+        return stacksSubject.map(extractList())
+                .map(filterOnlyStacksPendingRemoval())
+                .map(listAsStacks());
+    }
+
+    private static Func1<List<Stack>, List<Stack>> filterOnlyStacksPendingRemoval() {
+        return new Func1<List<Stack>, List<Stack>>() {
+            @Override
+            public List<Stack> call(List<Stack> stacks) {
+                List<Stack> pendingRemoval = new ArrayList<>(stacks.size());
+                for (Stack stack : stacks) {
+                    if (stack.deleted()) {
+                        pendingRemoval.add(stack);
+                    }
+                }
+                return pendingRemoval;
+            }
+        };
+    }
+
 }

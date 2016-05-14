@@ -1,4 +1,4 @@
-package com.ataulm.stacks;
+package com.ataulm.stacks.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,12 @@ import android.view.MenuItem;
 
 import com.ataulm.Event;
 import com.ataulm.Optional;
+import com.ataulm.stacks.LoggingObserver;
+import com.ataulm.stacks.NavigationDrawerActivity;
+import com.ataulm.stacks.R;
+import com.ataulm.stacks.StackBundleConverter;
+import com.ataulm.stacks.StackInputListener;
+import com.ataulm.stacks.StackItemListener;
 import com.ataulm.stacks.stack.CreateStackUsecase;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
 import com.ataulm.stacks.stack.Id;
@@ -15,7 +21,6 @@ import com.ataulm.stacks.stack.RemoveStackUsecase;
 import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
 import com.ataulm.stacks.stack.UpdateStackUsecase;
-import com.ataulm.stacks.view.ViewStackScreen;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -89,7 +94,7 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
 
     private Optional<Stack> getStackFrom(Intent intent) {
         Bundle extras = intent.getExtras();
-        return extras == null ? Optional.<Stack>absent() : new StackBundle().createStackFrom(extras);
+        return extras == null ? Optional.<Stack>absent() : new StackBundleConverter().createStackFrom(extras);
     }
 
     @Override
@@ -102,7 +107,7 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
     @Override
     public void onClick(Stack stack) {
         Intent intent = new Intent(this, ViewActivity.class);
-        intent.putExtras(new StackBundle().createBundleFrom(stack));
+        intent.putExtras(new StackBundleConverter().createBundleFrom(stack));
         startActivity(intent);
     }
 

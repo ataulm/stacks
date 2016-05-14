@@ -9,4 +9,6 @@ public interface FetchStacksUsecase {
 
     Observable<Event<Stacks>> fetchStacks(Optional<Id> parentId);
 
+    Observable<Event<Stacks>> fetchStacksPendingRemoval();
+
 }

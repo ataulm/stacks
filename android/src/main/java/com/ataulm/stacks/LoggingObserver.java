@@ -4,7 +4,7 @@ import android.util.Log;
 
 import rx.Observer;
 
-abstract class LoggingObserver<T> implements Observer<T> {
+public abstract class LoggingObserver<T> implements Observer<T> {
 
     @Override
     public void onCompleted() {

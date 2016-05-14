@@ -4,7 +4,7 @@
   <android.support.design.widget.AppBarLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/holo_green_dark">
+    android:background="@android:color/holo_red_light">
 
     <android.support.v7.widget.Toolbar
       android:id="@+id/toolbar"
@@ -14,13 +14,13 @@
   </android.support.design.widget.AppBarLayout>
 
   <com.ataulm.stacks.BaseTextView
-    android:id="@+id/view_screen_empty_view"
+    android:id="@+id/removed_stacks_screen_empty_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="No deleted stacks!" />
+    android:text="No stacks!\nAll done!" />
 
   <android.support.v7.widget.RecyclerView
-    android:id="@+id/view_screen_recycler_view"
+    android:id="@+id/removed_stacks_screen_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="false" />
