@@ -6,26 +6,26 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ataulm.stacks.R;
-import com.ataulm.stacks.RemovedStackView;
+import com.ataulm.stacks.RemovedStackItemView;
 import com.ataulm.stacks.stack.Stack;
 
 final class RemovedStackViewHolder extends RecyclerView.ViewHolder {
 
-    private final RemovedStackView removedStackView;
+    private final RemovedStackItemView removedStackItemView;
 
     public static RemovedStackViewHolder inflate(ViewGroup parent) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.view_removed_stack, parent, false);
-        return new RemovedStackViewHolder(view, ((RemovedStackView) view));
+        return new RemovedStackViewHolder(view, ((RemovedStackItemView) view));
     }
 
-    private RemovedStackViewHolder(View itemView, RemovedStackView removedStackView) {
+    private RemovedStackViewHolder(View itemView, RemovedStackItemView removedStackItemView) {
         super(itemView);
-        this.removedStackView = removedStackView;
+        this.removedStackItemView = removedStackItemView;
     }
 
-    public void bind(Stack stack) {
-        removedStackView.bind(stack);
+    public void bind(Stack stack, RemovedStackItemListener listener) {
+        removedStackItemView.bind(stack, listener);
     }
 
 }

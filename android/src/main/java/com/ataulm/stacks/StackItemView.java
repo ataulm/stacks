@@ -1,7 +1,6 @@
 package com.ataulm.stacks;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
@@ -120,7 +119,7 @@ public class StackItemView extends LinearLayout {
         return new Action(R.id.stack_item_action_remove, R.string.stack_item_remove, new Runnable() {
             @Override
             public void run() {
-                confirmRemove(stack, listener);
+                listener.onClickRemove(stack);
             }
         });
     }
@@ -148,30 +147,9 @@ public class StackItemView extends LinearLayout {
         removeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                confirmRemove(stack, listener);
+                listener.onClickRemove(stack);
             }
         });
     }
-
-    private void confirmRemove(final Stack stack, final StackItemListener listener) {
-        new AlertDialog.Builder(getContext())
-                .setTitle("Remove this stack?")
-                .setMessage("This stack and all its children will be removed.")
-                .setPositiveButton("Remove", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        listener.onClickRemove(stack);
-                    }
-                })
-                .setNegativeButton("Cancel", NO_OP)
-                .create()
-                .show();
-    }
-
-    private static final DialogInterface.OnClickListener NO_OP = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-        }
-    };
 
 }

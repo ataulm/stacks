@@ -6,7 +6,7 @@ public interface RemovedStacksScreen {
 
     void setTitle(String title);
 
-    void showData(Stacks stacks);
+    void showData(Stacks stacks, RemovedStackItemListener listener);
 
     void showEmptyScreen();
 

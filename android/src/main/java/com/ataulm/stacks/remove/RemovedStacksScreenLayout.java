@@ -47,8 +47,8 @@ public class RemovedStacksScreenLayout extends LinearLayout implements RemovedSt
     }
 
     @Override
-    public void showData(Stacks stacks) {
-        RecyclerView.Adapter adapter = RemovedStacksAdapter.create(stacks);
+    public void showData(Stacks stacks, RemovedStackItemListener listener) {
+        RecyclerView.Adapter adapter = RemovedStacksAdapter.create(stacks, listener);
         recyclerView.swapAdapter(adapter, false);
 
         emptyView.setVisibility(GONE);
@@ -56,7 +56,7 @@ public class RemovedStacksScreenLayout extends LinearLayout implements RemovedSt
 
     @Override
     public void showEmptyScreen() {
-        RecyclerView.Adapter adapter = RemovedStacksAdapter.create(Stacks.empty());
+        RecyclerView.Adapter adapter = RemovedStacksAdapter.create(Stacks.empty(), RemovedStackItemListener.NO_OP);
         recyclerView.swapAdapter(adapter, false);
 
         emptyView.setVisibility(VISIBLE);
@@ -65,15 +65,17 @@ public class RemovedStacksScreenLayout extends LinearLayout implements RemovedSt
     private static final class RemovedStacksAdapter extends RecyclerView.Adapter<RemovedStackViewHolder> {
 
         private final Stacks stacks;
+        private final RemovedStackItemListener listener;
 
-        public static RemovedStacksAdapter create(Stacks stacks) {
-            RemovedStacksAdapter stacksAdapter = new RemovedStacksAdapter(stacks);
+        public static RemovedStacksAdapter create(Stacks stacks, RemovedStackItemListener listener) {
+            RemovedStacksAdapter stacksAdapter = new RemovedStacksAdapter(stacks, listener);
             stacksAdapter.setHasStableIds(true);
             return stacksAdapter;
         }
 
-        private RemovedStacksAdapter(Stacks stacks) {
+        private RemovedStacksAdapter(Stacks stacks, RemovedStackItemListener listener) {
             this.stacks = stacks;
+            this.listener = listener;
         }
 
         @Override
@@ -84,7 +86,7 @@ public class RemovedStacksScreenLayout extends LinearLayout implements RemovedSt
         @Override
         public void onBindViewHolder(RemovedStackViewHolder holder, int position) {
             Stack stack = stacks.get(position);
-            holder.bind(stack);
+            holder.bind(stack, listener);
         }
 
         @Override

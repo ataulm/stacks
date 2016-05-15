@@ -9,6 +9,7 @@ import com.ataulm.stacks.R;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
 import com.ataulm.stacks.stack.PersistStacksUsecase;
 import com.ataulm.stacks.stack.RemoveStackUsecase;
+import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
 
 import butterknife.Bind;
@@ -18,7 +19,7 @@ import rx.android.schedulers.AndroidSchedulers;
 
 import static com.ataulm.stacks.StacksApplication.*;
 
-public class RemovedActivity extends NavigationDrawerActivity {
+public class RemovedActivity extends NavigationDrawerActivity implements RemovedStackItemListener {
 
     private final FetchStacksUsecase fetchStacksUsecase = createFetchStacksUsecase();
     private final RemoveStackUsecase removeStackUsecase = createRemoveStackUsecase();
@@ -54,12 +55,22 @@ public class RemovedActivity extends NavigationDrawerActivity {
         subscription.unsubscribe();
     }
 
+    @Override
+    public void onClickRestore(Stack stack) {
+        removeStackUsecase.unmarkPendingRemove(stack);
+    }
+
+    @Override
+    public void onClickDelete(Stack stack) {
+        removeStackUsecase.remove(stack);
+    }
+
     private class StacksEventObserver extends LoggingObserver<Event<Stacks>> {
 
         @Override
         public void onNext(Event<Stacks> event) {
             if (event.getData().isPresent() && event.getData().get().size() > 0) {
-                removedStacksScreen.showData(event.getData().get());
+                removedStacksScreen.showData(event.getData().get(), RemovedActivity.this);
             } else {
                 removedStacksScreen.showEmptyScreen();
             }
