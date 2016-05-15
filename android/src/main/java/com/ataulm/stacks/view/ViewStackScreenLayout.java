@@ -56,8 +56,8 @@ public class ViewStackScreenLayout extends LinearLayout implements ViewStackScre
     }
 
     @Override
-    public void showEmptyScreen(StackItemListener interactionListener, StackInputListener inputListener) {
-        RecyclerView.Adapter adapter = StacksAdapter.create(Stacks.empty(), interactionListener, inputListener);
+    public void showEmptyScreen(StackInputListener inputListener) {
+        RecyclerView.Adapter adapter = StacksAdapter.create(Stacks.empty(), StackItemListener.NO_OP, inputListener);
         recyclerView.swapAdapter(adapter, false);
 
         emptyView.setVisibility(VISIBLE);

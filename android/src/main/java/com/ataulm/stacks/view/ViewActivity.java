@@ -155,7 +155,7 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
             if (event.getData().isPresent() && event.getData().get().size() > 0) {
                 viewStackScreen.showData(event.getData().get(), ViewActivity.this, ViewActivity.this);
             } else {
-                viewStackScreen.showEmptyScreen(ViewActivity.this, ViewActivity.this);
+                viewStackScreen.showEmptyScreen(ViewActivity.this);
             }
         }
 

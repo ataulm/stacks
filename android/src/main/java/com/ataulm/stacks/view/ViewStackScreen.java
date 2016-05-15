@@ -10,6 +10,6 @@ public interface ViewStackScreen {
 
     void showData(Stacks stacks, StackItemListener interactionListener, StackInputListener inputListener);
 
-    void showEmptyScreen(StackItemListener interactionListener, StackInputListener inputListener);
+    void showEmptyScreen(StackInputListener inputListener);
 
 }
