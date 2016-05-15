@@ -36,7 +36,7 @@ public class RemovedActivity extends NavigationDrawerActivity {
         setContentView(R.layout.activity_removed);
         ButterKnife.bind(this);
 
-        removedStacksScreen.setTitle("Deleted Stacks");
+        removedStacksScreen.setTitle("Removed Stacks");
     }
 
     @Override
