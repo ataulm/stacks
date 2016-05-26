@@ -1,8 +1,6 @@
 package com.ataulm.stacks;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -35,21 +33,16 @@ public class NavigationDrawerView extends LinearLayout {
         homeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                goTo(ViewActivity.class);
+                ViewActivity.start(getContext());
             }
         });
 
         removedButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                goTo(RemovedActivity.class);
+                RemovedActivity.start(getContext());
             }
         });
-    }
-
-    private void goTo(Class<? extends Activity> cls) {
-        // TODO this should be a callback to the activity
-        getContext().startActivity(new Intent(getContext(), cls));
     }
 
 }

@@ -8,10 +8,13 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.ataulm.Optional;
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.StackInputListener;
 import com.ataulm.stacks.StackItemListener;
 import com.ataulm.stacks.StacksAdapter;
+import com.ataulm.stacks.ToolbarActionListener;
+import com.ataulm.stacks.stack.Id;
 import com.ataulm.stacks.stack.Stacks;
 
 import butterknife.Bind;
@@ -43,12 +46,15 @@ public class ViewStackScreenLayout extends LinearLayout implements ViewStackScre
     }
 
     @Override
-    public void setTitle(String title) {
+    public void setupToolbar(String title, Optional<Id> parent, ToolbarActionListener toolbarActionListener) {
         toolbar.setTitle(title);
+        updateToolbarMenuGivenParentId(parent, toolbarActionListener);
     }
 
     @Override
-    public void showData(Stacks stacks, StackItemListener interactionListener, StackInputListener inputListener) {
+    public void showData(Stacks stacks, Optional<Id> parentId, StackItemListener interactionListener, StackInputListener inputListener, ToolbarActionListener toolbarActionListener) {
+        updateToolbarMenuGivenParentId(parentId, toolbarActionListener);
+
         RecyclerView.Adapter adapter = StacksAdapter.create(stacks, interactionListener, inputListener);
         recyclerView.swapAdapter(adapter, false);
 
@@ -56,11 +62,33 @@ public class ViewStackScreenLayout extends LinearLayout implements ViewStackScre
     }
 
     @Override
-    public void showEmptyScreen(StackInputListener inputListener) {
+    public void showEmptyScreen(Optional<Id> parentId, StackInputListener inputListener, ToolbarActionListener toolbarActionListener) {
+        updateToolbarMenuGivenParentId(parentId, toolbarActionListener);
+
         RecyclerView.Adapter adapter = StacksAdapter.create(Stacks.empty(), StackItemListener.NO_OP, inputListener);
         recyclerView.swapAdapter(adapter, false);
 
         emptyView.setVisibility(VISIBLE);
+    }
+
+    private void updateToolbarMenuGivenParentId(final Optional<Id> parentId, final ToolbarActionListener toolbarActionListener) {
+        if (parentId.isPresent()) {
+            toolbar.setNavigationIcon(R.drawable.wire_up);
+            toolbar.setNavigationOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toolbarActionListener.onClickNavigateUpToStackWith(parentId.get());
+                }
+            });
+        } else {
+            toolbar.setNavigationIcon(R.drawable.wire_nav_drawer);
+            toolbar.setNavigationOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toolbarActionListener.onClickToggleNavigationMenu();
+                }
+            });
+        }
     }
 
 }

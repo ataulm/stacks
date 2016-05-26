@@ -1,6 +1,9 @@
 package com.ataulm.stacks.remove;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 
 import com.ataulm.Event;
 import com.ataulm.stacks.LoggingObserver;
@@ -20,6 +23,16 @@ import rx.android.schedulers.AndroidSchedulers;
 import static com.ataulm.stacks.StacksApplication.*;
 
 public class RemovedActivity extends NavigationDrawerActivity implements RemovedStackItemListener {
+
+    public static void start(Context context) {
+        Intent intent = new Intent(context, RemovedActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent, noActivityAnimation(context));
+    }
+
+    private static Bundle noActivityAnimation(Context context) {
+        return ActivityOptionsCompat.makeCustomAnimation(context, 0, 0).toBundle();
+    }
 
     private final FetchStacksUsecase fetchStacksUsecase = createFetchStacksUsecase();
     private final RemoveStackUsecase removeStackUsecase = createRemoveStackUsecase();

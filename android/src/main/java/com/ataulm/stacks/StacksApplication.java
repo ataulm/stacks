@@ -67,7 +67,7 @@ public class StacksApplication extends Application {
         return new AsyncUpdateStacksUsecase(new SyncUpdateStackUsecase(stacksRepository));
     }
 
-    public static void displayToast(String text) {
+    public static void displayToast(CharSequence text) {
         if (toast != null) {
             toast.cancel();
         }

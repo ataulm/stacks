@@ -1,9 +1,9 @@
 package com.ataulm.stacks.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v4.app.ActivityOptionsCompat;
 
 import com.ataulm.Event;
 import com.ataulm.Optional;
@@ -22,6 +22,8 @@ import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
 import com.ataulm.stacks.stack.UpdateStackUsecase;
 
+import javax.annotation.Nullable;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Subscription;
@@ -30,6 +32,28 @@ import rx.android.schedulers.AndroidSchedulers;
 import static com.ataulm.stacks.StacksApplication.*;
 
 public class ViewActivity extends NavigationDrawerActivity implements StackItemListener, StackInputListener {
+
+    public static void start(Context context) {
+        Intent intent = createIntent(context, null);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent, noActivityAnimation(context));
+    }
+
+    private static Bundle noActivityAnimation(Context context) {
+        return ActivityOptionsCompat.makeCustomAnimation(context, 0, 0).toBundle();
+    }
+
+    public static void start(Context context, @Nullable Stack stack) {
+        context.startActivity(createIntent(context, stack), noActivityAnimation(context));
+    }
+
+    private static Intent createIntent(Context context, @Nullable Stack stack) {
+        Intent intent = new Intent(context, ViewActivity.class);
+        if (stack != null) {
+            intent.putExtras(new StackBundleConverter().createBundleFrom(stack));
+        }
+        return intent;
+    }
 
     private final FetchStacksUsecase fetchStacksUsecase = createFetchStacksUsecase();
     private final CreateStackUsecase createStackUsecase = createCreateStackUsecase();
@@ -50,35 +74,11 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
         ButterKnife.bind(this);
 
         Optional<Stack> stack = getStackFrom(getIntent());
+        Optional<Id> parentId = getThisStacksParentId();
         if (stack.isPresent()) {
-            viewStackScreen.setTitle(stack.get().summary());
+            viewStackScreen.setupToolbar(stack.get().summary(), parentId, this);
         } else {
-            viewStackScreen.setTitle("Stacks");
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (getStackFrom(getIntent()).isPresent()) {
-            getMenuInflater().inflate(R.menu.view_stack, menu);
-            return true;
-        } else {
-            return super.onCreateOptionsMenu(menu);
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_edit:
-                onClickEdit(getStackFrom(getIntent()).get());
-                return true;
-            case R.id.menu_remove:
-                onClickRemove(getStackFrom(getIntent()).get());
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+            viewStackScreen.setupToolbar("Stacks", parentId, this);
         }
     }
 
@@ -106,14 +106,7 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
 
     @Override
     public void onClick(Stack stack) {
-        Intent intent = new Intent(this, ViewActivity.class);
-        intent.putExtras(new StackBundleConverter().createBundleFrom(stack));
-        startActivity(intent);
-    }
-
-    @Override
-    public void onClickEdit(Stack stack) {
-        // TODO: edit
+        ViewActivity.start(this, stack);
     }
 
     @Override
@@ -152,10 +145,11 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
 
         @Override
         public void onNext(Event<Stacks> event) {
+            Optional<Id> parent = getThisStacksParentId();
             if (event.getData().isPresent() && event.getData().get().size() > 0) {
-                viewStackScreen.showData(event.getData().get(), ViewActivity.this, ViewActivity.this);
+                viewStackScreen.showData(event.getData().get(), parent, ViewActivity.this, ViewActivity.this, ViewActivity.this);
             } else {
-                viewStackScreen.showEmptyScreen(ViewActivity.this);
+                viewStackScreen.showEmptyScreen(parent, ViewActivity.this, ViewActivity.this);
             }
         }
 
