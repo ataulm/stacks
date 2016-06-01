@@ -42,12 +42,15 @@ public class RemovedStacksScreenLayout extends LinearLayout implements RemovedSt
     }
 
     @Override
-    public void setTitle(String title) {
+    public void setupToolbar(String title, ToolbarActionListener toolbarActionListener) {
         toolbar.setTitle(title);
+        updateToolbar(toolbarActionListener);
     }
 
     @Override
-    public void showData(Stacks stacks, RemovedStackItemListener listener) {
+    public void showData(Stacks stacks, RemovedStackItemListener listener, ToolbarActionListener toolbarActionListener) {
+        updateToolbar(toolbarActionListener);
+
         RecyclerView.Adapter adapter = RemovedStacksAdapter.create(stacks, listener);
         recyclerView.swapAdapter(adapter, false);
 
@@ -55,16 +58,28 @@ public class RemovedStacksScreenLayout extends LinearLayout implements RemovedSt
     }
 
     @Override
-    public void showEmptyScreen() {
+    public void showEmptyScreen(ToolbarActionListener toolbarActionListener) {
+        updateToolbar(toolbarActionListener);
+
         RecyclerView.Adapter adapter = RemovedStacksAdapter.create(Stacks.empty(), RemovedStackItemListener.NO_OP);
         recyclerView.swapAdapter(adapter, false);
 
         emptyView.setVisibility(VISIBLE);
     }
 
-    private static final class RemovedStacksAdapter extends RecyclerView.Adapter<RemovedStackViewHolder> {
+    private void updateToolbar(final ToolbarActionListener toolbarActionListener) {
+        toolbar.setNavigationIcon(R.drawable.wire_nav_drawer);
+        toolbar.setNavigationOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toolbarActionListener.onClickToggleNavigationMenu();
+            }
+        });
+    }
 
+    private static final class RemovedStacksAdapter extends RecyclerView.Adapter<RemovedStackViewHolder> {
         private final Stacks stacks;
+
         private final RemovedStackItemListener listener;
 
         public static RemovedStacksAdapter create(Stacks stacks, RemovedStackItemListener listener) {

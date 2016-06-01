@@ -19,7 +19,7 @@ import rx.android.schedulers.AndroidSchedulers;
 
 import static com.ataulm.stacks.StacksApplication.*;
 
-public class RemovedActivity extends NavigationDrawerActivity implements RemovedStackItemListener {
+public class RemovedActivity extends NavigationDrawerActivity implements RemovedStackItemListener, ToolbarActionListener {
 
     private final FetchStacksUsecase fetchStacksUsecase = createFetchStacksUsecase();
     private final RemoveStackUsecase removeStackUsecase = createRemoveStackUsecase();
@@ -37,7 +37,7 @@ public class RemovedActivity extends NavigationDrawerActivity implements Removed
         setContentView(R.layout.activity_removed);
         ButterKnife.bind(this);
 
-        removedStacksScreen.setTitle("Removed Stacks");
+        removedStacksScreen.setupToolbar("Removed Stacks", RemovedActivity.this);
     }
 
     @Override
@@ -70,9 +70,9 @@ public class RemovedActivity extends NavigationDrawerActivity implements Removed
         @Override
         public void onNext(Event<Stacks> event) {
             if (event.getData().isPresent() && event.getData().get().size() > 0) {
-                removedStacksScreen.showData(event.getData().get(), RemovedActivity.this);
+                removedStacksScreen.showData(event.getData().get(), RemovedActivity.this, RemovedActivity.this);
             } else {
-                removedStacksScreen.showEmptyScreen();
+                removedStacksScreen.showEmptyScreen(RemovedActivity.this);
             }
         }
 

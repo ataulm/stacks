@@ -4,10 +4,10 @@ import com.ataulm.stacks.stack.Stacks;
 
 public interface RemovedStacksScreen {
 
-    void setTitle(String title);
+    void setupToolbar(String title, ToolbarActionListener toolbarActionListener);
 
-    void showData(Stacks stacks, RemovedStackItemListener listener);
+    void showData(Stacks stacks, RemovedStackItemListener listener, ToolbarActionListener toolbarActionListener);
 
-    void showEmptyScreen();
+    void showEmptyScreen(ToolbarActionListener toolbarActionListener);
 
 }
