@@ -31,13 +31,14 @@ public class StacksRepository {
             Observable<List<Stack>> allStacks = stacksSubject.map(extractList());
             return Observable.zip(
                     allStacks.map(filterOnlyStackWithId(parentId.get())),
-                    allStacks.map(filterOnlyStacksWithParent(parentId)),
+                    allStacks.map(filterOnlyStacksWithParent(parentId)).map(filterOnlyNotRemovedStacks()),
                     asStacks()
             );
         } else {
             return stacksSubject
                     .map(extractList())
                     .map(filterOnlyRootStacks())
+                    .map(filterOnlyNotRemovedStacks())
                     .map(listAsStacks());
         }
     }
@@ -49,6 +50,21 @@ public class StacksRepository {
                 List<Stack> filtered = new ArrayList<>(stacks.size());
                 for (Stack stack : stacks) {
                     if (!stack.parentId().isPresent()) {
+                        filtered.add(stack);
+                    }
+                }
+                return filtered;
+            }
+        };
+    }
+
+    private static Func1<List<Stack>, List<Stack>> filterOnlyNotRemovedStacks() {
+        return new Func1<List<Stack>, List<Stack>>() {
+            @Override
+            public List<Stack> call(List<Stack> stacks) {
+                List<Stack> filtered = new ArrayList<>(stacks.size());
+                for (Stack stack : stacks) {
+                    if (!stack.deleted()) {
                         filtered.add(stack);
                     }
                 }

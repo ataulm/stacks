@@ -59,12 +59,6 @@ public class StackItemView extends LinearLayout {
             summaryTextView.setAlpha(1f);
         }
 
-        if (stack.deleted()) {
-            summaryTextView.setTextColor(Color.RED);
-        } else {
-            summaryTextView.setTextColor(Color.BLACK);
-        }
-
         bindCompletedCheckBox(stack, listener);
         bindActions(stack, listener);
     }
