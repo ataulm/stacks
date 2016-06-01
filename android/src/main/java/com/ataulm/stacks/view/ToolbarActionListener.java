@@ -1,4 +1,4 @@
-package com.ataulm.stacks;
+package com.ataulm.stacks.view;
 
 import com.ataulm.stacks.stack.Id;
 

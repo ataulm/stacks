@@ -13,7 +13,6 @@ import com.ataulm.stacks.R;
 import com.ataulm.stacks.StackInputListener;
 import com.ataulm.stacks.StackItemListener;
 import com.ataulm.stacks.StacksAdapter;
-import com.ataulm.stacks.ToolbarActionListener;
 import com.ataulm.stacks.stack.Id;
 import com.ataulm.stacks.stack.Stacks;
 

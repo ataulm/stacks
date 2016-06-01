@@ -3,7 +3,6 @@ package com.ataulm.stacks.view;
 import com.ataulm.Optional;
 import com.ataulm.stacks.StackInputListener;
 import com.ataulm.stacks.StackItemListener;
-import com.ataulm.stacks.ToolbarActionListener;
 import com.ataulm.stacks.stack.Id;
 import com.ataulm.stacks.stack.Stacks;
 

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import com.ataulm.stacks.BaseActivity;
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.StacksApplication;
-import com.ataulm.stacks.ToolbarActionListener;
+import com.ataulm.stacks.view.ToolbarActionListener;
 import com.ataulm.stacks.stack.Id;
 import com.ataulm.stacks.view.ViewActivity;
 
