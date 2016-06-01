@@ -3,12 +3,11 @@ package com.ataulm.stacks.view;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
 
 import com.ataulm.Event;
 import com.ataulm.Optional;
 import com.ataulm.stacks.LoggingObserver;
-import com.ataulm.stacks.NavigationDrawerActivity;
+import com.ataulm.stacks.navigation.NavigationDrawerActivity;
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.StackBundleConverter;
 import com.ataulm.stacks.StackInputListener;
@@ -22,8 +21,6 @@ import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
 import com.ataulm.stacks.stack.UpdateStackUsecase;
 
-import javax.annotation.Nullable;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Subscription;
@@ -33,25 +30,14 @@ import static com.ataulm.stacks.StacksApplication.*;
 
 public class ViewActivity extends NavigationDrawerActivity implements StackItemListener, StackInputListener {
 
-    public static void start(Context context) {
-        Intent intent = createIntent(context, null);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent, noActivityAnimation(context));
+    public static void start(Context context, Stack stack) {
+        Intent intent = createIntent(context, stack);
+        context.startActivity(intent);
     }
 
-    private static Bundle noActivityAnimation(Context context) {
-        return ActivityOptionsCompat.makeCustomAnimation(context, 0, 0).toBundle();
-    }
-
-    public static void start(Context context, @Nullable Stack stack) {
-        context.startActivity(createIntent(context, stack), noActivityAnimation(context));
-    }
-
-    private static Intent createIntent(Context context, @Nullable Stack stack) {
+    private static Intent createIntent(Context context, Stack stack) {
         Intent intent = new Intent(context, ViewActivity.class);
-        if (stack != null) {
-            intent.putExtras(new StackBundleConverter().createBundleFrom(stack));
-        }
+        intent.putExtras(new StackBundleConverter().createBundleFrom(stack));
         return intent;
     }
 

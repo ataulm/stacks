@@ -1,11 +1,13 @@
-package com.ataulm.stacks;
+package com.ataulm.stacks.navigation;
 
-import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.v4.widget.DrawerLayout;
-import android.view.View;
 import android.view.ViewGroup;
 
+import com.ataulm.stacks.BaseActivity;
+import com.ataulm.stacks.R;
+import com.ataulm.stacks.StacksApplication;
+import com.ataulm.stacks.ToolbarActionListener;
 import com.ataulm.stacks.stack.Id;
 import com.ataulm.stacks.view.ViewActivity;
 
@@ -20,7 +22,13 @@ public abstract class NavigationDrawerActivity extends BaseActivity implements T
     DrawerLayout drawerLayout;
 
     @Bind(R.id.drawer)
-    View drawerView;
+    NavigationDrawerView drawerView;
+
+    private final TopLevelActivityNavigator navigator;
+
+    protected NavigationDrawerActivity() {
+        this.navigator = new TopLevelActivityNavigator(this);
+    }
 
     @Override
     public void setContentView(@LayoutRes int layout) {
@@ -28,12 +36,22 @@ public abstract class NavigationDrawerActivity extends BaseActivity implements T
         ViewGroup content = findById(this, R.id.drawer_layout_content);
         getLayoutInflater().inflate(layout, content);
         ButterKnife.bind(this);
+
+        drawerView.set(new NavigationDrawerView.Listener() {
+            @Override
+            public void onClickViewStacks() {
+                navigator.navigateToViewStacks();
+            }
+
+            @Override
+            public void onClickRemovedStacks() {
+                navigator.navigateToRemovedStacks();
+            }
+        });
     }
 
     @Override
     public void onClickNavigateUpToStackWith(Id id) {
-        Intent intent = new Intent(this, ViewActivity.class);
-
         StacksApplication.displayToast("navigate up to stack with id");
         // TODO: this should be like a clear stack style, perhaps can build a fake backstack with all the stacks to root so pressing back after this is like pressing up
     }
@@ -52,7 +70,7 @@ public abstract class NavigationDrawerActivity extends BaseActivity implements T
         if (isDrawerOpen()) {
             closeDrawer();
         } else if (notOnHomeActivity()) {
-            ViewActivity.start(this);
+            navigator.navigateToViewStacks();
         } else {
             super.onBackPressed();
         }

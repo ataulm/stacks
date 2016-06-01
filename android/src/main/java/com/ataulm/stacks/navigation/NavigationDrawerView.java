@@ -1,10 +1,11 @@
-package com.ataulm.stacks;
+package com.ataulm.stacks.navigation;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.ataulm.stacks.R;
 import com.ataulm.stacks.remove.RemovedActivity;
 import com.ataulm.stacks.view.ViewActivity;
 
@@ -18,6 +19,8 @@ public class NavigationDrawerView extends LinearLayout {
 
     @Bind(R.id.navigation_drawer_item_removed)
     View removedButton;
+
+    private Listener listener;
 
     public NavigationDrawerView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -33,16 +36,28 @@ public class NavigationDrawerView extends LinearLayout {
         homeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewActivity.start(getContext());
+                listener.onClickViewStacks();
             }
         });
 
         removedButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                RemovedActivity.start(getContext());
+                listener.onClickRemovedStacks();
             }
         });
+    }
+
+    public void set(Listener listener) {
+        this.listener = listener;
+    }
+
+    public interface Listener {
+
+        void onClickViewStacks();
+
+        void onClickRemovedStacks();
+
     }
 
 }
