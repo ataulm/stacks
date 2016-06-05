@@ -1,6 +1,8 @@
 package com.ataulm.stacks.navigation;
 
+import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.view.ViewGroup;
 
@@ -24,9 +26,11 @@ public abstract class NavigationDrawerActivity extends BaseActivity implements T
     @Bind(R.id.drawer)
     NavigationDrawerView drawerView;
 
-    private final TopLevelActivityNavigator navigator;
+    private TopLevelActivityNavigator navigator;
 
-    protected NavigationDrawerActivity() {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         this.navigator = new TopLevelActivityNavigator(this);
     }
 
