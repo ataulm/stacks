@@ -20,18 +20,18 @@ import com.novoda.accessibility.ActionsAlertDialogCreator;
 
 import java.util.Arrays;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class StackItemView extends LinearLayout {
 
-    @Bind(R.id.stack_item_check_completed)
+    @BindView(R.id.stack_item_check_completed)
     CheckBox completedCheckBox;
 
-    @Bind(R.id.stack_item_text_summary)
+    @BindView(R.id.stack_item_text_summary)
     TextView summaryTextView;
 
-    @Bind(R.id.stack_item_button_remove)
+    @BindView(R.id.stack_item_button_remove)
     View removeButton;
 
     private final AccessibilityServices accessibilityServices;

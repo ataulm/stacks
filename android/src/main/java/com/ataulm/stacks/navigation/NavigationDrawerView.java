@@ -9,15 +9,15 @@ import com.ataulm.stacks.R;
 import com.ataulm.stacks.remove.RemovedActivity;
 import com.ataulm.stacks.view.ViewActivity;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class NavigationDrawerView extends LinearLayout {
 
-    @Bind(R.id.navigation_drawer_item_home)
+    @BindView(R.id.navigation_drawer_item_home)
     View homeButton;
 
-    @Bind(R.id.navigation_drawer_item_removed)
+    @BindView(R.id.navigation_drawer_item_removed)
     View removedButton;
 
     private Listener listener;

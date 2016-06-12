@@ -13,18 +13,18 @@ import com.ataulm.stacks.R;
 import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RemovedStacksScreenLayout extends LinearLayout implements RemovedStacksScreen {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @Bind(R.id.removed_stacks_screen_empty_view)
+    @BindView(R.id.removed_stacks_screen_empty_view)
     View emptyView;
 
-    @Bind(R.id.removed_stacks_screen_recycler_view)
+    @BindView(R.id.removed_stacks_screen_recycler_view)
     RecyclerView recyclerView;
 
     public RemovedStacksScreenLayout(Context context, AttributeSet attrs) {

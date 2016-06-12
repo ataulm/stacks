@@ -13,17 +13,17 @@ import com.ataulm.stacks.view.ToolbarActionListener;
 import com.ataulm.stacks.stack.Id;
 import com.ataulm.stacks.view.ViewActivity;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static butterknife.ButterKnife.findById;
 
 public abstract class NavigationDrawerActivity extends BaseActivity implements ToolbarActionListener {
 
-    @Bind(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
-    @Bind(R.id.drawer)
+    @BindView(R.id.drawer)
     NavigationDrawerView drawerView;
 
     private TopLevelActivityNavigator navigator;

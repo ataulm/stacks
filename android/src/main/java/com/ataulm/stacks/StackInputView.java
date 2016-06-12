@@ -12,20 +12,20 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class StackInputView extends LinearLayout {
 
     private static final int REQUEST_FOCUS_AFTER_DELAY_MILLIS = 200;
 
-    @Bind(R.id.input_checkbox)
+    @BindView(R.id.input_checkbox)
     CheckBox completedCheckBox;
 
-    @Bind(R.id.input_edit_current)
+    @BindView(R.id.input_edit_current)
     EditText inputEditText;
 
-    @Bind(R.id.add_another_button)
+    @BindView(R.id.add_another_button)
     View addButton;
 
     public StackInputView(Context context, AttributeSet attrs) {

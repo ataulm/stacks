@@ -21,7 +21,7 @@ import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
 import com.ataulm.stacks.stack.UpdateStackUsecase;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -47,7 +47,7 @@ public class ViewActivity extends NavigationDrawerActivity implements StackItemL
     private final PersistStacksUsecase persistStacksUsecase = createPersistStacksUsecase();
     private final UpdateStackUsecase updateStacksUsecase = createUpdateStackUsecase();
 
-    @Bind(R.id.content)
+    @BindView(R.id.content)
     ViewStackScreen viewStackScreen;
 
     private Subscription subscription;

@@ -12,7 +12,7 @@ import com.ataulm.stacks.stack.RemoveStackUsecase;
 import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -25,7 +25,7 @@ public class RemovedActivity extends NavigationDrawerActivity implements Removed
     private final RemoveStackUsecase removeStackUsecase = createRemoveStackUsecase();
     private final PersistStacksUsecase persistStacksUsecase = createPersistStacksUsecase();
 
-    @Bind(R.id.content)
+    @BindView(R.id.content)
     RemovedStacksScreen removedStacksScreen;
 
     private Subscription subscription;

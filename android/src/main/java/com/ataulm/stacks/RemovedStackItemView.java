@@ -12,18 +12,18 @@ import android.widget.TextView;
 import com.ataulm.stacks.remove.RemovedStackItemListener;
 import com.ataulm.stacks.stack.Stack;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RemovedStackItemView extends LinearLayout {
 
-    @Bind(R.id.removed_stack_text_summary)
+    @BindView(R.id.removed_stack_text_summary)
     TextView summaryTextView;
 
-    @Bind(R.id.removed_stack_button_restore)
+    @BindView(R.id.removed_stack_button_restore)
     Button restoreButton;
 
-    @Bind(R.id.removed_stack_button_delete)
+    @BindView(R.id.removed_stack_button_delete)
     Button deleteButton;
 
     public RemovedStackItemView(Context context, AttributeSet attrs) {

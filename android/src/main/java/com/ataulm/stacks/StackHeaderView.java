@@ -8,12 +8,12 @@ import android.widget.TextView;
 
 import com.ataulm.stacks.stack.Stack;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class StackHeaderView extends LinearLayout {
 
-    @Bind(R.id.stack_header_text_summary)
+    @BindView(R.id.stack_header_text_summary)
     TextView summaryTextView;
 
     public StackHeaderView(Context context, AttributeSet attrs) {
