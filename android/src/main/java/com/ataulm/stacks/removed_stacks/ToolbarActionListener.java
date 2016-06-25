@@ -1,4 +1,4 @@
-package com.ataulm.stacks.remove;
+package com.ataulm.stacks.removed_stacks;
 
 public interface ToolbarActionListener {
 

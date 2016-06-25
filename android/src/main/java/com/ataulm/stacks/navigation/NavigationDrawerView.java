@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.ataulm.stacks.R;
-import com.ataulm.stacks.remove.RemovedActivity;
-import com.ataulm.stacks.view.ViewActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

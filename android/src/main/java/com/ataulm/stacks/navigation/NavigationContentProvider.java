@@ -24,7 +24,7 @@ public class NavigationContentProvider extends SimpleContentProvider {
 
     private static class MimeTypeResolver {
 
-        private static final String MIME_TYPE_SCREEN_TOP_LEVEL = "vnd.android.cursor.item/vnd.%1$s.screen.top_level.%2$s";
+        private static final String MIME_TYPE_SCREEN_TOP_LEVEL = "vnd.android.cursor.item/vnd.%1$s.toplevel";
 
         private final String packageName;
 
@@ -39,7 +39,7 @@ public class NavigationContentProvider extends SimpleContentProvider {
         @Nullable
         public String getType(Uri uri) {
             if (isTopLevelScreen(uri)) {
-                return String.format(MIME_TYPE_SCREEN_TOP_LEVEL, packageName, uri.getLastPathSegment());
+                return String.format(MIME_TYPE_SCREEN_TOP_LEVEL, packageName);
             } else {
                 return null;
             }
@@ -50,12 +50,7 @@ public class NavigationContentProvider extends SimpleContentProvider {
             if (path.size() == 0) {
                 return false;
             }
-            return pathStartsWithScreen(path) && lastPathSegmentMatchesAtLeastOneScreen(path);
-        }
-
-        private boolean pathStartsWithScreen(List<String> path) {
-            String pathPrefix = path.get(0);
-            return "screen".equals(pathPrefix);
+            return lastPathSegmentMatchesAtLeastOneScreen(path);
         }
 
         private boolean lastPathSegmentMatchesAtLeastOneScreen(List<String> path) {

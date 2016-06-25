@@ -48,7 +48,7 @@ public class StacksTest {
     }
 
     private static Stack createChildStack(String id, Id parentId) {
-        return createStack(id, Optional.from(parentId));
+        return createStack(id, Optional.fromNullable(parentId));
     }
 
     private static Stack createStack(String id, Optional<Id> parentId) {

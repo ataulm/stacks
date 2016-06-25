@@ -10,26 +10,34 @@
     android:theme="@style/Stacks.Theme"
     tools:ignore="AllowBackup">
 
-    <activity android:name=".view.ViewActivity">
+    <activity
+      android:name=".navigation.TopLevelActivity"
+      android:launchMode="singleTask">
+
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
-        <data android:mimeType="vnd.android.cursor.item/vnd.${packageName}.screen.top_level.stack" />
+        <data android:mimeType="vnd.android.cursor.item/vnd.${packageName}.toplevel" />
       </intent-filter>
+
     </activity>
 
-    <activity android:name=".remove.RemovedActivity">
+    <activity android:name=".stack.ViewActivity">
+
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
-        <data android:mimeType="vnd.android.cursor.item/vnd.${packageName}.screen.top_level.removed" />
+        <data android:mimeType="vnd.android.cursor.item/vnd.${packageName}.stacks_list" />
       </intent-filter>
+
     </activity>
+
+    <activity android:name=".removed_stack.RemovedActivity" />
 
     <activity-alias
       android:name="activity.primary_launcher"
       android:label="@string/app_name"
-      android:targetActivity=".view.ViewActivity">
+      android:targetActivity=".navigation.TopLevelActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />

@@ -1,4 +1,4 @@
-package com.ataulm.stacks;
+package com.ataulm.stacks.removed_stacks;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,7 +9,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ataulm.stacks.remove.RemovedStackItemListener;
+import com.ataulm.stacks.jabber.Jabber;
+import com.ataulm.stacks.NoOpDialogOnClickListener;
+import com.ataulm.stacks.R;
 import com.ataulm.stacks.stack.Stack;
 
 import butterknife.BindView;
@@ -38,32 +40,32 @@ public class RemovedStackItemView extends LinearLayout {
         ButterKnife.bind(this);
     }
 
-    public void bind(final Stack stack, final RemovedStackItemListener listener) {
+    public void bind(final Stack stack) {
         summaryTextView.setText(stack.summary());
 
         restoreButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickRestore(stack);
+                Jabber.toast("on click restore");
             }
         });
 
         deleteButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickDelete(stack);
+                confirmRemove(stack);
             }
         });
     }
 
-    private void confirmRemove(final Stack stack, final RemovedStackItemListener listener) {
+    private void confirmRemove(final Stack stack) {
         new AlertDialog.Builder(getContext())
                 .setTitle("Delete this stack?")
                 .setMessage("This stack and all its children will be deleted.")
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        listener.onClickDelete(stack);
+                        Jabber.toast("on click delete");
                     }
                 })
                 .setNegativeButton("Cancel", new NoOpDialogOnClickListener())

@@ -1,4 +1,4 @@
-package com.ataulm.stacks.remove;
+package com.ataulm.stacks.removed_stacks;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ataulm.stacks.R;
-import com.ataulm.stacks.RemovedStackItemView;
 import com.ataulm.stacks.stack.Stack;
 
 final class RemovedStackViewHolder extends RecyclerView.ViewHolder {
@@ -24,8 +23,8 @@ final class RemovedStackViewHolder extends RecyclerView.ViewHolder {
         this.removedStackItemView = removedStackItemView;
     }
 
-    public void bind(Stack stack, RemovedStackItemListener listener) {
-        removedStackItemView.bind(stack, listener);
+    public void bind(Stack stack) {
+        removedStackItemView.bind(stack);
     }
 
 }

@@ -1,11 +1,9 @@
-package com.ataulm.stacks;
+package com.ataulm.stacks.stack;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.ataulm.Optional;
-import com.ataulm.stacks.stack.Stack;
-import com.ataulm.stacks.stack.Stacks;
 
 public class StacksAdapter extends RecyclerView.Adapter {
 
@@ -13,19 +11,17 @@ public class StacksAdapter extends RecyclerView.Adapter {
 
     private final Optional<Stack> header;
     private final Stacks stacks;
-    private final StackItemListener stackItemListener;
     private final StackInputListener stackInputListener;
 
-    public static StacksAdapter create(Stacks stacks, StackItemListener listener, StackInputListener stackInputListener) {
-        StacksAdapter stacksAdapter = new StacksAdapter(stacks.info(), stacks, listener, stackInputListener);
+    public static StacksAdapter create(Stacks stacks, StackInputListener stackInputListener) {
+        StacksAdapter stacksAdapter = new StacksAdapter(stacks.info(), stacks, stackInputListener);
         stacksAdapter.setHasStableIds(true);
         return stacksAdapter;
     }
 
-    private StacksAdapter(Optional<Stack> header, Stacks stacks, StackItemListener listener, StackInputListener stackInputListener) {
+    private StacksAdapter(Optional<Stack> header, Stacks stacks, StackInputListener stackInputListener) {
         this.header = header;
         this.stacks = stacks;
-        this.stackItemListener = listener;
         this.stackInputListener = stackInputListener;
     }
 
@@ -48,7 +44,7 @@ public class StacksAdapter extends RecyclerView.Adapter {
             ((StackInputViewHolder) holder).bind(stackInputListener);
         } else {
             Stack stack = stacks.get(position - headerCount());
-            ((StackItemViewHolder) holder).bind(stack, stackItemListener);
+            ((StackItemViewHolder) holder).bind(stack);
         }
     }
 

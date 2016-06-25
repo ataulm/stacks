@@ -6,13 +6,13 @@ import android.content.SharedPreferences;
 import com.ataulm.Optional;
 import com.ataulm.stacks.stack.JsonRepository;
 
-final class SharedPreferencesJsonRepository implements JsonRepository {
+public final class SharedPreferencesJsonRepository implements JsonRepository {
 
     private static final String KEY_STACKS = "STACKS";
 
     private final SharedPreferences sharedPreferences;
 
-    static SharedPreferencesJsonRepository create(Context context) {
+    public static SharedPreferencesJsonRepository create(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID + ".LOCALREPO", Context.MODE_PRIVATE);
         return new SharedPreferencesJsonRepository(sharedPreferences);
     }

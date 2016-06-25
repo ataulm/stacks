@@ -19,7 +19,7 @@ public abstract class Optional<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> Optional<T> from(T data) {
+    public static <T> Optional<T> fromNullable(@Nullable T data) {
         if (data == null) {
             return ABSENT;
         }
@@ -29,7 +29,7 @@ public abstract class Optional<T> {
     @SuppressWarnings("unchecked")
     public static <T> Optional<T> of(T data) {
         if (data == null) {
-            throw new IllegalArgumentException("Data cannot be null. Use Optional.from(maybeNullData).");
+            throw new IllegalArgumentException("Data cannot be null. Use Optional.fromNullable(maybeNullData).");
         }
         return new AutoValue_Optional<>(data);
     }

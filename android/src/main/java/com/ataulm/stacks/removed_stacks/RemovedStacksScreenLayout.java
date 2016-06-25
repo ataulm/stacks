@@ -1,4 +1,4 @@
-package com.ataulm.stacks.remove;
+package com.ataulm.stacks.removed_stacks;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +16,7 @@ import com.ataulm.stacks.stack.Stacks;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RemovedStacksScreenLayout extends LinearLayout implements RemovedStacksScreen {
+public class RemovedStacksScreenLayout extends LinearLayout {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -41,27 +41,24 @@ public class RemovedStacksScreenLayout extends LinearLayout implements RemovedSt
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    @Override
     public void setupToolbar(String title, ToolbarActionListener toolbarActionListener) {
         toolbar.setTitle(title);
         updateToolbar(toolbarActionListener);
     }
 
-    @Override
-    public void showData(Stacks stacks, RemovedStackItemListener listener, ToolbarActionListener toolbarActionListener) {
+    public void showData(Stacks stacks, ToolbarActionListener toolbarActionListener) {
         updateToolbar(toolbarActionListener);
 
-        RecyclerView.Adapter adapter = RemovedStacksAdapter.create(stacks, listener);
+        RecyclerView.Adapter adapter = RemovedStacksAdapter.create(stacks);
         recyclerView.swapAdapter(adapter, false);
 
         emptyView.setVisibility(GONE);
     }
 
-    @Override
     public void showEmptyScreen(ToolbarActionListener toolbarActionListener) {
         updateToolbar(toolbarActionListener);
 
-        RecyclerView.Adapter adapter = RemovedStacksAdapter.create(Stacks.empty(), RemovedStackItemListener.NO_OP);
+        RecyclerView.Adapter adapter = RemovedStacksAdapter.create(Stacks.empty());
         recyclerView.swapAdapter(adapter, false);
 
         emptyView.setVisibility(VISIBLE);
@@ -80,17 +77,14 @@ public class RemovedStacksScreenLayout extends LinearLayout implements RemovedSt
     private static final class RemovedStacksAdapter extends RecyclerView.Adapter<RemovedStackViewHolder> {
         private final Stacks stacks;
 
-        private final RemovedStackItemListener listener;
-
-        public static RemovedStacksAdapter create(Stacks stacks, RemovedStackItemListener listener) {
-            RemovedStacksAdapter stacksAdapter = new RemovedStacksAdapter(stacks, listener);
+        public static RemovedStacksAdapter create(Stacks stacks) {
+            RemovedStacksAdapter stacksAdapter = new RemovedStacksAdapter(stacks);
             stacksAdapter.setHasStableIds(true);
             return stacksAdapter;
         }
 
-        private RemovedStacksAdapter(Stacks stacks, RemovedStackItemListener listener) {
+        private RemovedStacksAdapter(Stacks stacks) {
             this.stacks = stacks;
-            this.listener = listener;
         }
 
         @Override
@@ -101,7 +95,7 @@ public class RemovedStacksScreenLayout extends LinearLayout implements RemovedSt
         @Override
         public void onBindViewHolder(RemovedStackViewHolder holder, int position) {
             Stack stack = stacks.get(position);
-            holder.bind(stack, listener);
+            holder.bind(stack);
         }
 
         @Override

@@ -10,7 +10,7 @@ public abstract class Event<T> {
     }
 
     public static <T> Event<T> loading(T data) {
-        return new AutoValue_Event<>(Type.LOADING, Optional.from(data), Optional.<Throwable>absent());
+        return new AutoValue_Event<>(Type.LOADING, Optional.fromNullable(data), Optional.<Throwable>absent());
     }
 
     public static <T> Event<T> idle() {
@@ -18,7 +18,7 @@ public abstract class Event<T> {
     }
 
     public static <T> Event<T> idle(T data) {
-        return new AutoValue_Event<>(Type.IDLE, Optional.from(data), Optional.<Throwable>absent());
+        return new AutoValue_Event<>(Type.IDLE, Optional.fromNullable(data), Optional.<Throwable>absent());
     }
 
     public static <T> Event<T> error(Throwable error) {
@@ -29,7 +29,7 @@ public abstract class Event<T> {
         if (error == null) {
             throw new IllegalArgumentException("Error events must contain an error.");
         }
-        return new AutoValue_Event<>(Type.ERROR, Optional.from(data), Optional.of(error));
+        return new AutoValue_Event<>(Type.ERROR, Optional.fromNullable(data), Optional.of(error));
     }
 
     public abstract Type getType();

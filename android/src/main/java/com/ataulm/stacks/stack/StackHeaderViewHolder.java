@@ -1,11 +1,11 @@
-package com.ataulm.stacks;
+package com.ataulm.stacks.stack;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ataulm.stacks.stack.Stack;
+import com.ataulm.stacks.R;
 
 final class StackHeaderViewHolder extends RecyclerView.ViewHolder {
 

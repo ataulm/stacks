@@ -1,4 +1,4 @@
-package com.ataulm.stacks;
+package com.ataulm.stacks.stack;
 
 import android.content.Context;
 import android.text.Editable;
@@ -11,6 +11,9 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.ataulm.stacks.R;
+import com.ataulm.stacks.SimpleTextWatcher;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
