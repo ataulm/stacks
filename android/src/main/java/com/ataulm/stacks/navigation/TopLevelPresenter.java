@@ -29,24 +29,6 @@ class TopLevelPresenter implements Presenter {
         activePresenter.start(uri);
     }
 
-    /**
-     * @return true if the back event was consumed
-     */
-    @Override
-    public boolean onBackPressed() {
-        return activePresenter.onBackPressed();
-    }
-
-    @Override
-    public boolean isDisplaying(Screen screen) {
-        return activePresenter.isDisplaying(screen);
-    }
-
-    @Override
-    public void stop() {
-        activePresenter.stop();
-    }
-
     private Presenter getPresenterMatching(@Nullable Uri uri) {
         Screen screen = getScreenMatching(uri);
         for (Presenter presenter : presenters) {
@@ -67,6 +49,21 @@ class TopLevelPresenter implements Presenter {
         }
 
         throw new IllegalArgumentException("no screen matching uri: " + uri);
+    }
+
+    @Override
+    public void stop() {
+        activePresenter.stop();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return activePresenter.onBackPressed();
+    }
+
+    @Override
+    public boolean isDisplaying(Screen screen) {
+        return activePresenter.isDisplaying(screen);
     }
 
 }
