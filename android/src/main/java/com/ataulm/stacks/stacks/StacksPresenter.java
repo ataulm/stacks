@@ -10,7 +10,7 @@ import com.ataulm.stacks.navigation.Screen;
 import com.ataulm.stacks.navigation.UriResolver;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
 import com.ataulm.stacks.stack.Id;
-import com.ataulm.stacks.stack.ViewStackScreenLayout;
+import com.ataulm.stacks.stack.StacksScreenLayout;
 
 import rx.Subscription;
 
@@ -20,7 +20,7 @@ public class StacksPresenter implements Presenter {
     private final UriResolver uriResolver;
     private final FetchStacksUsecase fetchStacksUsecase;
 
-    private ViewStackScreenLayout contentView;
+    private StacksScreenLayout contentView;
     private Subscription subscription;
 
     public StacksPresenter(

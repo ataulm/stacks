@@ -15,7 +15,7 @@ import com.ataulm.stacks.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ViewStackScreenLayout extends LinearLayout {
+public class StacksScreenLayout extends LinearLayout {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -26,7 +26,7 @@ public class ViewStackScreenLayout extends LinearLayout {
     @BindView(R.id.view_screen_recycler_view)
     RecyclerView recyclerView;
 
-    public ViewStackScreenLayout(Context context, AttributeSet attrs) {
+    public StacksScreenLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOrientation(VERTICAL);
     }
