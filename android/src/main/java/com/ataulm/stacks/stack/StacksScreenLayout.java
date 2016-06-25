@@ -45,18 +45,14 @@ public class StacksScreenLayout extends LinearLayout {
         updateToolbarMenuGivenParentId(parent);
     }
 
-    public void showData(Stacks stacks, Optional<Id> parentId, StackInputListener inputListener) {
-        updateToolbarMenuGivenParentId(parentId);
-
+    public void showData(Stacks stacks, StackInputListener inputListener) {
         RecyclerView.Adapter adapter = StacksAdapter.create(stacks, inputListener);
         recyclerView.swapAdapter(adapter, false);
 
         emptyView.setVisibility(GONE);
     }
 
-    public void showEmptyScreen(Optional<Id> parentId, StackInputListener inputListener) {
-        updateToolbarMenuGivenParentId(parentId);
-
+    public void showEmptyScreen(StackInputListener inputListener) {
         RecyclerView.Adapter adapter = StacksAdapter.create(Stacks.empty(), inputListener);
         recyclerView.swapAdapter(adapter, false);
 
