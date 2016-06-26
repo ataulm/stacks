@@ -12,8 +12,7 @@ public final class StacksAdapter extends RecyclerView.Adapter<StackItemViewHolde
     private final Stacks stacks;
     private final StableIdDictionary<Stack> ids;
 
-    public static StacksAdapter create(Stacks stacks) {
-        StableIdDictionary<Stack> ids = new StableIdDictionary<>(stacks.size());
+    public static StacksAdapter create(Stacks stacks, StableIdDictionary<Stack> ids) {
         StacksAdapter stacksAdapter = new StacksAdapter(stacks, ids);
         stacksAdapter.setHasStableIds(true);
         return stacksAdapter;

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.ataulm.Optional;
+import com.ataulm.rv.StableIdDictionary;
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.stack.Id;
 import com.ataulm.stacks.stack.Stack;
@@ -28,9 +29,12 @@ public class StacksScreenLayout extends LinearLayout {
     @BindView(R.id.view_screen_recycler_view)
     RecyclerView recyclerView;
 
+    private final StableIdDictionary<Stack> ids;
+
     public StacksScreenLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOrientation(VERTICAL);
+        ids = new StableIdDictionary<>();
     }
 
     @Override
@@ -45,7 +49,7 @@ public class StacksScreenLayout extends LinearLayout {
     public void update(Stacks stacks, ToolbarActions toolbarActions, StackInputListener inputListener) {
         updateToolbar(stacks, toolbarActions);
 
-        RecyclerView.Adapter adapter = StacksAdapter.create(stacks);
+        RecyclerView.Adapter adapter = StacksAdapter.create(stacks, ids);
         recyclerView.swapAdapter(adapter, false);
 
         if (stacks.size() == 0) {
