@@ -1,4 +1,4 @@
-package com.ataulm.stacks.stack;
+package com.ataulm.stacks.stacks;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +10,9 @@ import android.widget.LinearLayout;
 
 import com.ataulm.Optional;
 import com.ataulm.stacks.R;
+import com.ataulm.stacks.stack.Id;
+import com.ataulm.stacks.stack.Stack;
+import com.ataulm.stacks.stack.Stacks;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

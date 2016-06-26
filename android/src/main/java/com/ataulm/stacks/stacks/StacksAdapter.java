@@ -1,9 +1,11 @@
-package com.ataulm.stacks.stack;
+package com.ataulm.stacks.stacks;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.ataulm.Optional;
+import com.ataulm.stacks.stack.Stack;
+import com.ataulm.stacks.stack.Stacks;
 
 public class StacksAdapter extends RecyclerView.Adapter {
 

@@ -1,4 +1,4 @@
-package com.ataulm.stacks.stack;
+package com.ataulm.stacks.stacks;
 
 import android.content.Context;
 import android.util.AttributeSet;

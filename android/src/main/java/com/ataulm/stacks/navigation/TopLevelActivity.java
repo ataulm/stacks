@@ -15,7 +15,7 @@ import com.ataulm.stacks.jabber.Jabber;
 import com.ataulm.stacks.removed_stacks.RemovedStacksPresenter;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
 import com.ataulm.stacks.stack.Id;
-import com.ataulm.stacks.stack.ToolbarActions;
+import com.ataulm.stacks.stacks.ToolbarActions;
 import com.ataulm.stacks.stacks.StacksPresenter;
 
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package com.ataulm.stacks.stack;
+package com.ataulm.stacks.stacks;
 
 import android.content.Context;
 import android.support.v4.view.ViewCompat;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.ataulm.stacks.jabber.Jabber;
 import com.ataulm.stacks.R;
+import com.ataulm.stacks.stack.Stack;
 import com.novoda.accessibility.AccessibilityServices;
 import com.novoda.accessibility.Action;
 import com.novoda.accessibility.Actions;

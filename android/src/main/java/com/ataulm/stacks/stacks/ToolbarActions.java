@@ -1,4 +1,6 @@
-package com.ataulm.stacks.stack;
+package com.ataulm.stacks.stacks;
+
+import com.ataulm.stacks.stack.Id;
 
 public interface ToolbarActions {
 

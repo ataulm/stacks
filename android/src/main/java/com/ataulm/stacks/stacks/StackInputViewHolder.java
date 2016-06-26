@@ -1,4 +1,4 @@
-package com.ataulm.stacks.stack;
+package com.ataulm.stacks.stacks;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

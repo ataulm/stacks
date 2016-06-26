@@ -13,10 +13,7 @@ import com.ataulm.stacks.navigation.Screen;
 import com.ataulm.stacks.navigation.UriResolver;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
 import com.ataulm.stacks.stack.Id;
-import com.ataulm.stacks.stack.StackInputListener;
 import com.ataulm.stacks.stack.Stacks;
-import com.ataulm.stacks.stack.StacksScreenLayout;
-import com.ataulm.stacks.stack.ToolbarActions;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;

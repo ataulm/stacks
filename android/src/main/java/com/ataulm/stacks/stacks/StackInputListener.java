@@ -1,4 +1,4 @@
-package com.ataulm.stacks.stack;
+package com.ataulm.stacks.stacks;
 
 public interface StackInputListener {
 
