@@ -15,7 +15,6 @@ import com.ataulm.stacks.stack.CreateStackUsecase;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
 import com.ataulm.stacks.stack.Id;
 import com.ataulm.stacks.stack.PersistStacksUsecase;
-import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
 
 import rx.Subscription;
@@ -52,7 +51,17 @@ public class StacksPresenter implements Presenter {
     @Override
     public void start(Uri uri) {
         contentView = contentViewSetter.display(R.layout.view_stacks_screen);
-        Optional<Id> id = uriResolver.extractIdFrom(uri);
+        final Optional<Id> id = uriResolver.extractIdFrom(uri);
+
+        contentView.set(
+                new StackInputListener() {
+                    @Override
+                    public void onClickAddStack(String summary) {
+                        createStackUsecase.createStack(id, summary);
+                    }
+                }
+        );
+
         subscription = fetchStacksUsecase.fetchStacks(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new StacksObserver());
@@ -92,32 +101,15 @@ public class StacksPresenter implements Presenter {
                     update(stacks);
                     Jabber.toast("up to date");
                     break;
+                default:
+                    throw new IllegalArgumentException("unknown type: " + stacks.getType());
             }
         }
 
         private void update(Event<Stacks> stacksEvent) {
-            Optional<Stacks> data = stacksEvent.getData();
-            final Optional<Id> stackId = getStackIdFrom(data);
-
-            StackInputListener inputListener = new StackInputListener() {
-                @Override
-                public void onClickAddStack(String summary) {
-                    createStackUsecase.createStack(stackId, summary);
-                }
-            };
-
-            if (data.isPresent()) {
-                Stacks stacks = data.get();
-                contentView.update(stacks, toolbarActions, inputListener);
-            }
-        }
-
-        private Optional<Id> getStackIdFrom(Optional<Stacks> data) {
-            if (data.isPresent()) {
-                Optional<Stack> info = data.get().info();
-                return info.isPresent() ? info.get().parentId() : Optional.<Id>absent();
-            } else {
-                return Optional.absent();
+            if (stacksEvent.getData().isPresent()) {
+                Stacks stacks = stacksEvent.getData().get();
+                contentView.update(stacks, toolbarActions);
             }
         }
 

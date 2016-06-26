@@ -49,7 +49,11 @@ public class StacksScreenLayout extends LinearLayout {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    public void update(Stacks stacks, ToolbarActions toolbarActions, StackInputListener inputListener) {
+    public void set(StackInputListener inputListener) {
+        stackInputView.bind(inputListener);
+    }
+
+    public void update(Stacks stacks, ToolbarActions toolbarActions) {
         updateToolbar(stacks, toolbarActions);
 
         RecyclerView.Adapter adapter = StacksAdapter.create(stacks, ids);
@@ -62,8 +66,6 @@ public class StacksScreenLayout extends LinearLayout {
             recyclerView.setVisibility(VISIBLE);
             emptyView.setVisibility(GONE);
         }
-
-        stackInputView.bind(inputListener);
     }
 
     private void updateToolbar(Stacks stacks, ToolbarActions actions) {
