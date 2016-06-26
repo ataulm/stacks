@@ -79,6 +79,7 @@ public class StacksPresenter implements Presenter {
                     break;
                 case IDLE:
                     update(stacks);
+                    Jabber.toast("up to date");
                     break;
             }
         }
