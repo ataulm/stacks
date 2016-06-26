@@ -21,7 +21,13 @@
   <android.support.v7.widget.RecyclerView
     android:id="@+id/view_screen_recycler_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="100"
     android:focusable="false" />
+
+  <com.ataulm.stacks.stacks.StackInputView
+    android:id="@+id/view_screen_stack_input_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
 
 </merge>

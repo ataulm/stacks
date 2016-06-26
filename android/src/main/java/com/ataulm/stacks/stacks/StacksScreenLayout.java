@@ -29,6 +29,9 @@ public class StacksScreenLayout extends LinearLayout {
     @BindView(R.id.view_screen_recycler_view)
     RecyclerView recyclerView;
 
+    @BindView(R.id.view_screen_stack_input_view)
+    StackInputView stackInputView;
+
     private final StableIdDictionary<Stack> ids;
 
     public StacksScreenLayout(Context context, AttributeSet attrs) {
@@ -59,6 +62,8 @@ public class StacksScreenLayout extends LinearLayout {
             recyclerView.setVisibility(VISIBLE);
             emptyView.setVisibility(GONE);
         }
+
+        stackInputView.bind(inputListener);
     }
 
     private void updateToolbar(Stacks stacks, ToolbarActions actions) {
