@@ -3,21 +3,25 @@ package com.ataulm.stacks.stacks;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.ataulm.rv.StableIdDictionary;
 import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
 
 public final class StacksAdapter extends RecyclerView.Adapter<StackItemViewHolder> {
 
     private final Stacks stacks;
+    private final StableIdDictionary<Stack> ids;
 
     public static StacksAdapter create(Stacks stacks) {
-        StacksAdapter stacksAdapter = new StacksAdapter(stacks);
+        StableIdDictionary<Stack> ids = new StableIdDictionary<>(stacks.size());
+        StacksAdapter stacksAdapter = new StacksAdapter(stacks, ids);
         stacksAdapter.setHasStableIds(true);
         return stacksAdapter;
     }
 
-    private StacksAdapter(Stacks stacks) {
+    private StacksAdapter(Stacks stacks, StableIdDictionary<Stack> ids) {
         this.stacks = stacks;
+        this.ids = ids;
     }
 
     @Override
@@ -38,7 +42,8 @@ public final class StacksAdapter extends RecyclerView.Adapter<StackItemViewHolde
 
     @Override
     public long getItemId(int position) {
-        return stacks.get(position).id().hashCode();
+        Stack stack = stacks.get(position);
+        return ids.getId(stack);
     }
 
 }
