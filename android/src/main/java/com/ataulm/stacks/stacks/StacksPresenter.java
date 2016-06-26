@@ -11,8 +11,11 @@ import com.ataulm.stacks.jabber.Jabber;
 import com.ataulm.stacks.navigation.ContentViewSetter;
 import com.ataulm.stacks.navigation.Screen;
 import com.ataulm.stacks.navigation.UriResolver;
+import com.ataulm.stacks.stack.CreateStackUsecase;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
 import com.ataulm.stacks.stack.Id;
+import com.ataulm.stacks.stack.PersistStacksUsecase;
+import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
 
 import rx.Subscription;
@@ -23,6 +26,8 @@ public class StacksPresenter implements Presenter {
     private final ContentViewSetter contentViewSetter;
     private final UriResolver uriResolver;
     private final FetchStacksUsecase fetchStacksUsecase;
+    private final CreateStackUsecase createStackUsecase;
+    private final PersistStacksUsecase persistStacksUsecase;
     private final ToolbarActions toolbarActions;
 
     private StacksScreenLayout contentView;
@@ -32,10 +37,15 @@ public class StacksPresenter implements Presenter {
             ContentViewSetter contentViewSetter,
             UriResolver uriResolver,
             FetchStacksUsecase fetchStacksUsecase,
-            ToolbarActions toolbarActions) {
+            CreateStackUsecase createStackUsecase,
+            PersistStacksUsecase persistStacksUsecase,
+            ToolbarActions toolbarActions
+    ) {
         this.contentViewSetter = contentViewSetter;
         this.fetchStacksUsecase = fetchStacksUsecase;
         this.uriResolver = uriResolver;
+        this.createStackUsecase = createStackUsecase;
+        this.persistStacksUsecase = persistStacksUsecase;
         this.toolbarActions = toolbarActions;
     }
 
@@ -50,6 +60,7 @@ public class StacksPresenter implements Presenter {
 
     @Override
     public void stop() {
+        persistStacksUsecase.persistStacks();
         if (!subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }
@@ -84,22 +95,29 @@ public class StacksPresenter implements Presenter {
             }
         }
 
-        private void update(Event<Stacks> stacks) {
+        private void update(Event<Stacks> stacksEvent) {
+            Optional<Stacks> data = stacksEvent.getData();
+            final Optional<Id> stackId = getStackIdFrom(data);
+
             StackInputListener inputListener = new StackInputListener() {
                 @Override
                 public void onClickAddStack(String summary) {
-                    Jabber.toast("click add: " + summary);
-                }
-
-                @Override
-                public void onClickAddStackCompleted(String summary) {
-                    Jabber.toast("click add completed: " + summary);
+                    createStackUsecase.createStack(stackId, summary);
                 }
             };
 
-            Optional<Stacks> data = stacks.getData();
             if (data.isPresent()) {
-                contentView.update(data.get(), toolbarActions, inputListener);
+                Stacks stacks = data.get();
+                contentView.update(stacks, toolbarActions, inputListener);
+            }
+        }
+
+        private Optional<Id> getStackIdFrom(Optional<Stacks> data) {
+            if (data.isPresent()) {
+                Optional<Stack> info = data.get().info();
+                return info.isPresent() ? info.get().parentId() : Optional.<Id>absent();
+            } else {
+                return Optional.absent();
             }
         }
 

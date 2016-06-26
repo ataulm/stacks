@@ -13,10 +13,12 @@ import com.ataulm.stacks.Presenter;
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.jabber.Jabber;
 import com.ataulm.stacks.removed_stacks.RemovedStacksPresenter;
+import com.ataulm.stacks.stack.CreateStackUsecase;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
 import com.ataulm.stacks.stack.Id;
-import com.ataulm.stacks.stacks.ToolbarActions;
+import com.ataulm.stacks.stack.PersistStacksUsecase;
 import com.ataulm.stacks.stacks.StacksPresenter;
+import com.ataulm.stacks.stacks.ToolbarActions;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,6 +32,8 @@ public class TopLevelActivity extends BaseActivity {
     private final UriCreator uriCreator = uriCreator();
     private final UriResolver uriResolver = uriResolver();
     private final FetchStacksUsecase fetchStacksUsecase = fetchStacksUsecase();
+    private final CreateStackUsecase createStackUsecase = createStacksUsecase();
+    private final PersistStacksUsecase persistStacksUsecase = persistStacksUsecase();
 
     private TopLevelPresenter presenter;
     private TopLevelNavigator navigator;
@@ -50,7 +54,7 @@ public class TopLevelActivity extends BaseActivity {
         FrameLayout contentFrame = ButterKnife.findById(this, R.id.drawer_layout_content);
         ContentViewSetter contentViewSetter = new ContentViewSetter(getLayoutInflater(), contentFrame);
         return Arrays.asList(
-                new StacksPresenter(contentViewSetter, uriResolver, fetchStacksUsecase, createToolbarActions()),
+                new StacksPresenter(contentViewSetter, uriResolver, fetchStacksUsecase, createStackUsecase, persistStacksUsecase, createToolbarActions()),
                 new RemovedStacksPresenter(contentViewSetter)
         );
     }
