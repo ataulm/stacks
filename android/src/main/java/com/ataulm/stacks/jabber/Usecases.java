@@ -14,7 +14,7 @@ import com.ataulm.stacks.stack.SyncRemoveStackUsecase;
 import com.ataulm.stacks.stack.SyncUpdateStackUsecase;
 import com.ataulm.stacks.stack.UpdateStackUsecase;
 
-public final class Usecases {
+final class Usecases {
 
     private final FetchStacksUsecase fetchStacksUsecase;
     private final CreateStackUsecase createStackUsecase;
