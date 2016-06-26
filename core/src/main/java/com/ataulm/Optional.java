@@ -11,7 +11,15 @@ public abstract class Optional<T> {
     private static final Optional ABSENT = new AutoValue_Optional(null);
 
     @Nullable
-    public abstract T get();
+    abstract T data();
+
+    public T get() {
+        if (isPresent()) {
+            return data();
+        } else {
+            throw new IllegalStateException("Data not present");
+        }
+    }
 
     @SuppressWarnings("unchecked")
     public static <T> Optional<T> absent() {
@@ -39,7 +47,7 @@ public abstract class Optional<T> {
     }
 
     public boolean isPresent() {
-        return get() != null;
+        return data() != null;
     }
 
 }
