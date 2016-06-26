@@ -45,7 +45,7 @@ public class StacksScreenLayout extends LinearLayout {
     public void update(Stacks stacks, ToolbarActions toolbarActions, StackInputListener inputListener) {
         updateToolbar(stacks, toolbarActions);
 
-        RecyclerView.Adapter adapter = StacksAdapter.create(stacks, inputListener);
+        RecyclerView.Adapter adapter = StacksAdapter.create(stacks);
         recyclerView.swapAdapter(adapter, false);
 
         if (stacks.size() == 0) {
