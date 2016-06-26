@@ -8,9 +8,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.ataulm.Optional;
-import com.ataulm.stacks.jabber.Jabber;
 import com.ataulm.stacks.R;
+import com.ataulm.stacks.jabber.Jabber;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,34 +39,25 @@ public class StacksScreenLayout extends LinearLayout {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    public void setupToolbar(String title, Optional<Id> parent) {
-        toolbar.setTitle(title);
-        updateToolbarMenuGivenParentId(parent);
-    }
-
     public void showData(Stacks stacks, StackInputListener inputListener) {
+        updateToolbar(stacks);
         RecyclerView.Adapter adapter = StacksAdapter.create(stacks, inputListener);
         recyclerView.swapAdapter(adapter, false);
 
         emptyView.setVisibility(GONE);
     }
 
-    public void showEmptyScreen(StackInputListener inputListener) {
-        RecyclerView.Adapter adapter = StacksAdapter.create(Stacks.empty(), inputListener);
-        recyclerView.swapAdapter(adapter, false);
-
-        emptyView.setVisibility(VISIBLE);
-    }
-
-    private void updateToolbarMenuGivenParentId(Optional<Id> parentId) {
-        if (parentId.isPresent()) {
-            setupToolbarToNavigateUp();
+    private void updateToolbar(Stacks stacks) {
+        if (stacks.info().isPresent()) {
+            Stack stack = stacks.info().get();
+            updateToolbarWith(stack);
         } else {
-            setupToolbarToToggleMenu();
+            updateToolbarAsRootStack();
         }
     }
 
-    private void setupToolbarToNavigateUp() {
+    private void updateToolbarWith(Stack stack) {
+        toolbar.setTitle(stack.summary());
         toolbar.setNavigationIcon(R.drawable.wire_up);
         toolbar.setNavigationOnClickListener(new OnClickListener() {
             @Override
@@ -77,7 +67,8 @@ public class StacksScreenLayout extends LinearLayout {
         });
     }
 
-    private void setupToolbarToToggleMenu() {
+    private void updateToolbarAsRootStack() {
+        toolbar.setTitle("Stacks");
         toolbar.setNavigationIcon(R.drawable.wire_nav_drawer);
         toolbar.setNavigationOnClickListener(new OnClickListener() {
             @Override
@@ -85,6 +76,13 @@ public class StacksScreenLayout extends LinearLayout {
                 Jabber.toast("on click toggle menu");
             }
         });
+    }
+
+    public void showEmptyScreen(StackInputListener inputListener) {
+        RecyclerView.Adapter adapter = StacksAdapter.create(Stacks.empty(), inputListener);
+        recyclerView.swapAdapter(adapter, false);
+
+        emptyView.setVisibility(VISIBLE);
     }
 
 }
