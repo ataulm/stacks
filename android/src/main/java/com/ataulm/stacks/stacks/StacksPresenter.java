@@ -16,6 +16,7 @@ import com.ataulm.stacks.stack.Id;
 import com.ataulm.stacks.stack.StackInputListener;
 import com.ataulm.stacks.stack.Stacks;
 import com.ataulm.stacks.stack.StacksScreenLayout;
+import com.ataulm.stacks.stack.ToolbarActions;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -25,6 +26,7 @@ public class StacksPresenter implements Presenter {
     private final ContentViewSetter contentViewSetter;
     private final UriResolver uriResolver;
     private final FetchStacksUsecase fetchStacksUsecase;
+    private final ToolbarActions toolbarActions;
 
     private StacksScreenLayout contentView;
     private Subscription subscription;
@@ -32,11 +34,12 @@ public class StacksPresenter implements Presenter {
     public StacksPresenter(
             ContentViewSetter contentViewSetter,
             UriResolver uriResolver,
-            FetchStacksUsecase fetchStacksUsecase
-    ) {
+            FetchStacksUsecase fetchStacksUsecase,
+            ToolbarActions toolbarActions) {
         this.contentViewSetter = contentViewSetter;
         this.fetchStacksUsecase = fetchStacksUsecase;
         this.uriResolver = uriResolver;
+        this.toolbarActions = toolbarActions;
     }
 
     @Override
@@ -96,11 +99,10 @@ public class StacksPresenter implements Presenter {
                     Jabber.toast("click add completed: " + summary);
                 }
             };
+
             Optional<Stacks> data = stacks.getData();
             if (data.isPresent()) {
-                contentView.showData(data.get(), inputListener);
-            } else {
-                contentView.showEmptyScreen(inputListener);
+                contentView.update(data.get(), toolbarActions, inputListener);
             }
         }
 

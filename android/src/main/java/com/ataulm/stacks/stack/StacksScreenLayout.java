@@ -8,8 +8,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.ataulm.Optional;
 import com.ataulm.stacks.R;
-import com.ataulm.stacks.jabber.Jabber;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,50 +39,55 @@ public class StacksScreenLayout extends LinearLayout {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    public void showData(Stacks stacks, StackInputListener inputListener) {
-        updateToolbar(stacks);
+    public void update(Stacks stacks, ToolbarActions toolbarActions, StackInputListener inputListener) {
+        updateToolbar(stacks, toolbarActions);
+
         RecyclerView.Adapter adapter = StacksAdapter.create(stacks, inputListener);
         recyclerView.swapAdapter(adapter, false);
 
-        emptyView.setVisibility(GONE);
-    }
-
-    private void updateToolbar(Stacks stacks) {
-        if (stacks.info().isPresent()) {
-            Stack stack = stacks.info().get();
-            updateToolbarWith(stack);
+        if (stacks.size() == 0) {
+            emptyView.setVisibility(VISIBLE);
+            recyclerView.setVisibility(GONE);
         } else {
-            updateToolbarAsRootStack();
+            recyclerView.setVisibility(VISIBLE);
+            emptyView.setVisibility(GONE);
         }
     }
 
-    private void updateToolbarWith(Stack stack) {
+    private void updateToolbar(Stacks stacks, ToolbarActions actions) {
+        if (stacks.info().isPresent()) {
+            Stack stack = stacks.info().get();
+            updateToolbarWith(stack, actions);
+        } else {
+            updateToolbarAsRootStack(actions);
+        }
+    }
+
+    private void updateToolbarWith(final Stack stack, final ToolbarActions actions) {
         toolbar.setTitle(stack.summary());
         toolbar.setNavigationIcon(R.drawable.wire_up);
         toolbar.setNavigationOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Jabber.toast("on click navigate up");
+                Optional<Id> id = stack.parentId();
+                if (id.isPresent()) {
+                    actions.onClickNavigateUpTo(id.get());
+                } else {
+                    throw new IllegalStateException("stack has no parent: " + stack);
+                }
             }
         });
     }
 
-    private void updateToolbarAsRootStack() {
+    private void updateToolbarAsRootStack(final ToolbarActions actions) {
         toolbar.setTitle("Stacks");
         toolbar.setNavigationIcon(R.drawable.wire_nav_drawer);
         toolbar.setNavigationOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Jabber.toast("on click toggle menu");
+                actions.onClickOpenNavigationDrawer();
             }
         });
-    }
-
-    public void showEmptyScreen(StackInputListener inputListener) {
-        RecyclerView.Adapter adapter = StacksAdapter.create(Stacks.empty(), inputListener);
-        recyclerView.swapAdapter(adapter, false);
-
-        emptyView.setVisibility(VISIBLE);
     }
 
 }

@@ -11,8 +11,11 @@ import android.widget.FrameLayout;
 import com.ataulm.stacks.BaseActivity;
 import com.ataulm.stacks.Presenter;
 import com.ataulm.stacks.R;
+import com.ataulm.stacks.jabber.Jabber;
 import com.ataulm.stacks.removed_stacks.RemovedStacksPresenter;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
+import com.ataulm.stacks.stack.Id;
+import com.ataulm.stacks.stack.ToolbarActions;
 import com.ataulm.stacks.stacks.StacksPresenter;
 
 import java.util.Arrays;
@@ -47,9 +50,24 @@ public class TopLevelActivity extends BaseActivity {
         FrameLayout contentFrame = ButterKnife.findById(this, R.id.drawer_layout_content);
         ContentViewSetter contentViewSetter = new ContentViewSetter(getLayoutInflater(), contentFrame);
         return Arrays.asList(
-                new StacksPresenter(contentViewSetter, uriResolver, fetchStacksUsecase),
+                new StacksPresenter(contentViewSetter, uriResolver, fetchStacksUsecase, createToolbarActions()),
                 new RemovedStacksPresenter(contentViewSetter)
         );
+    }
+
+    private ToolbarActions createToolbarActions() {
+        return new ToolbarActions() {
+            @Override
+            public void onClickNavigateUpTo(Id id) {
+                Jabber.toast("navigate up to stack with id: " + id);
+                // TODO: navigate up with finish animation
+            }
+
+            @Override
+            public void onClickOpenNavigationDrawer() {
+                drawerController.openDrawer();
+            }
+        };
     }
 
     private void setupNavigationDrawer() {
