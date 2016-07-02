@@ -54,7 +54,7 @@ public class TopLevelActivity extends BaseActivity {
         ContentViewSetter contentViewSetter = new DrawerLayoutContentViewSetter(getLayoutInflater(), contentFrame);
         StacksToolbarActions toolbarActions = StacksToolbarActions.create(navigator, drawerController);
         return Arrays.asList(
-                new StacksPresenter(contentViewSetter, uriResolver, fetchStacksUsecase, createStackUsecase, persistStacksUsecase, toolbarActions, navigator),
+                new StacksPresenter(contentViewSetter, uriResolver, fetchStacksUsecase, createStackUsecase, persistStacksUsecase, toolbarActions, navigator, clickActions),
                 new RemovedStacksPresenter(contentViewSetter)
         );
     }

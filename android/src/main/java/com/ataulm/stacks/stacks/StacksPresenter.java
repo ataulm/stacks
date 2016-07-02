@@ -23,7 +23,7 @@ import com.ataulm.stacks.stack.Stacks;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class StacksPresenter implements Presenter {
+public final class StacksPresenter implements Presenter {
 
     private final ContentViewSetter contentViewSetter;
     private final UriResolver uriResolver;
@@ -31,13 +31,12 @@ public class StacksPresenter implements Presenter {
     private final CreateStackUsecase createStackUsecase;
     private final PersistStacksUsecase persistStacksUsecase;
     private final ToolbarActions toolbarActions;
-    private final Navigator navigator;
+    private final ClickActions clickActions;
 
     private StacksScreenLayout contentView;
-    private ClickActions clickActions;
     private Subscriptions subscriptions = new Subscriptions();
 
-    public StacksPresenter(
+    public static StacksPresenter create(
             ContentViewSetter contentViewSetter,
             UriResolver uriResolver,
             FetchStacksUsecase fetchStacksUsecase,
@@ -46,13 +45,34 @@ public class StacksPresenter implements Presenter {
             ToolbarActions toolbarActions,
             Navigator navigator
     ) {
+        ClickActions clickActions = new StackClickActions(navigator);
+        return new StacksPresenter(
+                contentViewSetter,
+                uriResolver,
+                fetchStacksUsecase,
+                createStackUsecase,
+                persistStacksUsecase,
+                toolbarActions,
+                clickActions
+        );
+    }
+
+    private StacksPresenter(
+            ContentViewSetter contentViewSetter,
+            UriResolver uriResolver,
+            FetchStacksUsecase fetchStacksUsecase,
+            CreateStackUsecase createStackUsecase,
+            PersistStacksUsecase persistStacksUsecase,
+            ToolbarActions toolbarActions,
+            ClickActions clickActions
+    ) {
         this.contentViewSetter = contentViewSetter;
         this.fetchStacksUsecase = fetchStacksUsecase;
         this.uriResolver = uriResolver;
         this.createStackUsecase = createStackUsecase;
         this.persistStacksUsecase = persistStacksUsecase;
         this.toolbarActions = toolbarActions;
-        this.navigator = navigator;
+        this.clickActions = clickActions;
     }
 
     @Override
@@ -60,19 +80,20 @@ public class StacksPresenter implements Presenter {
         contentView = contentViewSetter.display(R.layout.view_stacks_screen);
         final Optional<Id> id = uriResolver.extractIdFrom(uri);
 
-        clickActions = createClickActions();
-
-        contentView.set(
-                new StackInputListener() {
-                    @Override
-                    public void onClickAddStack(String summary) {
-                        createStackUsecase.createStack(id, summary);
-                    }
-                }
-        );
+        StackInputListener stackInputListener = createStackInputListener(id);
+        contentView.set(stackInputListener);
 
         subscriptions.add(subscribeToStack(id));
         subscriptions.add(subscribeToChildren(id));
+    }
+
+    private StackInputListener createStackInputListener(final Optional<Id> id) {
+        return new StackInputListener() {
+            @Override
+            public void onClickAddStack(String summary) {
+                createStackUsecase.createStack(id, summary);
+            }
+        };
     }
 
     private Subscription subscribeToStack(Optional<Id> id) {
@@ -86,30 +107,6 @@ public class StacksPresenter implements Presenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ChildrenObserver());
 
-    }
-
-    private ClickActions createClickActions() {
-        return new ClickActions() {
-            @Override
-            public void onClick(Stack stack) {
-                navigator.navigateToStack(stack.id());
-            }
-
-            @Override
-            public void onClickMarkComplete(Stack stack) {
-                Jabber.toast("on click: mark complete");
-            }
-
-            @Override
-            public void onClickMarkNotComplete(Stack stack) {
-                Jabber.toast("on click: mark incomplete");
-            }
-
-            @Override
-            public void onClickRemove(Stack stack) {
-                Jabber.toast("on click: delete");
-            }
-        };
     }
 
     @Override

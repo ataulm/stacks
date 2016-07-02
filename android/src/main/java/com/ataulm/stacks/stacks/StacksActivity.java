@@ -35,7 +35,7 @@ public class StacksActivity extends BaseActivity {
         ContentViewSetter contentViewSetter = new ActivityContentViewSetter(this);
         Navigator navigator = new Navigator(this, uriCreator);
         StacksToolbarActions toolbarActions = StacksToolbarActions.create(navigator);
-        presenter = new StacksPresenter(
+        presenter = StacksPresenter.create(
                 contentViewSetter,
                 uriResolver,
                 fetchStacksUsecase,
