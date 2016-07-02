@@ -26,13 +26,13 @@ class MimeTypeResolver {
 
     @Nullable
     public String getType(URI uri) {
-        if (isTopLevelScreen(uri)) {
+        if (isTopLevelScreen(uri) || isStacksScreen(uri)) {
             return String.format(MIME_TYPE_SCREEN_TOP_LEVEL, packageName);
         }
 
-        if (isStacksScreen(uri)) {
-            return String.format(MIME_TYPE_SCREEN_STACKS, packageName);
-        }
+//        if (isStacksScreen(uri)) {
+//            return String.format(MIME_TYPE_SCREEN_STACKS, packageName);
+//        }
 
         return null;
     }

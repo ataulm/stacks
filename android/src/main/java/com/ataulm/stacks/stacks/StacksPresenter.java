@@ -32,6 +32,7 @@ public final class StacksPresenter implements Presenter {
     private final FetchStacksUsecase fetchStacksUsecase;
     private final CreateStackUsecase createStackUsecase;
     private final PersistStacksUsecase persistStacksUsecase;
+    private final OnBackPressedAction onBackPressedAction;
     private final ToolbarActions toolbarActions;
     private final ClickActions clickActions;
 
@@ -49,13 +50,16 @@ public final class StacksPresenter implements Presenter {
             ToolbarActions toolbarActions,
             Navigator navigator
     ) {
+        OnBackPressedAction onBackPressedAction = new OnBackPressedAction(navigator);
         ClickActions clickActions = new StackClickActions(navigator, updateStackUsecase, removeStackUsecase);
+
         return new StacksPresenter(
                 contentViewSetter,
                 uriResolver,
                 fetchStacksUsecase,
                 createStackUsecase,
                 persistStacksUsecase,
+                onBackPressedAction,
                 toolbarActions,
                 clickActions
         );
@@ -67,6 +71,7 @@ public final class StacksPresenter implements Presenter {
             FetchStacksUsecase fetchStacksUsecase,
             CreateStackUsecase createStackUsecase,
             PersistStacksUsecase persistStacksUsecase,
+            OnBackPressedAction onBackPressedAction,
             ToolbarActions toolbarActions,
             ClickActions clickActions
     ) {
@@ -75,6 +80,7 @@ public final class StacksPresenter implements Presenter {
         this.uriResolver = uriResolver;
         this.createStackUsecase = createStackUsecase;
         this.persistStacksUsecase = persistStacksUsecase;
+        this.onBackPressedAction = onBackPressedAction;
         this.toolbarActions = toolbarActions;
         this.clickActions = clickActions;
     }
@@ -121,7 +127,37 @@ public final class StacksPresenter implements Presenter {
 
     @Override
     public boolean onBackPressed() {
-        return false;
+        return onBackPressedAction.onBackPressed();
+    }
+
+    private static class OnBackPressedAction {
+
+        private final Navigator navigator;
+
+        private Optional<Stack> stack = Optional.absent();
+
+        OnBackPressedAction(Navigator navigator) {
+            this.navigator = navigator;
+        }
+
+        public void update(Optional<Stack> stack) {
+            this.stack = stack;
+        }
+
+        public boolean onBackPressed() {
+            if (stack.isPresent()) {
+                navigateUpToParent(stack.get());
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        private void navigateUpToParent(Stack stack) {
+            Optional<Id> parent = stack.parentId();
+            navigator.navigateUpToStack(parent);
+        }
+
     }
 
     @Override
@@ -152,6 +188,7 @@ public final class StacksPresenter implements Presenter {
             if (event.getData().isPresent()) {
                 Optional<Stack> stack = event.getData().get();
                 updateToolbar(stack);
+                onBackPressedAction.update(stack);
             }
         }
 

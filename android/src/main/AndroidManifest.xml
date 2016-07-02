@@ -22,16 +22,6 @@
 
     </activity>
 
-    <activity android:name=".stacks.StacksActivity">
-
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <data android:mimeType="vnd.android.cursor.item/vnd.${packageName}.stacks" />
-      </intent-filter>
-
-    </activity>
-
     <activity-alias
       android:name="activity.primary_launcher"
       android:label="@string/app_name"
