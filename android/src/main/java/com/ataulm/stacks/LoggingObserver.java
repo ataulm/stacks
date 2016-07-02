@@ -18,7 +18,7 @@ public abstract class LoggingObserver<T> implements Observer<T> {
 
     @Override
     public void onNext(T t) {
-        Log.d(tag(), "onCompleted");
+        Log.d(tag(), "onNext: " + t);
     }
 
     private String tag() {
