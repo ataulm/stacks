@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import com.ataulm.Optional;
 import com.ataulm.rv.StableIdDictionary;
 import com.ataulm.stacks.R;
-import com.ataulm.stacks.stack.Id;
 import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
 
@@ -53,10 +52,8 @@ public class StacksScreenLayout extends LinearLayout {
         stackInputView.bind(inputListener);
     }
 
-    public void update(Stacks stacks, ToolbarActions toolbarActions) {
-        updateToolbar(stacks, toolbarActions);
-
-        RecyclerView.Adapter adapter = StacksAdapter.create(stacks, ids);
+    public void update(Stacks stacks, ClickActions clickActions) {
+        RecyclerView.Adapter adapter = StacksAdapter.create(stacks, ids, clickActions);
         recyclerView.swapAdapter(adapter, false);
 
         if (stacks.size() == 0) {
@@ -68,32 +65,26 @@ public class StacksScreenLayout extends LinearLayout {
         }
     }
 
-    private void updateToolbar(Stacks stacks, ToolbarActions actions) {
-        if (stacks.info().isPresent()) {
-            Stack stack = stacks.info().get();
-            updateToolbarWith(stack, actions);
+    public void updateToolbar(Optional<Stack> stack, ToolbarActions actions) {
+        if (stack.isPresent()) {
+            updateToolbar(stack.get(), actions);
         } else {
-            updateToolbarAsRootStack(actions);
+            updateToolbar(actions);
         }
     }
 
-    private void updateToolbarWith(final Stack stack, final ToolbarActions actions) {
+    private void updateToolbar(final Stack stack, final ToolbarActions actions) {
         toolbar.setTitle(stack.summary());
         toolbar.setNavigationIcon(R.drawable.wire_up);
         toolbar.setNavigationOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Optional<Id> id = stack.parentId();
-                if (id.isPresent()) {
-                    actions.onClickNavigateUpTo(id.get());
-                } else {
-                    throw new IllegalStateException("stack has no parent: " + stack);
-                }
+                actions.onClickNavigateUpToParentOf(stack);
             }
         });
     }
 
-    private void updateToolbarAsRootStack(final ToolbarActions actions) {
+    private void updateToolbar(final ToolbarActions actions) {
         toolbar.setTitle("Stacks");
         toolbar.setNavigationIcon(R.drawable.wire_nav_drawer);
         toolbar.setNavigationOnClickListener(new OnClickListener() {
@@ -103,5 +94,4 @@ public class StacksScreenLayout extends LinearLayout {
             }
         });
     }
-
 }

@@ -15,7 +15,13 @@ public class SyncFetchStacksUsecase implements FetchStacksUsecase {
     }
 
     @Override
-    public Observable<Event<Stacks>> fetchStacks(Optional<Id> parentId) {
+    public Observable<Event<Optional<Stack>>> fetchStack(Optional<Id> id) {
+        return stacksRepository.getStack(id)
+                .compose(EventRxFunctions.<Optional<Stack>>asEvents());
+    }
+
+    @Override
+    public Observable<Event<Stacks>> fetchChildrenWithParent(Optional<Id> parentId) {
         return stacksRepository.getStacks(parentId)
                 .compose(EventRxFunctions.<Stacks>asEvents());
     }

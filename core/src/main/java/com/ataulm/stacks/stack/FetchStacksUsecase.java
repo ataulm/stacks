@@ -7,7 +7,9 @@ import rx.Observable;
 
 public interface FetchStacksUsecase {
 
-    Observable<Event<Stacks>> fetchStacks(Optional<Id> parentId);
+    Observable<Event<Optional<Stack>>> fetchStack(Optional<Id> id);
+
+    Observable<Event<Stacks>> fetchChildrenWithParent(Optional<Id> parentId);
 
     Observable<Event<Stacks>> fetchStacksPendingRemoval();
 

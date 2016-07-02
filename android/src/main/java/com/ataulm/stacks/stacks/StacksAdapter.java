@@ -11,16 +11,18 @@ public final class StacksAdapter extends RecyclerView.Adapter<StackItemViewHolde
 
     private final Stacks stacks;
     private final StableIdDictionary<Stack> ids;
+    private final ClickActions clickActions;
 
-    public static StacksAdapter create(Stacks stacks, StableIdDictionary<Stack> ids) {
-        StacksAdapter stacksAdapter = new StacksAdapter(stacks, ids);
+    public static StacksAdapter create(Stacks stacks, StableIdDictionary<Stack> ids, ClickActions clickActions) {
+        StacksAdapter stacksAdapter = new StacksAdapter(stacks, ids, clickActions);
         stacksAdapter.setHasStableIds(true);
         return stacksAdapter;
     }
 
-    private StacksAdapter(Stacks stacks, StableIdDictionary<Stack> ids) {
+    private StacksAdapter(Stacks stacks, StableIdDictionary<Stack> ids, ClickActions clickActions) {
         this.stacks = stacks;
         this.ids = ids;
+        this.clickActions = clickActions;
     }
 
     @Override
@@ -31,7 +33,7 @@ public final class StacksAdapter extends RecyclerView.Adapter<StackItemViewHolde
     @Override
     public void onBindViewHolder(StackItemViewHolder holder, int position) {
         Stack stack = stacks.get(position);
-        holder.bind(stack);
+        holder.bind(stack, clickActions);
     }
 
     @Override

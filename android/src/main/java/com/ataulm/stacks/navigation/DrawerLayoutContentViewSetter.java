@@ -5,7 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
-public class ContentViewSetter {
+import com.ataulm.stacks.ContentViewSetter;
+
+public class DrawerLayoutContentViewSetter implements ContentViewSetter {
 
     private final LayoutInflater layoutInflater;
     private final FrameLayout contentFrame;
@@ -13,11 +15,12 @@ public class ContentViewSetter {
     @LayoutRes
     private int layout;
 
-    ContentViewSetter(LayoutInflater layoutInflater, FrameLayout contentFrame) {
+    public DrawerLayoutContentViewSetter(LayoutInflater layoutInflater, FrameLayout contentFrame) {
         this.layoutInflater = layoutInflater;
         this.contentFrame = contentFrame;
     }
 
+    @Override
     public <T> T display(@LayoutRes int layout) {
         if (alreadyDisplaying(layout)) {
             return getContentView();

@@ -22,17 +22,15 @@
 
     </activity>
 
-    <activity android:name=".stack.ViewActivity">
+    <activity android:name=".stacks.StacksActivity">
 
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
-        <data android:mimeType="vnd.android.cursor.item/vnd.${packageName}.stacks_list" />
+        <data android:mimeType="vnd.android.cursor.item/vnd.${packageName}.stacks" />
       </intent-filter>
 
     </activity>
-
-    <activity android:name=".removed_stack.RemovedActivity" />
 
     <activity-alias
       android:name="activity.primary_launcher"

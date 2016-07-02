@@ -1,10 +1,9 @@
 package com.ataulm.stacks.navigation;
 
-import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
-import java.util.List;
+import java.net.URI;
 
 public class NavigationContentProvider extends SimpleContentProvider {
 
@@ -19,50 +18,8 @@ public class NavigationContentProvider extends SimpleContentProvider {
     @Nullable
     @Override
     public String getType(Uri uri) {
-        return mimeTypeResolver.getType(uri);
-    }
-
-    private static class MimeTypeResolver {
-
-        private static final String MIME_TYPE_SCREEN_TOP_LEVEL = "vnd.android.cursor.item/vnd.%1$s.toplevel";
-
-        private final String packageName;
-
-        static MimeTypeResolver create(Context context) {
-            return new MimeTypeResolver(context.getPackageName());
-        }
-
-        MimeTypeResolver(String packageName) {
-            this.packageName = packageName;
-        }
-
-        @Nullable
-        public String getType(Uri uri) {
-            if (isTopLevelScreen(uri)) {
-                return String.format(MIME_TYPE_SCREEN_TOP_LEVEL, packageName);
-            } else {
-                return null;
-            }
-        }
-
-        private boolean isTopLevelScreen(Uri uri) {
-            List<String> path = uri.getPathSegments();
-            if (path.size() == 0) {
-                return false;
-            }
-            return lastPathSegmentMatchesAtLeastOneScreen(path);
-        }
-
-        private boolean lastPathSegmentMatchesAtLeastOneScreen(List<String> path) {
-            String lastPathSegment = path.get(path.size() - 1);
-            for (Screen screen : Screen.values()) {
-                if (screen.getPath().equals(lastPathSegment)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
+        URI javaUri = URI.create(uri.toString());
+        return mimeTypeResolver.getType(javaUri);
     }
 
 }

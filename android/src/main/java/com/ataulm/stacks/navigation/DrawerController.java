@@ -2,7 +2,7 @@ package com.ataulm.stacks.navigation;
 
 import android.support.v4.widget.DrawerLayout;
 
-class DrawerController {
+public class DrawerController {
 
     private final DrawerLayout drawerLayout;
     private final int drawerGravity;
@@ -12,15 +12,15 @@ class DrawerController {
         this.drawerGravity = drawerGravity;
     }
 
-    boolean isDrawerOpen() {
+    public boolean isDrawerOpen() {
         return drawerLayout.isDrawerOpen(drawerGravity);
     }
 
-    void closeDrawer() {
+    public void closeDrawer() {
         drawerLayout.closeDrawer(drawerGravity);
     }
 
-    void openDrawer() {
+    public void openDrawer() {
         drawerLayout.openDrawer(drawerGravity);
     }
 

@@ -9,16 +9,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.FrameLayout;
 
 import com.ataulm.stacks.BaseActivity;
+import com.ataulm.stacks.ContentViewSetter;
 import com.ataulm.stacks.Presenter;
 import com.ataulm.stacks.R;
-import com.ataulm.stacks.jabber.Jabber;
 import com.ataulm.stacks.removed_stacks.RemovedStacksPresenter;
 import com.ataulm.stacks.stack.CreateStackUsecase;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
-import com.ataulm.stacks.stack.Id;
 import com.ataulm.stacks.stack.PersistStacksUsecase;
 import com.ataulm.stacks.stacks.StacksPresenter;
-import com.ataulm.stacks.stacks.ToolbarActions;
+import com.ataulm.stacks.stacks.StacksToolbarActions;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -36,7 +35,7 @@ public class TopLevelActivity extends BaseActivity {
     private final PersistStacksUsecase persistStacksUsecase = persistStacksUsecase();
 
     private TopLevelPresenter presenter;
-    private TopLevelNavigator navigator;
+    private Navigator navigator;
     private DrawerController drawerController;
 
     @Override
@@ -44,34 +43,20 @@ public class TopLevelActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_level);
 
-        presenter = new TopLevelPresenter(uriResolver, createScreenPresenters());
-
-        navigator = new TopLevelNavigator(this, uriCreator);
+        navigator = new Navigator(this, uriCreator);
         setupNavigationDrawer();
+
+        presenter = new TopLevelPresenter(uriResolver, createScreenPresenters());
     }
 
     private Collection<Presenter> createScreenPresenters() {
         FrameLayout contentFrame = ButterKnife.findById(this, R.id.drawer_layout_content);
-        ContentViewSetter contentViewSetter = new ContentViewSetter(getLayoutInflater(), contentFrame);
+        ContentViewSetter contentViewSetter = new DrawerLayoutContentViewSetter(getLayoutInflater(), contentFrame);
+        StacksToolbarActions toolbarActions = StacksToolbarActions.create(navigator, drawerController);
         return Arrays.asList(
-                new StacksPresenter(contentViewSetter, uriResolver, fetchStacksUsecase, createStackUsecase, persistStacksUsecase, createToolbarActions()),
+                new StacksPresenter(contentViewSetter, uriResolver, fetchStacksUsecase, createStackUsecase, persistStacksUsecase, toolbarActions, navigator),
                 new RemovedStacksPresenter(contentViewSetter)
         );
-    }
-
-    private ToolbarActions createToolbarActions() {
-        return new ToolbarActions() {
-            @Override
-            public void onClickNavigateUpTo(Id id) {
-                Jabber.toast("navigate up to stack with id: " + id);
-                // TODO: navigate up with finish animation
-            }
-
-            @Override
-            public void onClickOpenNavigationDrawer() {
-                drawerController.openDrawer();
-            }
-        };
     }
 
     private void setupNavigationDrawer() {

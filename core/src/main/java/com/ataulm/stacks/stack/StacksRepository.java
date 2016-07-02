@@ -1,6 +1,7 @@
 package com.ataulm.stacks.stack;
 
 import com.ataulm.Optional;
+import com.ataulm.RxFunctions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,39 @@ public class StacksRepository {
     public StacksRepository(JsonStacksRepository jsonStacksRepository, JsonStackConverter jsonStackConverter) {
         this.jsonStacksRepository = jsonStacksRepository;
         this.jsonStackConverter = jsonStackConverter;
+    }
+
+    public Observable<Optional<Stack>> getStack(Optional<Id> id) {
+        if (id.isPresent()) {
+            refreshStacks();
+            return stacksSubject
+                    .map(extractList())
+                    .flatMap(RxFunctions.<Stack>emitEachElement())
+                    .filter(filterOnlyStacksMatching(id.get()))
+                    .first()
+                    .map(asOptional());
+        } else {
+            Optional<Stack> absent = Optional.<Stack>absent();
+            return Observable.just(absent);
+        }
+    }
+
+    private Func1<Stack, Optional<Stack>> asOptional() {
+        return new Func1<Stack, Optional<Stack>>() {
+            @Override
+            public Optional<Stack> call(Stack stack) {
+                return Optional.of(stack);
+            }
+        };
+    }
+
+    private static Func1<Stack, Boolean> filterOnlyStacksMatching(final Id id) {
+        return new Func1<Stack, Boolean>() {
+            @Override
+            public Boolean call(Stack stack) {
+                return stack.id().equals(id);
+            }
+        };
     }
 
     public Observable<Stacks> getStacks(Optional<Id> parentId) {

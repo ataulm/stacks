@@ -7,29 +7,28 @@ import android.support.annotation.Nullable;
 import com.ataulm.Optional;
 import com.ataulm.stacks.stack.Id;
 
+import java.net.URI;
 import java.util.List;
 
 public class UriResolver {
 
     private final String authority;
+    private final IdExtractor idExtractor;
 
     public static UriResolver create(Context context) {
-        return new UriResolver(context.getPackageName());
+        return new UriResolver(context.getPackageName(), new IdExtractor());
     }
 
-    UriResolver(String authority) {
+    UriResolver(String authority, IdExtractor idExtractor) {
         this.authority = authority;
+        this.idExtractor = idExtractor;
     }
 
     public boolean matches(@Nullable Uri uri, Screen screen) {
-        if (invalid(uri)) {
+        if (uri == null || !uri.getAuthority().equals(authority)) {
             return false;
         }
         return pathMatches(uri, screen);
-    }
-
-    private boolean invalid(@Nullable Uri uri) {
-        return uri == null || !uri.getAuthority().equals(authority);
     }
 
     private boolean pathMatches(Uri uri, Screen screen) {
@@ -37,28 +36,13 @@ public class UriResolver {
         return pathSegments.size() > 0 && pathSegments.get(0).equals(screen.getPath());
     }
 
-    public Optional<Id> extractIdFrom(Uri uri) {
-        if (matches(uri, Screen.STACKS)) {
-            return extractIdFrom(uri, Screen.STACKS);
-        } else {
+    public Optional<Id> extractIdFrom(@Nullable Uri uri) {
+        if (uri == null) {
             return Optional.absent();
         }
-    }
 
-    private Optional<Id> extractIdFrom(Uri uri, Screen screen) {
-        List<String> pathSegments = uri.getPathSegments();
-        return extractIdFrom(pathSegments, screen);
-    }
-
-    private Optional<Id> extractIdFrom(List<String> pathSegments, Screen screen) {
-        for (int index = 0; index < pathSegments.size(); index++) {
-            String pathSegment = pathSegments.get(index);
-            int indexNextPathSegment = index + 1;
-            if (screen.getPath().equals(pathSegment) && pathSegments.size() < indexNextPathSegment) {
-                return Optional.of(Id.create(pathSegments.get(indexNextPathSegment)));
-            }
-        }
-        return Optional.absent();
+        URI javaUri = URI.create(uri.toString());
+        return idExtractor.extractIdFrom(javaUri);
     }
 
 }
