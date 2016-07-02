@@ -60,7 +60,7 @@ public class StacksPresenter implements Presenter {
         contentView = contentViewSetter.display(R.layout.view_stacks_screen);
         final Optional<Id> id = uriResolver.extractIdFrom(uri);
 
-        createClickActions();
+        clickActions = createClickActions();
 
         contentView.set(
                 new StackInputListener() {
@@ -88,8 +88,8 @@ public class StacksPresenter implements Presenter {
 
     }
 
-    private void createClickActions() {
-        clickActions = new ClickActions() {
+    private ClickActions createClickActions() {
+        return new ClickActions() {
             @Override
             public void onClick(Stack stack) {
                 navigator.navigateToStack(stack.id());

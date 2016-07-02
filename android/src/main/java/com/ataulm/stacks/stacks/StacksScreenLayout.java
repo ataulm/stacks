@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.ataulm.Optional;
@@ -22,21 +23,15 @@ public class StacksScreenLayout extends LinearLayout {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.view_screen_empty_view)
-    View emptyView;
-
-    @BindView(R.id.view_screen_recycler_view)
-    RecyclerView recyclerView;
+    @BindView(R.id.view_screen_stacks_view)
+    StacksView stacksView;
 
     @BindView(R.id.view_screen_stack_input_view)
     StackInputView stackInputView;
 
-    private final StableIdDictionary<Stack> ids;
-
     public StacksScreenLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOrientation(VERTICAL);
-        ids = new StableIdDictionary<>();
     }
 
     @Override
@@ -44,8 +39,6 @@ public class StacksScreenLayout extends LinearLayout {
         super.onFinishInflate();
         View.inflate(getContext(), R.layout.merge_view_stack_screen, this);
         ButterKnife.bind(this);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     public void set(StackInputListener inputListener) {
@@ -53,16 +46,7 @@ public class StacksScreenLayout extends LinearLayout {
     }
 
     public void update(Stacks stacks, ClickActions clickActions) {
-        RecyclerView.Adapter adapter = StacksAdapter.create(stacks, ids, clickActions);
-        recyclerView.swapAdapter(adapter, false);
-
-        if (stacks.size() == 0) {
-            emptyView.setVisibility(VISIBLE);
-            recyclerView.setVisibility(GONE);
-        } else {
-            recyclerView.setVisibility(VISIBLE);
-            emptyView.setVisibility(GONE);
-        }
+        stacksView.update(stacks, clickActions);
     }
 
     public void updateToolbar(Optional<Stack> stack, ToolbarActions actions) {
@@ -94,4 +78,5 @@ public class StacksScreenLayout extends LinearLayout {
             }
         });
     }
+
 }

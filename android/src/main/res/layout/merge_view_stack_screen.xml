@@ -12,20 +12,11 @@
 
   </android.support.design.widget.AppBarLayout>
 
-  <com.ataulm.stacks.BaseTextView
-    android:id="@+id/view_screen_empty_view"
+  <com.ataulm.stacks.stacks.StacksView
+    android:id="@+id/view_screen_stacks_view"
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:layout_weight="100"
-    android:gravity="center"
-    android:text="No stacks\nAll done!" />
-
-  <android.support.v7.widget.RecyclerView
-    android:id="@+id/view_screen_recycler_view"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="100"
-    android:focusable="false" />
+    android:layout_weight="100" />
 
   <com.ataulm.stacks.stacks.StackInputView
     android:id="@+id/view_screen_stack_input_view"
