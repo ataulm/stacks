@@ -132,14 +132,12 @@ public final class StacksPresenter implements Presenter {
             super.onNext(event);
             switch (event.getType()) {
                 case LOADING:
-                    Jabber.toast("hang on, loading");
                     break;
                 case ERROR:
                     Jabber.toast("uh oh, error");
                     break;
                 case IDLE:
                     update(event);
-                    Jabber.toast("up to date");
                     break;
                 default:
                     throw new IllegalArgumentException("unknown type: " + event.getType());
@@ -166,14 +164,12 @@ public final class StacksPresenter implements Presenter {
             super.onNext(event);
             switch (event.getType()) {
                 case LOADING:
-                    Jabber.toast("hang on, loading");
                     break;
                 case ERROR:
                     Jabber.toast("uh oh, error");
                     break;
                 case IDLE:
                     update(event);
-                    Jabber.toast("up to date");
                     break;
                 default:
                     throw new IllegalArgumentException("unknown type: " + event.getType());
