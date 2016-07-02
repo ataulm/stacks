@@ -14,6 +14,8 @@ import com.ataulm.stacks.navigation.UriResolver;
 import com.ataulm.stacks.stack.CreateStackUsecase;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
 import com.ataulm.stacks.stack.PersistStacksUsecase;
+import com.ataulm.stacks.stack.RemoveStackUsecase;
+import com.ataulm.stacks.stack.UpdateStackUsecase;
 
 import static com.ataulm.stacks.jabber.Jabber.*;
 
@@ -23,6 +25,8 @@ public class StacksActivity extends BaseActivity {
     private final UriResolver uriResolver = uriResolver();
     private final FetchStacksUsecase fetchStacksUsecase = fetchStacksUsecase();
     private final CreateStackUsecase createStackUsecase = createStacksUsecase();
+    private final UpdateStackUsecase updateStackUsecase = updateStacksUsecase();
+    private final RemoveStackUsecase removeStackUsecase = removeStackUsecase();
     private final PersistStacksUsecase persistStacksUsecase = persistStacksUsecase();
 
     private StacksPresenter presenter;
@@ -40,6 +44,8 @@ public class StacksActivity extends BaseActivity {
                 uriResolver,
                 fetchStacksUsecase,
                 createStackUsecase,
+                updateStackUsecase,
+                removeStackUsecase,
                 persistStacksUsecase,
                 toolbarActions,
                 navigator

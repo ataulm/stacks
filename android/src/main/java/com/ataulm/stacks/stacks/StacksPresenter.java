@@ -17,8 +17,10 @@ import com.ataulm.stacks.stack.CreateStackUsecase;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
 import com.ataulm.stacks.stack.Id;
 import com.ataulm.stacks.stack.PersistStacksUsecase;
+import com.ataulm.stacks.stack.RemoveStackUsecase;
 import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
+import com.ataulm.stacks.stack.UpdateStackUsecase;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -41,11 +43,13 @@ public final class StacksPresenter implements Presenter {
             UriResolver uriResolver,
             FetchStacksUsecase fetchStacksUsecase,
             CreateStackUsecase createStackUsecase,
+            UpdateStackUsecase updateStackUsecase,
+            RemoveStackUsecase removeStackUsecase,
             PersistStacksUsecase persistStacksUsecase,
             ToolbarActions toolbarActions,
             Navigator navigator
     ) {
-        ClickActions clickActions = new StackClickActions(navigator);
+        ClickActions clickActions = new StackClickActions(navigator, updateStackUsecase, removeStackUsecase);
         return new StacksPresenter(
                 contentViewSetter,
                 uriResolver,

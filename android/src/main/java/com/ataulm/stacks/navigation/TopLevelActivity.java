@@ -16,6 +16,8 @@ import com.ataulm.stacks.removed_stacks.RemovedStacksPresenter;
 import com.ataulm.stacks.stack.CreateStackUsecase;
 import com.ataulm.stacks.stack.FetchStacksUsecase;
 import com.ataulm.stacks.stack.PersistStacksUsecase;
+import com.ataulm.stacks.stack.RemoveStackUsecase;
+import com.ataulm.stacks.stack.UpdateStackUsecase;
 import com.ataulm.stacks.stacks.StacksPresenter;
 import com.ataulm.stacks.stacks.StacksToolbarActions;
 
@@ -32,6 +34,8 @@ public class TopLevelActivity extends BaseActivity {
     private final UriResolver uriResolver = uriResolver();
     private final FetchStacksUsecase fetchStacksUsecase = fetchStacksUsecase();
     private final CreateStackUsecase createStackUsecase = createStacksUsecase();
+    private final UpdateStackUsecase updateStackUsecase = updateStacksUsecase();
+    private final RemoveStackUsecase removeStackUsecase = removeStackUsecase();
     private final PersistStacksUsecase persistStacksUsecase = persistStacksUsecase();
 
     private TopLevelPresenter presenter;
@@ -53,9 +57,24 @@ public class TopLevelActivity extends BaseActivity {
         FrameLayout contentFrame = ButterKnife.findById(this, R.id.drawer_layout_content);
         ContentViewSetter contentViewSetter = new DrawerLayoutContentViewSetter(getLayoutInflater(), contentFrame);
         StacksToolbarActions toolbarActions = StacksToolbarActions.create(navigator, drawerController);
+        StacksPresenter stacksPresenter = createStacksPresenter(contentViewSetter, toolbarActions);
         return Arrays.asList(
-                new StacksPresenter(contentViewSetter, uriResolver, fetchStacksUsecase, createStackUsecase, persistStacksUsecase, toolbarActions, navigator, clickActions),
+                stacksPresenter,
                 new RemovedStacksPresenter(contentViewSetter)
+        );
+    }
+
+    private StacksPresenter createStacksPresenter(ContentViewSetter contentViewSetter, StacksToolbarActions toolbarActions) {
+        return StacksPresenter.create(
+                contentViewSetter,
+                uriResolver,
+                fetchStacksUsecase,
+                createStackUsecase,
+                updateStackUsecase,
+                removeStackUsecase,
+                persistStacksUsecase,
+                toolbarActions,
+                navigator
         );
     }
 

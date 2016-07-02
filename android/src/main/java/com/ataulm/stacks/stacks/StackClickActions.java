@@ -1,15 +1,20 @@
 package com.ataulm.stacks.stacks;
 
-import com.ataulm.stacks.jabber.Jabber;
 import com.ataulm.stacks.navigation.Navigator;
+import com.ataulm.stacks.stack.RemoveStackUsecase;
 import com.ataulm.stacks.stack.Stack;
+import com.ataulm.stacks.stack.UpdateStackUsecase;
 
-class StackClickActions implements ClickActions {
+public class StackClickActions implements ClickActions {
 
     private final Navigator navigator;
+    private final UpdateStackUsecase updateStackUsecase;
+    private final RemoveStackUsecase removeStackUsecase;
 
-    StackClickActions(Navigator navigator) {
+    public StackClickActions(Navigator navigator, UpdateStackUsecase updateStackUsecase, RemoveStackUsecase removeStackUsecase) {
         this.navigator = navigator;
+        this.updateStackUsecase = updateStackUsecase;
+        this.removeStackUsecase = removeStackUsecase;
     }
 
     @Override
@@ -19,17 +24,17 @@ class StackClickActions implements ClickActions {
 
     @Override
     public void onClickMarkComplete(Stack stack) {
-        Jabber.toast("on click: mark complete");
+        updateStackUsecase.markCompleted(stack);
     }
 
     @Override
     public void onClickMarkNotComplete(Stack stack) {
-        Jabber.toast("on click: mark incomplete");
+        updateStackUsecase.markNotCompleted(stack);
     }
 
     @Override
     public void onClickRemove(Stack stack) {
-        Jabber.toast("on click: delete");
+        removeStackUsecase.markPendingRemove(stack);
     }
 
 }
