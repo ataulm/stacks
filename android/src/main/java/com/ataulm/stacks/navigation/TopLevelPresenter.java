@@ -21,8 +21,7 @@ class TopLevelPresenter implements Presenter {
 
     @Override
     public void start(@Nullable Uri uri) {
-        Presenter presenter = getPresenterMatching(uri);
-        activePresenter = presenter;
+        activePresenter = getPresenterMatching(uri);
         activePresenter.start(uri);
     }
 
