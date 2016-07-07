@@ -10,7 +10,6 @@ public class MimeTypeResolverShould {
 
     private static final String PACKAGE_NAME = "com.ataulm.stacks";
     private static final String MIME_TYPE_SCREEN_TOP_LEVEL = String.format(MimeTypeResolver.MIME_TYPE_SCREEN_TOP_LEVEL, PACKAGE_NAME);
-    private static final String MIME_TYPE_SCREEN_STACKS = String.format(MimeTypeResolver.MIME_TYPE_SCREEN_STACKS, PACKAGE_NAME);
 
     private MimeTypeResolver mimeTypeResolver = new MimeTypeResolver(PACKAGE_NAME);
 
@@ -38,7 +37,7 @@ public class MimeTypeResolverShould {
 
         String mimeType = mimeTypeResolver.getType(uri);
 
-        assertThat(mimeType).isEqualTo(MIME_TYPE_SCREEN_STACKS);
+        assertThat(mimeType).isEqualTo(MIME_TYPE_SCREEN_TOP_LEVEL);
     }
 
     @Test

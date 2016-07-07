@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 class MimeTypeResolver {
 
     static final String MIME_TYPE_SCREEN_TOP_LEVEL = "vnd.android.cursor.item/vnd.%1$s.toplevel";
-    static final String MIME_TYPE_SCREEN_STACKS = "vnd.android.cursor.item/vnd.%1$s.stacks";
 
     private static final String STACKS_PATH = "\\/stacks\\/([aA-zZ0-9]{8}-[aA-zZ0-9]{4}-[aA-zZ0-9]{4}-[aA-zZ0-9]{4}-[aA-zZ0-9]{12})";
     private static final Pattern STACKS_PATTERN = Pattern.compile(STACKS_PATH);
@@ -29,11 +28,6 @@ class MimeTypeResolver {
         if (isTopLevelScreen(uri) || isStacksScreen(uri)) {
             return String.format(MIME_TYPE_SCREEN_TOP_LEVEL, packageName);
         }
-
-//        if (isStacksScreen(uri)) {
-//            return String.format(MIME_TYPE_SCREEN_STACKS, packageName);
-//        }
-
         return null;
     }
 
