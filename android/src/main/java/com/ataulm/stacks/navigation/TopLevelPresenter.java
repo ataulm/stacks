@@ -1,10 +1,10 @@
 package com.ataulm.stacks.navigation;
 
-import android.net.Uri;
 import android.support.annotation.Nullable;
 
 import com.ataulm.stacks.Presenter;
 
+import java.net.URI;
 import java.util.Collection;
 
 class TopLevelPresenter implements Presenter {
@@ -20,12 +20,12 @@ class TopLevelPresenter implements Presenter {
     }
 
     @Override
-    public void start(@Nullable Uri uri) {
+    public void start(@Nullable URI uri) {
         activePresenter = getPresenterMatching(uri);
         activePresenter.start(uri);
     }
 
-    private Presenter getPresenterMatching(@Nullable Uri uri) {
+    private Presenter getPresenterMatching(@Nullable URI uri) {
         Screen screen = getScreenMatching(uri);
         for (Presenter presenter : presenters) {
             if (presenter.isDisplaying(screen)) {
@@ -35,7 +35,7 @@ class TopLevelPresenter implements Presenter {
         throw new IllegalArgumentException("no presenters can display: " + uri);
     }
 
-    private Screen getScreenMatching(@Nullable Uri uri) {
+    private Screen getScreenMatching(@Nullable URI uri) {
         if (uri == null || uriResolver.matches(uri, Screen.STACKS)) {
             return Screen.STACKS;
         }

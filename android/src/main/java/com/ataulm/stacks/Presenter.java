@@ -1,12 +1,12 @@
 package com.ataulm.stacks;
 
-import android.net.Uri;
-
 import com.ataulm.stacks.navigation.Screen;
+
+import java.net.URI;
 
 public interface Presenter {
 
-    void start(Uri uri);
+    void start(URI uri);
 
     void stop();
 

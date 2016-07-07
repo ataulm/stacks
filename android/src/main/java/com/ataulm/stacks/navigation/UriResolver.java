@@ -1,16 +1,16 @@
 package com.ataulm.stacks.navigation;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.annotation.Nullable;
 
 import com.ataulm.Optional;
 import com.ataulm.stacks.stack.Id;
 
 import java.net.URI;
-import java.util.List;
 
 public class UriResolver {
+
+    private static final int TOP_LEVEL_PATH_PART = 1;
 
     private final String authority;
     private final IdExtractor idExtractor;
@@ -24,25 +24,23 @@ public class UriResolver {
         this.idExtractor = idExtractor;
     }
 
-    public boolean matches(@Nullable Uri uri, Screen screen) {
+    public boolean matches(@Nullable URI uri, Screen screen) {
         if (uri == null || !uri.getAuthority().equals(authority)) {
             return false;
         }
         return pathMatches(uri, screen);
     }
 
-    private boolean pathMatches(Uri uri, Screen screen) {
-        List<String> pathSegments = uri.getPathSegments();
-        return pathSegments.size() > 0 && pathSegments.get(0).equals(screen.getPath());
+    private boolean pathMatches(URI uri, Screen screen) {
+        String[] pathSegments = uri.getPath().split("/");
+        return pathSegments.length > 0 && pathSegments[TOP_LEVEL_PATH_PART].equals(screen.getPath());
     }
 
-    public Optional<Id> extractIdFrom(@Nullable Uri uri) {
+    public Optional<Id> extractIdFrom(@Nullable URI uri) {
         if (uri == null) {
             return Optional.absent();
         }
-
-        URI javaUri = URI.create(uri.toString());
-        return idExtractor.extractIdFrom(javaUri);
+        return idExtractor.extractIdFrom(uri);
     }
 
 }

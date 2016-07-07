@@ -1,7 +1,5 @@
 package com.ataulm.stacks.stacks;
 
-import android.net.Uri;
-
 import com.ataulm.Event;
 import com.ataulm.Optional;
 import com.ataulm.Subscriptions;
@@ -21,6 +19,8 @@ import com.ataulm.stacks.stack.RemoveStackUsecase;
 import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
 import com.ataulm.stacks.stack.UpdateStackUsecase;
+
+import java.net.URI;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -86,7 +86,7 @@ public final class StacksPresenter implements Presenter {
     }
 
     @Override
-    public void start(Uri uri) {
+    public void start(URI uri) {
         contentView = contentViewSetter.display(R.layout.view_stacks_screen);
         final Optional<Id> id = uriResolver.extractIdFrom(uri);
 

@@ -1,11 +1,11 @@
 package com.ataulm.stacks.removed_stacks;
 
-import android.net.Uri;
-
 import com.ataulm.stacks.ContentViewSetter;
 import com.ataulm.stacks.Presenter;
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.navigation.Screen;
+
+import java.net.URI;
 
 public class RemovedStacksPresenter implements Presenter {
 
@@ -17,7 +17,7 @@ public class RemovedStacksPresenter implements Presenter {
     }
 
     @Override
-    public void start(Uri uri) {
+    public void start(URI uri) {
         contentView = contentViewSetter.display(R.layout.view_removed_stacks_screen);
     }
 

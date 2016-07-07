@@ -21,6 +21,7 @@ import com.ataulm.stacks.stack.UpdateStackUsecase;
 import com.ataulm.stacks.stacks.StacksPresenter;
 import com.ataulm.stacks.stacks.StacksToolbarActions;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -105,15 +106,29 @@ public class TopLevelActivity extends BaseActivity {
         super.onNewIntent(intent);
         setIntent(intent);
 
-        Uri uri = intent.getData();
+        URI uri = uriFrom(intent.getData());
         presenter.start(uri);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Uri uri = getIntent().getData();
+        URI uri = getUri();
         presenter.start(uri);
+    }
+
+    @Nullable
+    private URI getUri() {
+        Uri data = getIntent().getData();
+        return uriFrom(data);
+    }
+
+    @Nullable
+    private static URI uriFrom(Uri uri) {
+        if (uri == null) {
+            return null;
+        }
+        return URI.create(uri.toString());
     }
 
     @Override
