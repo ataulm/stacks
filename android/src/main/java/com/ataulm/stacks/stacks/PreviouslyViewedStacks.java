@@ -47,6 +47,21 @@ public final class PreviouslyViewedStacks {
         return bundle;
     }
 
+    public boolean noPreviousStackIds() {
+        return stacks.size() < 2;
+    }
+
+    public Optional<Id> getPreviousId() {
+        if (noPreviousStackIds()) {
+            throw new IndexOutOfBoundsException("no previous stacks found");
+        }
+        return getPenultimateStackId();
+    }
+
+    private Optional<Id> getPenultimateStackId() {
+        return stacks.get(stacks.size() - 2);
+    }
+
     static class IdMapper {
 
         List<Optional<Id>> mapRawIdsToIds(String[] rawIds) {

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 
 import com.ataulm.Optional;
+import com.ataulm.stacks.Log;
 import com.ataulm.stacks.stack.Id;
 
 public class Navigator {
@@ -45,14 +46,33 @@ public class Navigator {
         }
     }
 
+    // TODO: "activity" transitions on back vs up
+
     private void navigateUpToStack(Id id) {
-        // TODO: animation should be like finish I think - check with Leonie
+        Log.d("navigating UP to stack: " + id);
         navigateToStack(id);
     }
 
     private void navigateUpToRootStack() {
-        // TODO: animation should be like finish I think - check with Leonie
+        Log.d("navigating UP to root stack");
         navigateTo(Screen.STACKS);
     }
 
+    public void navigateBackToStack(Optional<Id> id) {
+        if (id.isPresent()) {
+            navigateBackToStack(id.get());
+        } else {
+            navigateBackToRootStack();
+        }
+    }
+
+    private void navigateBackToStack(Id id) {
+        Log.d("navigating BACK to stack: " + id);
+        navigateToStack(id);
+    }
+
+    private void navigateBackToRootStack() {
+        Log.d("navigating BACK to root stack");
+        navigateTo(Screen.STACKS);
+    }
 }
