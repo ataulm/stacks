@@ -37,7 +37,19 @@ public final class PreviouslyViewedStacks {
     }
 
     public void add(Optional<Id> stack) {
+        if (!stacks.isEmpty() && getLastStackId().equals(stack)) {
+            throw new IllegalStateException("can't view the same stack twice in a row");
+        }
         stacks.add(stack);
+    }
+
+    private Optional<Id> getLastStackId() {
+        if (stacks.isEmpty()) {
+            throw new IndexOutOfBoundsException("no stacks, cannot retrieve last stack");
+        }
+
+        int indexLastStack = stacks.size() - 1;
+        return stacks.get(indexLastStack);
     }
 
     public Bundle toBundle() {
@@ -51,15 +63,26 @@ public final class PreviouslyViewedStacks {
         return stacks.size() < 2;
     }
 
-    public Optional<Id> getPreviousId() {
+    public Optional<Id> getPenultimateStackIdThenRemoveLastId() {
         if (noPreviousStackIds()) {
             throw new IndexOutOfBoundsException("no previous stacks found");
         }
-        return getPenultimateStackId();
+        Optional<Id> penultimateStackId = getPenultimateStackId();
+        removeLastId();
+        return penultimateStackId;
+    }
+
+    private void removeLastId() {
+        Optional<Id> lastStackId = getLastStackId();
+        stacks.remove(lastStackId);
     }
 
     private Optional<Id> getPenultimateStackId() {
         return stacks.get(stacks.size() - 2);
+    }
+
+    public boolean lastViewedStackIs(Optional<Id> id) {
+        return !stacks.isEmpty() && getLastStackId().equals(id);
     }
 
     static class IdMapper {

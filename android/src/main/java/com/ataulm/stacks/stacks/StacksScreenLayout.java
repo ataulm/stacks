@@ -1,16 +1,12 @@
 package com.ataulm.stacks.stacks;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.ataulm.Optional;
-import com.ataulm.rv.StableIdDictionary;
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
@@ -49,32 +45,32 @@ public class StacksScreenLayout extends LinearLayout {
         stacksView.update(stacks, clickActions);
     }
 
-    public void updateToolbar(Optional<Stack> stack, ToolbarActions actions) {
+    public void updateToolbar(Optional<Stack> stack, OnClickNavigateUpToParentListener upListener, OnClickOpenNavigationDrawerListener drawerListener) {
         if (stack.isPresent()) {
-            updateToolbar(stack.get(), actions);
+            updateToolbar(stack.get(), upListener);
         } else {
-            updateToolbar(actions);
+            updateToolbar(drawerListener);
         }
     }
 
-    private void updateToolbar(final Stack stack, final ToolbarActions actions) {
+    private void updateToolbar(final Stack stack, final OnClickNavigateUpToParentListener listener) {
         toolbar.setTitle(stack.summary());
         toolbar.setNavigationIcon(R.drawable.wire_up);
         toolbar.setNavigationOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                actions.onClickNavigateUpToParentOf(stack);
+                listener.onClickNavigateUpToParentOf(stack);
             }
         });
     }
 
-    private void updateToolbar(final ToolbarActions actions) {
+    private void updateToolbar(final OnClickOpenNavigationDrawerListener listener) {
         toolbar.setTitle("Stacks");
         toolbar.setNavigationIcon(R.drawable.wire_nav_drawer);
         toolbar.setNavigationOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                actions.onClickOpenNavigationDrawer();
+                listener.onClickOpenNavigationDrawer();
             }
         });
     }

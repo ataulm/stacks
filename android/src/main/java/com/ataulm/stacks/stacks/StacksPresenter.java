@@ -32,9 +32,9 @@ public final class StacksPresenter implements Presenter {
     private final FetchStacksUsecase fetchStacksUsecase;
     private final CreateStackUsecase createStackUsecase;
     private final PersistStacksUsecase persistStacksUsecase;
-    private final ToolbarActions toolbarActions;
+    private final OnClickOpenNavigationDrawerListener navigationDrawerListener;
     private final ClickActions clickActions;
-    private final BackAndUp backAndUp;
+    private final BackAndUp backAndUpListener;
     private final PreviouslyViewedStacks previouslyViewedStacks;
 
     private StacksScreenLayout contentView;
@@ -48,7 +48,7 @@ public final class StacksPresenter implements Presenter {
             UpdateStackUsecase updateStackUsecase,
             RemoveStackUsecase removeStackUsecase,
             PersistStacksUsecase persistStacksUsecase,
-            ToolbarActions toolbarActions, // TODO: resolve ToolbarActions with BackAndUp
+            OnClickOpenNavigationDrawerListener navigationDrawerListener, // TODO: resolve ToolbarActions with BackAndUp
             Navigator navigator,
             PreviouslyViewedStacks previouslyViewedStacks
     ) {
@@ -61,7 +61,7 @@ public final class StacksPresenter implements Presenter {
                 fetchStacksUsecase,
                 createStackUsecase,
                 persistStacksUsecase,
-                toolbarActions,
+                navigationDrawerListener,
                 clickActions,
                 backAndUp,
                 previouslyViewedStacks
@@ -74,9 +74,9 @@ public final class StacksPresenter implements Presenter {
             FetchStacksUsecase fetchStacksUsecase,
             CreateStackUsecase createStackUsecase,
             PersistStacksUsecase persistStacksUsecase,
-            ToolbarActions toolbarActions,
+            OnClickOpenNavigationDrawerListener navigationDrawerListener,
             ClickActions clickActions,
-            BackAndUp backAndUp,
+            BackAndUp backAndUpListener,
             PreviouslyViewedStacks previouslyViewedStacks
     ) {
         this.contentViewSetter = contentViewSetter;
@@ -84,17 +84,20 @@ public final class StacksPresenter implements Presenter {
         this.uriResolver = uriResolver;
         this.createStackUsecase = createStackUsecase;
         this.persistStacksUsecase = persistStacksUsecase;
-        this.toolbarActions = toolbarActions;
+        this.navigationDrawerListener = navigationDrawerListener;
         this.clickActions = clickActions;
-        this.backAndUp = backAndUp;
+        this.backAndUpListener = backAndUpListener;
         this.previouslyViewedStacks = previouslyViewedStacks;
     }
 
     @Override
     public void start(URI uri) {
-        contentView = contentViewSetter.display(R.layout.view_stacks_screen);
         Optional<Id> id = uriResolver.extractIdFrom(uri);
-        previouslyViewedStacks.add(id);
+        if (!previouslyViewedStacks.lastViewedStackIs(id)) {
+            previouslyViewedStacks.add(id);
+        }
+
+        contentView = contentViewSetter.display(R.layout.view_stacks_screen);
 
         StackInputListener stackInputListener = createStackInputListener(id);
         contentView.set(stackInputListener);
@@ -103,20 +106,14 @@ public final class StacksPresenter implements Presenter {
         subscriptions.add(subscribeToChildren(id));
     }
 
-    private static class BackAndUp {
+    private static class BackAndUp implements OnClickNavigateUpToParentListener {
 
         private final PreviouslyViewedStacks previouslyViewedStacks;
         private final Navigator navigator;
 
-        private Optional<Stack> stackInfo = Optional.absent();
-
         BackAndUp(PreviouslyViewedStacks previouslyViewedStacks, Navigator navigator) {
             this.previouslyViewedStacks = previouslyViewedStacks;
             this.navigator = navigator;
-        }
-
-        public void updateStackInfo(Optional<Stack> stackInfo) {
-            this.stackInfo = stackInfo;
         }
 
         /**
@@ -127,24 +124,21 @@ public final class StacksPresenter implements Presenter {
                 // this is either the root stack or arrived here via deeplink
                 return false;
             }
-            Optional<Id> previousStackId = previouslyViewedStacks.getPreviousId();
+            Optional<Id> previousStackId = previouslyViewedStacks.getPenultimateStackIdThenRemoveLastId();
             navigator.navigateBackToStack(previousStackId);
             return true;
         }
 
-        public void onClickUp() {
-            if (!stackInfo.isPresent()) {
-                throw new IllegalStateException("Root stack has no up ^ if stack info hasn't loaded, then click up should be disabled");
-            }
-            navigateUpToParentOf(stackInfo.get());
-        }
 
         private void navigateUpToParentOf(Stack stack) {
             navigator.navigateUpToStack(stack.parentId());
         }
 
+        @Override
+        public void onClickNavigateUpToParentOf(Stack stack) {
+            navigateUpToParentOf(stack);
+        }
     }
-
 
     private StackInputListener createStackInputListener(final Optional<Id> id) {
         return new StackInputListener() {
@@ -176,7 +170,7 @@ public final class StacksPresenter implements Presenter {
 
     @Override
     public boolean onBackPressed() {
-        return backAndUp.onClickBack();
+        return backAndUpListener.onClickBack();
     }
 
     @Override
@@ -207,12 +201,11 @@ public final class StacksPresenter implements Presenter {
             if (event.getData().isPresent()) {
                 Optional<Stack> stack = event.getData().get();
                 updateToolbar(stack);
-                backAndUp.updateStackInfo(stack);
             }
         }
 
         private void updateToolbar(Optional<Stack> stack) {
-            contentView.updateToolbar(stack, toolbarActions);
+            contentView.updateToolbar(stack, backAndUpListener, navigationDrawerListener);
         }
 
     }
