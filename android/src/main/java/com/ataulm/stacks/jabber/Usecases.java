@@ -14,7 +14,7 @@ import com.ataulm.stacks.stack.SyncRemoveStackUsecase;
 import com.ataulm.stacks.stack.SyncUpdateStackUsecase;
 import com.ataulm.stacks.stack.UpdateStackUsecase;
 
-final class Usecases {
+public final class Usecases {
 
     private final FetchStacksUsecase fetchStacksUsecase;
     private final CreateStackUsecase createStackUsecase;
@@ -46,23 +46,23 @@ final class Usecases {
         this.updateStacksUsecase = updateStacksUsecase;
     }
 
-    FetchStacksUsecase fetchStacks() {
+    public FetchStacksUsecase fetchStacks() {
         return fetchStacksUsecase;
     }
 
-    CreateStackUsecase createStacks() {
+    public CreateStackUsecase createStacks() {
         return createStackUsecase;
     }
 
-    RemoveStackUsecase removeStacks() {
+    public RemoveStackUsecase removeStacks() {
         return removeStackUsecase;
     }
 
-    PersistStacksUsecase persistStacks() {
+    public PersistStacksUsecase persistStacks() {
         return persistStacksUsecase;
     }
 
-    UpdateStackUsecase updateStacks() {
+    public UpdateStackUsecase updateStacks() {
         return updateStacksUsecase;
     }
 

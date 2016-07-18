@@ -8,17 +8,13 @@ import com.ataulm.stacks.LoggingObserver;
 import com.ataulm.stacks.Presenter;
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.jabber.Jabber;
+import com.ataulm.stacks.jabber.Usecases;
 import com.ataulm.stacks.navigation.Navigator;
 import com.ataulm.stacks.navigation.Screen;
 import com.ataulm.stacks.navigation.UriResolver;
-import com.ataulm.stacks.stack.CreateStackUsecase;
-import com.ataulm.stacks.stack.FetchStacksUsecase;
 import com.ataulm.stacks.stack.Id;
-import com.ataulm.stacks.stack.PersistStacksUsecase;
-import com.ataulm.stacks.stack.RemoveStackUsecase;
 import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
-import com.ataulm.stacks.stack.UpdateStackUsecase;
 
 import java.net.URI;
 
@@ -29,9 +25,7 @@ public final class StacksPresenter implements Presenter {
 
     private final ContentViewSetter contentViewSetter;
     private final UriResolver uriResolver;
-    private final FetchStacksUsecase fetchStacksUsecase;
-    private final CreateStackUsecase createStackUsecase;
-    private final PersistStacksUsecase persistStacksUsecase;
+    private final Usecases usecases;
     private final OnClickOpenNavigationDrawerListener navigationDrawerListener;
     private final ClickActions clickActions;
     private final BackAndUp backAndUpListener;
@@ -43,24 +37,18 @@ public final class StacksPresenter implements Presenter {
     public static StacksPresenter create(
             ContentViewSetter contentViewSetter,
             UriResolver uriResolver,
-            FetchStacksUsecase fetchStacksUsecase,
-            CreateStackUsecase createStackUsecase,
-            UpdateStackUsecase updateStackUsecase,
-            RemoveStackUsecase removeStackUsecase,
-            PersistStacksUsecase persistStacksUsecase,
+            Usecases usecases,
             OnClickOpenNavigationDrawerListener navigationDrawerListener, // TODO: resolve ToolbarActions with BackAndUp
             Navigator navigator,
             PreviouslyViewedStacks previouslyViewedStacks
     ) {
-        ClickActions clickActions = new StackClickActions(navigator, updateStackUsecase, removeStackUsecase);
+        ClickActions clickActions = new StackClickActions(navigator, usecases.updateStacks(), usecases.removeStacks());
         BackAndUp backAndUp = new BackAndUp(previouslyViewedStacks, navigator);
 
         return new StacksPresenter(
                 contentViewSetter,
                 uriResolver,
-                fetchStacksUsecase,
-                createStackUsecase,
-                persistStacksUsecase,
+                usecases,
                 navigationDrawerListener,
                 clickActions,
                 backAndUp,
@@ -71,19 +59,15 @@ public final class StacksPresenter implements Presenter {
     private StacksPresenter(
             ContentViewSetter contentViewSetter,
             UriResolver uriResolver,
-            FetchStacksUsecase fetchStacksUsecase,
-            CreateStackUsecase createStackUsecase,
-            PersistStacksUsecase persistStacksUsecase,
+            Usecases usecases,
             OnClickOpenNavigationDrawerListener navigationDrawerListener,
             ClickActions clickActions,
             BackAndUp backAndUpListener,
             PreviouslyViewedStacks previouslyViewedStacks
     ) {
         this.contentViewSetter = contentViewSetter;
-        this.fetchStacksUsecase = fetchStacksUsecase;
         this.uriResolver = uriResolver;
-        this.createStackUsecase = createStackUsecase;
-        this.persistStacksUsecase = persistStacksUsecase;
+        this.usecases = usecases;
         this.navigationDrawerListener = navigationDrawerListener;
         this.clickActions = clickActions;
         this.backAndUpListener = backAndUpListener;
@@ -129,7 +113,6 @@ public final class StacksPresenter implements Presenter {
             return true;
         }
 
-
         private void navigateUpToParentOf(Stack stack) {
             navigator.navigateUpToStack(stack.parentId());
         }
@@ -144,19 +127,19 @@ public final class StacksPresenter implements Presenter {
         return new StackInputListener() {
             @Override
             public void onClickAddStack(String summary) {
-                createStackUsecase.createStack(id, summary);
+                usecases.createStacks().createStack(id, summary);
             }
         };
     }
 
     private Subscription subscribeToStack(Optional<Id> id) {
-        return fetchStacksUsecase.fetchStack(id)
+        return usecases.fetchStacks().fetchStack(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new StackObserver());
     }
 
     private Subscription subscribeToChildren(Optional<Id> id) {
-        return fetchStacksUsecase.fetchChildrenWithParent(id)
+        return usecases.fetchStacks().fetchChildrenWithParent(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ChildrenObserver());
 
@@ -164,7 +147,7 @@ public final class StacksPresenter implements Presenter {
 
     @Override
     public void stop() {
-        persistStacksUsecase.persistStacks();
+        usecases.persistStacks().persistStacks();
         subscriptions.unsubscribe();
     }
 

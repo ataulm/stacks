@@ -12,12 +12,8 @@ import com.ataulm.stacks.BaseActivity;
 import com.ataulm.stacks.ContentViewSetter;
 import com.ataulm.stacks.Presenter;
 import com.ataulm.stacks.R;
+import com.ataulm.stacks.jabber.Usecases;
 import com.ataulm.stacks.removed_stacks.RemovedStacksPresenter;
-import com.ataulm.stacks.stack.CreateStackUsecase;
-import com.ataulm.stacks.stack.FetchStacksUsecase;
-import com.ataulm.stacks.stack.PersistStacksUsecase;
-import com.ataulm.stacks.stack.RemoveStackUsecase;
-import com.ataulm.stacks.stack.UpdateStackUsecase;
 import com.ataulm.stacks.stacks.OnClickOpenNavigationDrawerListener;
 import com.ataulm.stacks.stacks.PreviouslyViewedStacks;
 import com.ataulm.stacks.stacks.StacksPresenter;
@@ -34,11 +30,7 @@ public class TopLevelActivity extends BaseActivity {
 
     private final UriCreator uriCreator = uriCreator();
     private final UriResolver uriResolver = uriResolver();
-    private final FetchStacksUsecase fetchStacksUsecase = fetchStacksUsecase();
-    private final CreateStackUsecase createStackUsecase = createStacksUsecase();
-    private final UpdateStackUsecase updateStackUsecase = updateStacksUsecase();
-    private final RemoveStackUsecase removeStackUsecase = removeStackUsecase();
-    private final PersistStacksUsecase persistStacksUsecase = persistStacksUsecase();
+    private final Usecases usecases = usecases();
 
     private TopLevelPresenter presenter;
     private Navigator navigator;
@@ -69,11 +61,7 @@ public class TopLevelActivity extends BaseActivity {
         return StacksPresenter.create(
                 contentViewSetter,
                 uriResolver,
-                fetchStacksUsecase,
-                createStackUsecase,
-                updateStackUsecase,
-                removeStackUsecase,
-                persistStacksUsecase,
+                usecases,
                 createOnClickOpenNavDrawerListener(),
                 navigator,
                 PreviouslyViewedStacks.create(savedInstanceState)
