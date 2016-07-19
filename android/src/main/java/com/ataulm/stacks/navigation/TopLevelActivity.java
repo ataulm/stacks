@@ -15,7 +15,6 @@ import com.ataulm.stacks.R;
 import com.ataulm.stacks.jabber.Usecases;
 import com.ataulm.stacks.removed_stacks.RemovedStacksPresenter;
 import com.ataulm.stacks.stacks.OnClickOpenNavigationDrawerListener;
-import com.ataulm.stacks.stacks.PreviouslyViewedStacks;
 import com.ataulm.stacks.stacks.StacksPresenter;
 
 import java.net.URI;
@@ -63,8 +62,7 @@ public class TopLevelActivity extends BaseActivity {
                 uriResolver,
                 usecases,
                 createOnClickOpenNavDrawerListener(),
-                navigator,
-                PreviouslyViewedStacks.create(savedInstanceState)
+                navigator
         );
     }
 
@@ -140,21 +138,27 @@ public class TopLevelActivity extends BaseActivity {
     public void onBackPressed() {
         if (drawerController.isDrawerOpen()) {
             drawerController.closeDrawer();
-        } else {
-            handleBackNavigation();
-        }
-    }
-
-    private void handleBackNavigation() {
-        if (presenter.onBackPressed()) {
             return;
         }
 
-        if (presenter.isDisplaying(Screen.STACKS)) {
-//            onBackPressedOnStacksScreen();
-        } else {
-            navigator.navigateTo(Screen.STACKS);
+        if (handleBackNavigation()) {
+            return;
         }
+
+        super.onBackPressed();
+    }
+
+    private boolean handleBackNavigation() {
+        if (presenter.onBackPressed()) {
+            return true;
+        }
+
+        if (presenter.isDisplaying(Screen.STACKS)) {
+            return false;
+        }
+
+        navigator.navigateTo(Screen.STACKS);
+        return true;
     }
 
 }

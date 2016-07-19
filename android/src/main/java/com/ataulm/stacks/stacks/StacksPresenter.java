@@ -26,10 +26,8 @@ public final class StacksPresenter implements Presenter {
     private final ContentViewSetter contentViewSetter;
     private final UriResolver uriResolver;
     private final Usecases usecases;
-    private final OnClickOpenNavigationDrawerListener navigationDrawerListener;
     private final ClickActions clickActions;
-    private final BackAndUp backAndUpListener;
-    private final PreviouslyViewedStacks previouslyViewedStacks;
+    private final OnClickNavigationButtonListener onClickNavigationButtonListener;
 
     private StacksScreenLayout contentView;
     private Subscriptions subscriptions = new Subscriptions();
@@ -38,21 +36,28 @@ public final class StacksPresenter implements Presenter {
             ContentViewSetter contentViewSetter,
             UriResolver uriResolver,
             Usecases usecases,
-            OnClickOpenNavigationDrawerListener navigationDrawerListener, // TODO: resolve ToolbarActions with BackAndUp
-            Navigator navigator,
-            PreviouslyViewedStacks previouslyViewedStacks
+            final OnClickOpenNavigationDrawerListener navigationDrawerListener,
+            final Navigator navigator
     ) {
         ClickActions clickActions = new StackClickActions(navigator, usecases.updateStacks(), usecases.removeStacks());
-        BackAndUp backAndUp = new BackAndUp(previouslyViewedStacks, navigator);
+        OnClickNavigationButtonListener onClickNavigationButtonListener = new OnClickNavigationButtonListener() {
+            @Override
+            public void onClickNavigationButton(Optional<Stack> stack) {
+                if (stack.isPresent()) {
+                    Optional<Id> parentId = stack.get().parentId();
+                    navigator.navigateUpToStack(parentId);
+                } else {
+                    navigationDrawerListener.onClickOpenNavigationDrawer();
+                }
+            }
+        };
 
         return new StacksPresenter(
                 contentViewSetter,
                 uriResolver,
                 usecases,
-                navigationDrawerListener,
                 clickActions,
-                backAndUp,
-                previouslyViewedStacks
+                onClickNavigationButtonListener
         );
     }
 
@@ -60,67 +65,26 @@ public final class StacksPresenter implements Presenter {
             ContentViewSetter contentViewSetter,
             UriResolver uriResolver,
             Usecases usecases,
-            OnClickOpenNavigationDrawerListener navigationDrawerListener,
             ClickActions clickActions,
-            BackAndUp backAndUpListener,
-            PreviouslyViewedStacks previouslyViewedStacks
+            OnClickNavigationButtonListener onClickNavigationButtonListener
     ) {
         this.contentViewSetter = contentViewSetter;
         this.uriResolver = uriResolver;
         this.usecases = usecases;
-        this.navigationDrawerListener = navigationDrawerListener;
         this.clickActions = clickActions;
-        this.backAndUpListener = backAndUpListener;
-        this.previouslyViewedStacks = previouslyViewedStacks;
+        this.onClickNavigationButtonListener = onClickNavigationButtonListener;
     }
 
     @Override
     public void start(URI uri) {
-        Optional<Id> id = uriResolver.extractIdFrom(uri);
-        if (!previouslyViewedStacks.lastViewedStackIs(id)) {
-            previouslyViewedStacks.add(id);
-        }
-
         contentView = contentViewSetter.display(R.layout.view_stacks_screen);
 
+        Optional<Id> id = uriResolver.extractIdFrom(uri);
         StackInputListener stackInputListener = createStackInputListener(id);
         contentView.set(stackInputListener);
 
         subscriptions.add(subscribeToStack(id));
         subscriptions.add(subscribeToChildren(id));
-    }
-
-    private static class BackAndUp implements OnClickNavigateUpToParentListener {
-
-        private final PreviouslyViewedStacks previouslyViewedStacks;
-        private final Navigator navigator;
-
-        BackAndUp(PreviouslyViewedStacks previouslyViewedStacks, Navigator navigator) {
-            this.previouslyViewedStacks = previouslyViewedStacks;
-            this.navigator = navigator;
-        }
-
-        /**
-         * @return true if back consumed
-         */
-        public boolean onClickBack() {
-            if (previouslyViewedStacks.noPreviousStackIds()) {
-                // this is either the root stack or arrived here via deeplink
-                return false;
-            }
-            Optional<Id> previousStackId = previouslyViewedStacks.getPenultimateStackIdThenRemoveLastId();
-            navigator.navigateBackToStack(previousStackId);
-            return true;
-        }
-
-        private void navigateUpToParentOf(Stack stack) {
-            navigator.navigateUpToStack(stack.parentId());
-        }
-
-        @Override
-        public void onClickNavigateUpToParentOf(Stack stack) {
-            navigateUpToParentOf(stack);
-        }
     }
 
     private StackInputListener createStackInputListener(final Optional<Id> id) {
@@ -153,7 +117,7 @@ public final class StacksPresenter implements Presenter {
 
     @Override
     public boolean onBackPressed() {
-        return backAndUpListener.onClickBack();
+        return false;
     }
 
     @Override
@@ -188,7 +152,7 @@ public final class StacksPresenter implements Presenter {
         }
 
         private void updateToolbar(Optional<Stack> stack) {
-            contentView.updateToolbar(stack, backAndUpListener, navigationDrawerListener);
+            contentView.updateToolbar(stack, onClickNavigationButtonListener);
         }
 
     }

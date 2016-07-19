@@ -45,32 +45,34 @@ public class StacksScreenLayout extends LinearLayout {
         stacksView.update(stacks, clickActions);
     }
 
-    public void updateToolbar(Optional<Stack> stack, OnClickNavigateUpToParentListener upListener, OnClickOpenNavigationDrawerListener drawerListener) {
+    public void updateToolbar(Optional<Stack> stack, OnClickNavigationButtonListener listener) {
         if (stack.isPresent()) {
-            updateToolbar(stack.get(), upListener);
+            updateToolbar(stack.get(), listener);
         } else {
-            updateToolbar(drawerListener);
+            updateToolbar(listener);
         }
     }
 
-    private void updateToolbar(final Stack stack, final OnClickNavigateUpToParentListener listener) {
+    private void updateToolbar(final Stack stack, final OnClickNavigationButtonListener listener) {
         toolbar.setTitle(stack.summary());
         toolbar.setNavigationIcon(R.drawable.wire_up);
         toolbar.setNavigationOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickNavigateUpToParentOf(stack);
+                Optional<Stack> stackOptional = Optional.of(stack);
+                listener.onClickNavigationButton(stackOptional);
             }
         });
     }
 
-    private void updateToolbar(final OnClickOpenNavigationDrawerListener listener) {
+    private void updateToolbar(final OnClickNavigationButtonListener listener) {
         toolbar.setTitle("Stacks");
         toolbar.setNavigationIcon(R.drawable.wire_nav_drawer);
         toolbar.setNavigationOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickOpenNavigationDrawer();
+                Optional<Stack> stackOptional = Optional.absent();
+                listener.onClickNavigationButton(stackOptional);
             }
         });
     }
