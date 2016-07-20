@@ -8,7 +8,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class MimeTypeResolverShould {
 
-    private static final String PACKAGE_NAME = "com.ataulm.stacks";
+    private static final String PACKAGE_NAME = "any.package.name";
     private static final String MIME_TYPE_SCREEN_TOP_LEVEL = String.format(MimeTypeResolver.MIME_TYPE_SCREEN_TOP_LEVEL, PACKAGE_NAME);
     private static final String MIME_TYPE_SCREEN_STACKS = String.format(MimeTypeResolver.MIME_TYPE_SCREEN_STACKS, PACKAGE_NAME);
 
