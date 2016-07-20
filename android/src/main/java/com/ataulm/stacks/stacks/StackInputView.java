@@ -3,9 +3,12 @@ package com.ataulm.stacks.stacks;
 import android.content.Context;
 import android.text.Editable;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.SimpleTextWatcher;
@@ -42,10 +45,43 @@ public class StackInputView extends LinearLayout {
     }
 
     public void bind(final StackInputListener listener) {
+        setEnterKeyListenerToAddStackAndPreventMultilineInput(listener);
+
         addButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 addStack(listener);
+            }
+        });
+    }
+
+    private void setEnterKeyListenerToAddStackAndPreventMultilineInput(final StackInputListener listener) {
+        inputEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (enterOrDone(actionId)) {
+                    addStack(listener);
+                    return true;
+                }
+                return false;
+            }
+
+            private boolean enterOrDone(int actionId) {
+                return actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_NULL;
+            }
+        });
+
+        inputEditText.setOnKeyListener(new OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                boolean enterPressed = keyCode == KeyEvent.KEYCODE_ENTER;
+
+                if (enterPressed) {
+                    addStack(listener);
+                    return true;
+                }
+
+                return false;
             }
         });
     }
