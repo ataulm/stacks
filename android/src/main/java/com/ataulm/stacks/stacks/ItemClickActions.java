@@ -2,7 +2,7 @@ package com.ataulm.stacks.stacks;
 
 import com.ataulm.stacks.stack.Stack;
 
-public interface ClickActions {
+public interface ItemClickActions {
 
     void onClick(Stack stack);
 

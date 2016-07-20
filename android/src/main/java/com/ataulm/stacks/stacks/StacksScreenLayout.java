@@ -41,8 +41,8 @@ public class StacksScreenLayout extends LinearLayout {
         stackInputView.bind(inputListener);
     }
 
-    public void update(Stacks stacks, ClickActions clickActions) {
-        stacksView.update(stacks, clickActions);
+    public void update(Stacks stacks, ItemClickActions itemClickActions) {
+        stacksView.update(stacks, itemClickActions);
     }
 
     public void updateToolbar(Optional<Stack> stack, OnClickNavigationButtonListener listener) {

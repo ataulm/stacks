@@ -14,6 +14,7 @@ import com.ataulm.stacks.Presenter;
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.jabber.Usecases;
 import com.ataulm.stacks.removed_stacks.RemovedStacksPresenter;
+import com.ataulm.stacks.stacks.OnClickNavigationButtonListenerImpl;
 import com.ataulm.stacks.stacks.OnClickOpenNavigationDrawerListener;
 import com.ataulm.stacks.stacks.StacksPresenter;
 
@@ -43,26 +44,31 @@ public class TopLevelActivity extends BaseActivity {
         navigator = new Navigator(this, uriCreator);
         setupNavigationDrawer();
 
-        presenter = new TopLevelPresenter(uriResolver, createScreenPresenters(savedInstanceState));
+        presenter = new TopLevelPresenter(uriResolver, createScreenPresenters());
     }
 
-    private Collection<Presenter> createScreenPresenters(Bundle savedInstanceState) {
+    private Collection<Presenter> createScreenPresenters() {
         FrameLayout contentFrame = ButterKnife.findById(this, R.id.drawer_layout_content);
+
         ContentViewSetter contentViewSetter = new DrawerLayoutContentViewSetter(getLayoutInflater(), contentFrame);
-        StacksPresenter stacksPresenter = createStacksPresenter(contentViewSetter, savedInstanceState);
+        OnClickNavigationButtonListenerImpl onClickNavigationButtonListener = new OnClickNavigationButtonListenerImpl(navigator, createOnClickOpenNavDrawerListener());
+
+        StacksPresenter stacksPresenter = createStacksPresenter(contentViewSetter, onClickNavigationButtonListener);
+        RemovedStacksPresenter removedStacksPresenter = new RemovedStacksPresenter(contentViewSetter);
+
         return Arrays.asList(
                 stacksPresenter,
-                new RemovedStacksPresenter(contentViewSetter)
+                removedStacksPresenter
         );
     }
 
-    private StacksPresenter createStacksPresenter(ContentViewSetter contentViewSetter, Bundle savedInstanceState) {
+    private StacksPresenter createStacksPresenter(ContentViewSetter contentViewSetter, OnClickNavigationButtonListenerImpl onClickNavigationButtonListener) {
         return StacksPresenter.create(
                 contentViewSetter,
                 uriResolver,
                 usecases,
-                createOnClickOpenNavDrawerListener(),
-                navigator
+                navigator,
+                onClickNavigationButtonListener
         );
     }
 

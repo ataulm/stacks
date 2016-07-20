@@ -5,13 +5,13 @@ import com.ataulm.stacks.stack.RemoveStackUsecase;
 import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.UpdateStackUsecase;
 
-public class StackClickActions implements ClickActions {
+public class StackItemClickActions implements ItemClickActions {
 
     private final Navigator navigator;
     private final UpdateStackUsecase updateStackUsecase;
     private final RemoveStackUsecase removeStackUsecase;
 
-    public StackClickActions(Navigator navigator, UpdateStackUsecase updateStackUsecase, RemoveStackUsecase removeStackUsecase) {
+    public StackItemClickActions(Navigator navigator, UpdateStackUsecase updateStackUsecase, RemoveStackUsecase removeStackUsecase) {
         this.navigator = navigator;
         this.updateStackUsecase = updateStackUsecase;
         this.removeStackUsecase = removeStackUsecase;

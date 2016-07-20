@@ -49,7 +49,7 @@ public class StackItemView extends LinearLayout {
         ButterKnife.bind(this);
     }
 
-    public void bind(Stack stack, ClickActions clickActions) {
+    public void bind(Stack stack, ItemClickActions itemClickActions) {
         summaryTextView.setText(stack.summary());
         setContentDescription(stack.summary());
 
@@ -59,61 +59,61 @@ public class StackItemView extends LinearLayout {
             summaryTextView.setAlpha(1f);
         }
 
-        bindCompletedCheckBox(stack, clickActions);
-        bindActions(stack, clickActions);
+        bindCompletedCheckBox(stack, itemClickActions);
+        bindActions(stack, itemClickActions);
     }
 
-    private void bindCompletedCheckBox(final Stack stack, final ClickActions clickActions) {
+    private void bindCompletedCheckBox(final Stack stack, final ItemClickActions itemClickActions) {
         completedCheckBox.setOnCheckedChangeListener(null);
         completedCheckBox.setChecked(stack.completed());
         completedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked && !stack.completed()) {
-                    clickActions.onClickMarkComplete(stack);
+                    itemClickActions.onClickMarkComplete(stack);
                 } else if (!isChecked && stack.completed()) {
-                    clickActions.onClickMarkNotComplete(stack);
+                    itemClickActions.onClickMarkNotComplete(stack);
                 }
             }
         });
     }
 
-    private void bindActions(Stack stack, ClickActions clickActions) {
-        Actions actions = createActions(stack, clickActions);
+    private void bindActions(Stack stack, ItemClickActions itemClickActions) {
+        Actions actions = createActions(stack, itemClickActions);
         AlertDialog alertDialog = new ActionsAlertDialogCreator(getContext(), R.string.stack_actions_title, actions).create();
 
-        addOnClickToOpen(stack, clickActions);
+        addOnClickToOpen(stack, itemClickActions);
         if (accessibilityServices.isSpokenFeedbackEnabled()) {
             ViewCompat.setAccessibilityDelegate(this, new ActionsAccessibilityDelegate(getResources(), actions));
             removeButton.setVisibility(GONE);
             addOnLongClickToShow(alertDialog);
         } else {
             removeButton.setVisibility(VISIBLE);
-            addOnClickRemoveButtonToRemove(stack, clickActions);
+            addOnClickRemoveButtonToRemove(stack, itemClickActions);
         }
     }
 
-    private Actions createActions(Stack stack, ClickActions clickActions) {
+    private Actions createActions(Stack stack, ItemClickActions itemClickActions) {
         return new Actions(Arrays.asList(
-                createViewActionFor(stack, clickActions),
-                createRemoveActionFor(stack, clickActions)
+                createViewActionFor(stack, itemClickActions),
+                createRemoveActionFor(stack, itemClickActions)
         ));
     }
 
-    private Action createViewActionFor(final Stack stack, final ClickActions clickActions) {
+    private Action createViewActionFor(final Stack stack, final ItemClickActions itemClickActions) {
         return new Action(R.id.stack_item_action_view, R.string.stack_item_view, new Runnable() {
             @Override
             public void run() {
-                clickActions.onClick(stack);
+                itemClickActions.onClick(stack);
             }
         });
     }
 
-    private Action createRemoveActionFor(final Stack stack, final ClickActions clickActions) {
+    private Action createRemoveActionFor(final Stack stack, final ItemClickActions itemClickActions) {
         return new Action(R.id.stack_item_action_remove, R.string.stack_item_remove, new Runnable() {
             @Override
             public void run() {
-                clickActions.onClickRemove(stack);
+                itemClickActions.onClickRemove(stack);
             }
         });
     }
@@ -128,20 +128,20 @@ public class StackItemView extends LinearLayout {
         });
     }
 
-    private void addOnClickToOpen(final Stack stack, final ClickActions clickActions) {
+    private void addOnClickToOpen(final Stack stack, final ItemClickActions itemClickActions) {
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                clickActions.onClick(stack);
+                itemClickActions.onClick(stack);
             }
         });
     }
 
-    private void addOnClickRemoveButtonToRemove(final Stack stack, final ClickActions clickActions) {
+    private void addOnClickRemoveButtonToRemove(final Stack stack, final ItemClickActions itemClickActions) {
         removeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                clickActions.onClickRemove(stack);
+                itemClickActions.onClickRemove(stack);
             }
         });
     }

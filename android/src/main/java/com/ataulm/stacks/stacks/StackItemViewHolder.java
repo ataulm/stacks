@@ -23,8 +23,8 @@ final class StackItemViewHolder extends RecyclerView.ViewHolder {
         this.stackItemView = stackItemView;
     }
 
-    public void bind(Stack stack, ClickActions clickActions) {
-        stackItemView.bind(stack, clickActions);
+    public void bind(Stack stack, ItemClickActions itemClickActions) {
+        stackItemView.bind(stack, itemClickActions);
     }
 
 }

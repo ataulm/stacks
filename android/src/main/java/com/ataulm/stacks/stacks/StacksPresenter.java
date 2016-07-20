@@ -1,20 +1,15 @@
 package com.ataulm.stacks.stacks;
 
-import com.ataulm.Event;
 import com.ataulm.Optional;
 import com.ataulm.Subscriptions;
 import com.ataulm.stacks.ContentViewSetter;
-import com.ataulm.stacks.LoggingObserver;
 import com.ataulm.stacks.Presenter;
 import com.ataulm.stacks.R;
-import com.ataulm.stacks.jabber.Jabber;
 import com.ataulm.stacks.jabber.Usecases;
 import com.ataulm.stacks.navigation.Navigator;
 import com.ataulm.stacks.navigation.Screen;
 import com.ataulm.stacks.navigation.UriResolver;
 import com.ataulm.stacks.stack.Id;
-import com.ataulm.stacks.stack.Stack;
-import com.ataulm.stacks.stack.Stacks;
 
 import java.net.URI;
 
@@ -26,7 +21,7 @@ public final class StacksPresenter implements Presenter {
     private final ContentViewSetter contentViewSetter;
     private final UriResolver uriResolver;
     private final Usecases usecases;
-    private final ClickActions clickActions;
+    private final ItemClickActions itemClickActions;
     private final OnClickNavigationButtonListener onClickNavigationButtonListener;
 
     private StacksScreenLayout contentView;
@@ -36,27 +31,16 @@ public final class StacksPresenter implements Presenter {
             ContentViewSetter contentViewSetter,
             UriResolver uriResolver,
             Usecases usecases,
-            final OnClickOpenNavigationDrawerListener navigationDrawerListener,
-            final Navigator navigator
+            Navigator navigator,
+            OnClickNavigationButtonListener onClickNavigationButtonListener
     ) {
-        ClickActions clickActions = new StackClickActions(navigator, usecases.updateStacks(), usecases.removeStacks());
-        OnClickNavigationButtonListener onClickNavigationButtonListener = new OnClickNavigationButtonListener() {
-            @Override
-            public void onClickNavigationButton(Optional<Stack> stack) {
-                if (stack.isPresent()) {
-                    Optional<Id> parentId = stack.get().parentId();
-                    navigator.navigateUpToStack(parentId);
-                } else {
-                    navigationDrawerListener.onClickOpenNavigationDrawer();
-                }
-            }
-        };
+        ItemClickActions itemClickActions = new StackItemClickActions(navigator, usecases.updateStacks(), usecases.removeStacks());
 
         return new StacksPresenter(
                 contentViewSetter,
                 uriResolver,
                 usecases,
-                clickActions,
+                itemClickActions,
                 onClickNavigationButtonListener
         );
     }
@@ -65,13 +49,13 @@ public final class StacksPresenter implements Presenter {
             ContentViewSetter contentViewSetter,
             UriResolver uriResolver,
             Usecases usecases,
-            ClickActions clickActions,
+            ItemClickActions itemClickActions,
             OnClickNavigationButtonListener onClickNavigationButtonListener
     ) {
         this.contentViewSetter = contentViewSetter;
         this.uriResolver = uriResolver;
         this.usecases = usecases;
-        this.clickActions = clickActions;
+        this.itemClickActions = itemClickActions;
         this.onClickNavigationButtonListener = onClickNavigationButtonListener;
     }
 
@@ -99,13 +83,13 @@ public final class StacksPresenter implements Presenter {
     private Subscription subscribeToStack(Optional<Id> id) {
         return usecases.fetchStacks().fetchStack(id)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new StackObserver());
+                .subscribe(new StackObserver(contentView, onClickNavigationButtonListener));
     }
 
     private Subscription subscribeToChildren(Optional<Id> id) {
         return usecases.fetchStacks().fetchChildrenWithParent(id)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ChildrenObserver());
+                .subscribe(new ChildrenObserver(contentView, itemClickActions));
 
     }
 
@@ -125,63 +109,4 @@ public final class StacksPresenter implements Presenter {
         return screen == Screen.STACKS;
     }
 
-    private class StackObserver extends LoggingObserver<Event<Optional<Stack>>> {
-
-        @Override
-        public void onNext(Event<Optional<Stack>> event) {
-            super.onNext(event);
-            switch (event.getType()) {
-                case LOADING:
-                    break;
-                case ERROR:
-                    Jabber.toast("uh oh, error");
-                    break;
-                case IDLE:
-                    update(event);
-                    break;
-                default:
-                    throw new IllegalArgumentException("unknown type: " + event.getType());
-            }
-        }
-
-        private void update(Event<Optional<Stack>> event) {
-            if (event.getData().isPresent()) {
-                Optional<Stack> stack = event.getData().get();
-                updateToolbar(stack);
-            }
-        }
-
-        private void updateToolbar(Optional<Stack> stack) {
-            contentView.updateToolbar(stack, onClickNavigationButtonListener);
-        }
-
-    }
-
-    private class ChildrenObserver extends LoggingObserver<Event<Stacks>> {
-
-        @Override
-        public void onNext(Event<Stacks> event) {
-            super.onNext(event);
-            switch (event.getType()) {
-                case LOADING:
-                    break;
-                case ERROR:
-                    Jabber.toast("uh oh, error");
-                    break;
-                case IDLE:
-                    update(event);
-                    break;
-                default:
-                    throw new IllegalArgumentException("unknown type: " + event.getType());
-            }
-        }
-
-        private void update(Event<Stacks> event) {
-            if (event.getData().isPresent()) {
-                Stacks stacks = event.getData().get();
-                contentView.update(stacks, clickActions);
-            }
-        }
-
-    }
 }

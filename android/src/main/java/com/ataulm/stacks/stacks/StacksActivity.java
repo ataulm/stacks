@@ -12,21 +12,25 @@ import com.ataulm.stacks.navigation.Navigator;
 
 import java.net.URI;
 
+import static com.ataulm.stacks.jabber.Jabber.*;
+import static com.ataulm.stacks.jabber.Jabber.uriCreator;
+
 public class StacksActivity extends BaseActivity {
 
     private StacksPresenter presenter;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stacks);
 
+        Navigator navigator = new Navigator(this, uriCreator());
         presenter = StacksPresenter.create(
                 new ActivityContentViewSetter(this),
-                Jabber.uriResolver(),
-                Jabber.usecases(),
-                null,
-                new Navigator(this, Jabber.uriCreator())
+                uriResolver(),
+                usecases(),
+                navigator,
+                new OnClickNavigationButtonListenerImpl(navigator, new IllegalStateOnClickOpenNavigationDrawerListener())
         );
     }
 
@@ -55,6 +59,15 @@ public class StacksActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         presenter.stop();
+    }
+
+    private static class IllegalStateOnClickOpenNavigationDrawerListener implements OnClickOpenNavigationDrawerListener {
+
+        @Override
+        public void onClickOpenNavigationDrawer() {
+            throw new IllegalStateException("StacksActivity doesn't support navigation drawer");
+        }
+
     }
 
 }
