@@ -1,4 +1,4 @@
-package com.ataulm.stacks.stacks;
+package com.ataulm.stacks.stacks.item;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,8 +7,9 @@ import android.view.ViewGroup;
 
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.stack.Stack;
+import com.ataulm.stacks.stacks.ItemClickActions;
 
-final class StackItemViewHolder extends RecyclerView.ViewHolder {
+public final class StackItemViewHolder extends RecyclerView.ViewHolder {
 
     private final StackItemView stackItemView;
 

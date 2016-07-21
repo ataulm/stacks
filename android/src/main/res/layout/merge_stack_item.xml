@@ -4,19 +4,24 @@
   <CheckBox
     android:id="@+id/stack_item_check_completed"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical" />
 
-  <TextView
-    android:id="@+id/stack_item_text_summary"
+  <FrameLayout
     android:layout_width="0dp"
     android:layout_height="match_parent"
-    android:layout_weight="100"
-    android:gravity="center_vertical" />
+    android:layout_weight="100">
 
-  <Button
-    android:id="@+id/stack_item_button_remove"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="x" />
+    <com.ataulm.stacks.stacks.item.StacksItemSummaryView
+      android:id="@+id/stack_item_text_summary"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent" />
+
+    <com.ataulm.stacks.stacks.item.StacksItemSummaryEditView
+      android:id="@+id/stack_item_edit_summary"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent" />
+
+  </FrameLayout>
 
 </merge>

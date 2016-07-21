@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import com.ataulm.rv.StableIdDictionary;
 import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.Stacks;
+import com.ataulm.stacks.stacks.item.StackItemViewHolder;
 
 public final class StacksAdapter extends RecyclerView.Adapter<StackItemViewHolder> {
 

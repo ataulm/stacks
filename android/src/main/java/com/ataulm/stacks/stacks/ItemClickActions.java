@@ -12,4 +12,6 @@ public interface ItemClickActions {
 
     void onClickRemove(Stack stack);
 
+    void onClickEdit(Stack stack, String summary);
+
 }

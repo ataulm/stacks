@@ -1,5 +1,6 @@
 package com.ataulm.stacks.stacks;
 
+import com.ataulm.stacks.jabber.Jabber;
 import com.ataulm.stacks.navigation.Navigator;
 import com.ataulm.stacks.stack.RemoveStackUsecase;
 import com.ataulm.stacks.stack.Stack;
@@ -35,6 +36,11 @@ public class StackItemClickActions implements ItemClickActions {
     @Override
     public void onClickRemove(Stack stack) {
         removeStackUsecase.markPendingRemove(stack);
+    }
+
+    @Override
+    public void onClickEdit(Stack stack, String summary) {
+        updateStackUsecase.updateSummary(stack, summary);
     }
 
 }
