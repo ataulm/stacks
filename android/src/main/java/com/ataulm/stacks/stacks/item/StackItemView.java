@@ -38,18 +38,25 @@ public class StackItemView extends LinearLayout {
     }
 
     public void bind(final Stack stack, final ItemClickActions itemClickActions) {
-        showSummary();
+        bindSummary(stack, itemClickActions);
+        bindCompletedCheckBox(stack, itemClickActions);
+        applyTreatmentForCompletedState(stack);
 
-        if (stack.completed()) {
-            setAlpha(0.54f);
-        } else {
-            setAlpha(1f);
-        }
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickActions.onClick(stack);
+            }
+        });
+    }
+
+    private void bindSummary(final Stack stack, final ItemClickActions itemClickActions) {
+        resetSummaryVisibility();
 
         summaryTextView.bind(stack, new StacksItemSummaryView.Listener() {
             @Override
             public void onClickEdit() {
-                showEditableSummary();
+                setEditableSummaryVisible();
             }
 
             @Override
@@ -61,7 +68,7 @@ public class StackItemView extends LinearLayout {
         summaryEditText.bind(stack, new StacksItemSummaryEditView.Listener() {
             @Override
             public void onCancelChanges() {
-                showSummary();
+                resetSummaryVisibility();
                 summaryEditText.bind(stack, this);
             }
 
@@ -70,16 +77,14 @@ public class StackItemView extends LinearLayout {
                 itemClickActions.onClickEdit(stack, summary);
             }
         });
-
-        bindCompletedCheckBox(stack, itemClickActions);
     }
 
-    private void showSummary() {
+    private void resetSummaryVisibility() {
         summaryTextView.setVisibility(VISIBLE);
         summaryEditText.setVisibility(GONE);
     }
 
-    private void showEditableSummary() {
+    private void setEditableSummaryVisible() {
         summaryTextView.setVisibility(GONE);
         summaryEditText.setVisibility(VISIBLE);
     }
@@ -97,6 +102,14 @@ public class StackItemView extends LinearLayout {
                 }
             }
         });
+    }
+
+    private void applyTreatmentForCompletedState(Stack stack) {
+        if (stack.completed()) {
+            setAlpha(0.54f);
+        } else {
+            setAlpha(1f);
+        }
     }
 
 }
