@@ -39,8 +39,8 @@ public class StacksView extends FrameLayout {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    public void update(Stacks stacks, ItemClickActions itemClickActions) {
-        RecyclerView.Adapter adapter = StacksAdapter.create(stacks, ids, itemClickActions);
+    public void update(Stacks stacks, UserItemActions userItemActions) {
+        RecyclerView.Adapter adapter = StacksAdapter.create(stacks, ids, userItemActions);
         recyclerView.swapAdapter(adapter, false);
 
         if (stacks.size() == 0) {

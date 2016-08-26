@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.stack.Stack;
-import com.ataulm.stacks.stacks.ItemClickActions;
+import com.ataulm.stacks.stacks.UserItemActions;
 
 public final class StackItemViewHolder extends RecyclerView.ViewHolder {
 
@@ -24,8 +24,8 @@ public final class StackItemViewHolder extends RecyclerView.ViewHolder {
         this.stackItemView = stackItemView;
     }
 
-    public void bind(Stack stack, ItemClickActions itemClickActions) {
-        stackItemView.bind(stack, itemClickActions);
+    public void bind(Stack stack, UserItemActions userItemActions) {
+        stackItemView.bind(stack, userItemActions);
     }
 
 }

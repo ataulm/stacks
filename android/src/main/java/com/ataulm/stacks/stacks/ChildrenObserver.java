@@ -8,11 +8,11 @@ import com.ataulm.stacks.stack.Stacks;
 class ChildrenObserver extends LoggingObserver<Event<Stacks>> {
 
     private final StacksScreenLayout contentView;
-    private final ItemClickActions itemClickActions;
+    private final UserItemActions userItemActions;
 
-    ChildrenObserver(StacksScreenLayout contentView, ItemClickActions itemClickActions) {
+    ChildrenObserver(StacksScreenLayout contentView, UserItemActions userItemActions) {
         this.contentView = contentView;
-        this.itemClickActions = itemClickActions;
+        this.userItemActions = userItemActions;
     }
 
     @Override
@@ -35,7 +35,7 @@ class ChildrenObserver extends LoggingObserver<Event<Stacks>> {
     private void update(Event<Stacks> event) {
         if (event.getData().isPresent()) {
             Stacks stacks = event.getData().get();
-            contentView.update(stacks, itemClickActions);
+            contentView.update(stacks, userItemActions);
         }
     }
 

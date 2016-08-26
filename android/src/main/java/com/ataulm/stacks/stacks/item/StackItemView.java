@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 
 import com.ataulm.stacks.R;
 import com.ataulm.stacks.stack.Stack;
-import com.ataulm.stacks.stacks.ItemClickActions;
+import com.ataulm.stacks.stacks.UserItemActions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,20 +37,20 @@ public class StackItemView extends LinearLayout {
         ButterKnife.bind(this);
     }
 
-    public void bind(final Stack stack, final ItemClickActions itemClickActions) {
-        bindSummary(stack, itemClickActions);
-        bindCompletedCheckBox(stack, itemClickActions);
+    public void bind(final Stack stack, final UserItemActions userItemActions) {
+        bindSummary(stack, userItemActions);
+        bindCompletedCheckBox(stack, userItemActions);
         applyTreatmentForCompletedState(stack);
 
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemClickActions.onClick(stack);
+                userItemActions.onClick(stack);
             }
         });
     }
 
-    private void bindSummary(final Stack stack, final ItemClickActions itemClickActions) {
+    private void bindSummary(final Stack stack, final UserItemActions userItemActions) {
         resetSummaryVisibility();
 
         summaryTextView.bind(stack, new StacksItemSummaryView.Listener() {
@@ -61,7 +61,7 @@ public class StackItemView extends LinearLayout {
 
             @Override
             public void onClickRemove() {
-                itemClickActions.onClickRemove(stack);
+                userItemActions.onClickRemove(stack);
             }
         });
 
@@ -74,7 +74,7 @@ public class StackItemView extends LinearLayout {
 
             @Override
             public void onAcceptChanges(String summary) {
-                itemClickActions.onClickEdit(stack, summary);
+                userItemActions.onClickEdit(stack, summary);
             }
         });
     }
@@ -89,16 +89,16 @@ public class StackItemView extends LinearLayout {
         summaryEditText.setVisibility(VISIBLE);
     }
 
-    private void bindCompletedCheckBox(final Stack stack, final ItemClickActions itemClickActions) {
+    private void bindCompletedCheckBox(final Stack stack, final UserItemActions userItemActions) {
         completedCheckBox.setOnCheckedChangeListener(null);
         completedCheckBox.setChecked(stack.completed());
         completedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked && !stack.completed()) {
-                    itemClickActions.onClickMarkComplete(stack);
+                    userItemActions.onClickMarkComplete(stack);
                 } else if (!isChecked && stack.completed()) {
-                    itemClickActions.onClickMarkNotComplete(stack);
+                    userItemActions.onClickMarkNotComplete(stack);
                 }
             }
         });

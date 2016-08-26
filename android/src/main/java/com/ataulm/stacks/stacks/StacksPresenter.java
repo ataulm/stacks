@@ -21,7 +21,7 @@ public final class StacksPresenter implements Presenter {
     private final ContentViewSetter contentViewSetter;
     private final UriResolver uriResolver;
     private final Usecases usecases;
-    private final ItemClickActions itemClickActions;
+    private final UserItemActions userItemActions;
     private final OnClickNavigationButtonListener onClickNavigationButtonListener;
 
     private StacksScreenLayout contentView;
@@ -34,13 +34,13 @@ public final class StacksPresenter implements Presenter {
             Navigator navigator,
             OnClickNavigationButtonListener onClickNavigationButtonListener
     ) {
-        ItemClickActions itemClickActions = new StackItemClickActions(navigator, usecases.updateStacks(), usecases.removeStacks());
+        UserItemActions userItemActions = new StackUserItemActions(navigator, usecases.updateStacks(), usecases.removeStacks());
 
         return new StacksPresenter(
                 contentViewSetter,
                 uriResolver,
                 usecases,
-                itemClickActions,
+                userItemActions,
                 onClickNavigationButtonListener
         );
     }
@@ -49,13 +49,13 @@ public final class StacksPresenter implements Presenter {
             ContentViewSetter contentViewSetter,
             UriResolver uriResolver,
             Usecases usecases,
-            ItemClickActions itemClickActions,
+            UserItemActions userItemActions,
             OnClickNavigationButtonListener onClickNavigationButtonListener
     ) {
         this.contentViewSetter = contentViewSetter;
         this.uriResolver = uriResolver;
         this.usecases = usecases;
-        this.itemClickActions = itemClickActions;
+        this.userItemActions = userItemActions;
         this.onClickNavigationButtonListener = onClickNavigationButtonListener;
     }
 
@@ -89,7 +89,7 @@ public final class StacksPresenter implements Presenter {
     private Subscription subscribeToChildren(Optional<Id> id) {
         return usecases.fetchStacks().fetchChildrenWithParent(id)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ChildrenObserver(contentView, itemClickActions));
+                .subscribe(new ChildrenObserver(contentView, userItemActions));
 
     }
 

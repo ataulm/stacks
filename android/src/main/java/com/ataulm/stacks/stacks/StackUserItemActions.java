@@ -1,18 +1,17 @@
 package com.ataulm.stacks.stacks;
 
-import com.ataulm.stacks.jabber.Jabber;
 import com.ataulm.stacks.navigation.Navigator;
 import com.ataulm.stacks.stack.RemoveStackUsecase;
 import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stack.UpdateStackUsecase;
 
-public class StackItemClickActions implements ItemClickActions {
+public class StackUserItemActions implements UserItemActions {
 
     private final Navigator navigator;
     private final UpdateStackUsecase updateStackUsecase;
     private final RemoveStackUsecase removeStackUsecase;
 
-    public StackItemClickActions(Navigator navigator, UpdateStackUsecase updateStackUsecase, RemoveStackUsecase removeStackUsecase) {
+    public StackUserItemActions(Navigator navigator, UpdateStackUsecase updateStackUsecase, RemoveStackUsecase removeStackUsecase) {
         this.navigator = navigator;
         this.updateStackUsecase = updateStackUsecase;
         this.removeStackUsecase = removeStackUsecase;
