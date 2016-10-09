@@ -8,12 +8,13 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.0.1'
     compile 'com.novoda:accessibilitools:1.1.0'
 
-    compile 'com.android.support:design:24.0.0'
-    compile 'com.android.support:recyclerview-v7:24.0.0'
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:support-v4:24.0.0'
-    compile 'io.reactivex:rxandroid:1.1.0'
+    def supportVersion = '24.2.1'
+    compile "com.android.support:design:${supportVersion}"
+    compile "com.android.support:recyclerview-v7:${supportVersion}"
+    compile "com.android.support:appcompat-v7:${supportVersion}"
+    compile "com.android.support:support-v4:${supportVersion}"
 
+    compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.ataulm:rv-tools:1.0.0'
 
     testCompile 'junit:junit:4.12'
@@ -22,12 +23,12 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '22.0.1'
+    compileSdkVersion 24
+    buildToolsVersion '24.0.3'
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0.0"
     }
