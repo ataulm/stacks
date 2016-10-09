@@ -1,13 +1,17 @@
 package com.ataulm.stacks.stacks.item;
 
 import android.content.Context;
+import android.support.v7.widget.PopupMenu;
 import android.util.AttributeSet;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.ataulm.stacks.R;
+import com.ataulm.stacks.jabber.Jabber;
 import com.ataulm.stacks.stack.Stack;
 import com.ataulm.stacks.stacks.UserItemActions;
 
@@ -19,11 +23,11 @@ public class StackItemView extends LinearLayout {
     @BindView(R.id.stack_item_check_completed)
     CheckBox completedCheckBox;
 
-    @BindView(R.id.stack_item_text_summary)
-    StacksItemSummaryView summaryTextView;
+    @BindView(R.id.stacks_item_summary_text)
+    TextView summaryTextView;
 
-    @BindView(R.id.stack_item_edit_summary)
-    StacksItemSummaryEditView summaryEditText;
+    @BindView(R.id.stacks_item_summary_button_show_menu)
+    View showMenuButton;
 
     public StackItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -38,7 +42,30 @@ public class StackItemView extends LinearLayout {
     }
 
     public void bind(final Stack stack, final UserItemActions userItemActions) {
-        bindSummary(stack, userItemActions);
+        summaryTextView.setText(stack.summary());
+
+        final PopupMenu popupMenu = setupPopupMenu(new StacksItemSummaryView.Listener() {
+            @Override
+            public void onClickEdit() {
+                Jabber.toast("edit pressed");
+            }
+
+            @Override
+            public void onClickRemove() {
+                userItemActions.onClickRemove(stack);
+            }
+        });
+        showMenuButton.setOnClickListener(
+                new OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        popupMenu.show();
+                    }
+
+                }
+        );
+
         bindCompletedCheckBox(stack, userItemActions);
         applyTreatmentForCompletedState(stack);
 
@@ -50,43 +77,43 @@ public class StackItemView extends LinearLayout {
         });
     }
 
-    private void bindSummary(final Stack stack, final UserItemActions userItemActions) {
-        resetSummaryVisibility();
-
-        summaryTextView.bind(stack, new StacksItemSummaryView.Listener() {
-            @Override
-            public void onClickEdit() {
-                setEditableSummaryVisible();
-            }
-
-            @Override
-            public void onClickRemove() {
-                userItemActions.onClickRemove(stack);
-            }
-        });
-
-        summaryEditText.bind(stack, new StacksItemSummaryEditView.Listener() {
-            @Override
-            public void onCancelChanges() {
-                resetSummaryVisibility();
-                summaryEditText.bind(stack, this);
-            }
-
-            @Override
-            public void onAcceptChanges(String summary) {
-                userItemActions.onClickEdit(stack, summary);
-            }
-        });
+    private PopupMenu setupPopupMenu(StacksItemSummaryView.Listener listener) {
+        PopupMenu popupMenu = new PopupMenu(getContext(), showMenuButton);
+        popupMenu.inflate(R.menu.menu_stack_item);
+        popupMenu.setOnMenuItemClickListener(new MenuClickListener(listener));
+        return popupMenu;
     }
 
-    private void resetSummaryVisibility() {
-        summaryTextView.setVisibility(VISIBLE);
-        summaryEditText.setVisibility(GONE);
-    }
+    private static class MenuClickListener implements PopupMenu.OnMenuItemClickListener {
 
-    private void setEditableSummaryVisible() {
-        summaryTextView.setVisibility(GONE);
-        summaryEditText.setVisibility(VISIBLE);
+        private final StacksItemSummaryView.Listener listener;
+
+        MenuClickListener(StacksItemSummaryView.Listener listener) {
+            this.listener = listener;
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.remove:
+                    onClickRemove();
+                    return false;
+                case R.id.edit:
+                    onClickEdit();
+                    return true;
+                default:
+                    throw new IllegalArgumentException("unhandled item: " + item.getTitle());
+            }
+        }
+
+        private void onClickEdit() {
+            listener.onClickEdit();
+        }
+
+        private void onClickRemove() {
+            listener.onClickRemove();
+        }
+
     }
 
     private void bindCompletedCheckBox(final Stack stack, final UserItemActions userItemActions) {

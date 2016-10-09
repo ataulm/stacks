@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <CheckBox
     android:id="@+id/stack_item_check_completed"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_vertical" />
+    android:layout_gravity="center_vertical"
+    android:layout_marginLeft="20dp" />
 
-  <FrameLayout
+  <com.ataulm.BaseTextView
+    android:id="@+id/stacks_item_summary_text"
     android:layout_width="0dp"
-    android:layout_height="match_parent"
-    android:layout_weight="100">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginTop="18dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginBottom="16dp"
+    android:layout_weight="100"
+    android:textSize="16sp"
+    android:textColor="@color/warm_grey"
+    android:lineSpacingExtra="6sp"
+    app:textFont="robotoRegular" />
 
-    <com.ataulm.stacks.stacks.item.StacksItemSummaryView
-      android:id="@+id/stack_item_text_summary"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent" />
-
-    <com.ataulm.stacks.stacks.item.StacksItemSummaryEditView
-      android:id="@+id/stack_item_edit_summary"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent" />
-
-  </FrameLayout>
+  <View
+    android:id="@+id/stacks_item_summary_button_show_menu"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:layout_gravity="center_vertical"
+    android:background="@color/teal" />
 
 </merge>

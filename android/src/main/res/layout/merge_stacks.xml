@@ -8,7 +8,7 @@
     android:layout_weight="100"
     android:focusable="false" />
 
-  <com.ataulm.stacks.BaseTextView
+  <com.ataulm.BaseTextView
     android:id="@+id/stacks_empty_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
