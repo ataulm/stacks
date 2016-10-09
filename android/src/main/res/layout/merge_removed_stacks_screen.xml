@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <android.support.design.widget.AppBarLayout
+  <com.ataulm.stacks.view.AppBarWidget
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/holo_red_light">
-
-    <android.support.v7.widget.Toolbar
-      android:id="@+id/toolbar"
-      android:layout_width="match_parent"
-      android:layout_height="56dp" />
-
-  </android.support.design.widget.AppBarLayout>
+    android:layout_height="wrap_content" />
 
   <com.ataulm.stacks.BaseTextView
     android:id="@+id/removed_stacks_screen_empty_view"

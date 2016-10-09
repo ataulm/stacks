@@ -4,11 +4,13 @@
   <!-- All color codes should be here. -->
   <!-- If this list starts getting too long, something is wrong design-wise -->
   <!-- When changing a color, remember to refactor the name to describe it -->
+  <color name="transparent">#ffffffff</color>
   <color name="white">#ffffff</color>
   <color name="off_white">#f8f8f8</color>
   <color name="light_grey">#cbcbcb</color>
   <color name="grey">#969696</color>
   <color name="dark_grey">#5e5e5e</color>
+  <color name="teal">#009688</color>
   <!-- end swatch-->
 
   <color name="navigation_drawer_background">@color/off_white</color>
