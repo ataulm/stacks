@@ -36,11 +36,12 @@ public class UriResolver {
         return pathSegments.length > 0 && pathSegments[TOP_LEVEL_PATH_PART].equals(screen.getPath());
     }
 
-    public Optional<Id> extractIdFrom(@Nullable URI uri) {
-        if (uri == null) {
+    public Optional<Id> extractIdFrom(Optional<URI> uri) {
+        if (uri.isPresent()) {
+            return idExtractor.extractIdFrom(uri.get());
+        } else {
             return Optional.absent();
         }
-        return idExtractor.extractIdFrom(uri);
     }
 
 }

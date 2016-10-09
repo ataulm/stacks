@@ -2,18 +2,16 @@ package com.ataulm.stacks.stacks;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 
+import com.ataulm.Optional;
 import com.ataulm.stacks.ActivityContentViewSetter;
 import com.ataulm.stacks.BaseActivity;
 import com.ataulm.stacks.R;
-import com.ataulm.stacks.jabber.Jabber;
 import com.ataulm.stacks.navigation.Navigator;
 
 import java.net.URI;
 
 import static com.ataulm.stacks.jabber.Jabber.*;
-import static com.ataulm.stacks.jabber.Jabber.uriCreator;
 
 public class StacksActivity extends BaseActivity {
 
@@ -37,22 +35,18 @@ public class StacksActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        URI uri = getUri();
+        Optional<URI> uri = getUri();
         presenter.start(uri);
     }
 
-    @Nullable
-    private URI getUri() {
+    private Optional<URI> getUri() {
         Uri data = getIntent().getData();
         return uriFrom(data);
     }
 
-    @Nullable
-    private static URI uriFrom(Uri uri) {
-        if (uri == null) {
-            return null;
-        }
-        return URI.create(uri.toString());
+    private static Optional<URI> uriFrom(Uri uri) {
+        URI converted = uri == null ? null : URI.create(uri.toString());
+        return Optional.fromNullable(converted);
     }
 
     @Override

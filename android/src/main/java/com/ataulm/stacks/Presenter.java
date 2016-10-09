@@ -1,12 +1,13 @@
 package com.ataulm.stacks;
 
+import com.ataulm.Optional;
 import com.ataulm.stacks.navigation.Screen;
 
 import java.net.URI;
 
 public interface Presenter {
 
-    void start(URI uri);
+    void start(Optional<URI> uri);
 
     void stop();
 

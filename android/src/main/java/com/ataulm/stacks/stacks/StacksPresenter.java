@@ -60,7 +60,7 @@ public final class StacksPresenter implements Presenter {
     }
 
     @Override
-    public void start(URI uri) {
+    public void start(Optional<URI> uri) {
         contentView = contentViewSetter.display(R.layout.view_stacks_screen);
 
         Optional<Id> id = uriResolver.extractIdFrom(uri);

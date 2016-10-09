@@ -1,5 +1,6 @@
 package com.ataulm.stacks.removed_stacks;
 
+import com.ataulm.Optional;
 import com.ataulm.stacks.ContentViewSetter;
 import com.ataulm.stacks.Presenter;
 import com.ataulm.stacks.R;
@@ -17,7 +18,7 @@ public class RemovedStacksPresenter implements Presenter {
     }
 
     @Override
-    public void start(URI uri) {
+    public void start(Optional<URI> uri) {
         contentView = contentViewSetter.display(R.layout.view_removed_stacks_screen);
     }
 

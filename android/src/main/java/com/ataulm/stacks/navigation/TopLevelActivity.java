@@ -8,6 +8,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.FrameLayout;
 
+import com.ataulm.Optional;
 import com.ataulm.stacks.BaseActivity;
 import com.ataulm.stacks.ContentViewSetter;
 import com.ataulm.stacks.Presenter;
@@ -109,29 +110,25 @@ public class TopLevelActivity extends BaseActivity {
 
         setIntent(intent);
 
-        URI uri = uriFrom(intent.getData());
+        Optional<URI> uri = uriFrom(intent.getData());
         presenter.start(uri);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        URI uri = getUri();
+        Optional<URI> uri = getUri();
         presenter.start(uri);
     }
 
-    @Nullable
-    private URI getUri() {
+    private Optional<URI> getUri() {
         Uri data = getIntent().getData();
         return uriFrom(data);
     }
 
-    @Nullable
-    private static URI uriFrom(Uri uri) {
-        if (uri == null) {
-            return null;
-        }
-        return URI.create(uri.toString());
+    private static Optional<URI> uriFrom(Uri uri) {
+        URI converted = uri == null ? null : URI.create(uri.toString());
+        return Optional.fromNullable(converted);
     }
 
     @Override
